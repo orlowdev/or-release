@@ -1,19 +1,19 @@
 {
-	"name": "template",
-	"description": "description",
+	"name": "@priestine/versions",
+	"description": "A tool for automating Semantic Versioning on your project",
 	"version": "0.0.0",
 	"main": "index.js",
 	"engines": {
 		"node": ">=10.0.0"
 	},
-	"repository": "https://github.com/priestine/template.git",
+	"repository": "https://github.com/priestine/versions.git",
 	"author": "Sergei Orlov <orlove.dev@gmail.com> (https://orlove.dev/)",
 	"keywords": [],
 	"license": "MIT",
-	"homepage": "https://orlove.dev/repos/template",
+	"homepage": "https://orlove.dev/repos/versions",
 	"bugs": {
 		"email": "orlove.dev@gmail.com",
-		"url": "https://github.com/priestine/template/issues"
+		"url": "https://github.com/priestine/versions/issues"
 	},
 	"scripts": {
 		"start": "ts-node src/index.ts",
