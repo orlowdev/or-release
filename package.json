@@ -11,7 +11,22 @@
 	},
 	"repository": "https://github.com/priestine/versions.git",
 	"author": "Sergei Orlov <orlove.dev@gmail.com> (https://orlove.dev/)",
-	"keywords": [],
+	"keywords": [
+		"ci",
+		"semver",
+		"semantic versioning",
+		"versioning",
+		"release",
+		"release-automation",
+		"gitmoji",
+		"cc",
+		"conventional commits",
+		"changelog",
+		"tag",
+		"github",
+		"gitlab",
+		"bitbucket"
+	],
 	"license": "MIT",
 	"homepage": "https://orlove.dev/repos/versions",
 	"bugs": {
