@@ -2,7 +2,7 @@ name: AVA
 on: [push, pull_request]
 jobs:
  check:
-  runs-on: { { os.matrix } }
+  runs-on: ${{ os.matrix }}
   strategy:
    matrix:
     os: [ubuntu-latest, macos-latest, windows-latest]
