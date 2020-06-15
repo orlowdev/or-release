@@ -17,6 +17,7 @@
 		"stripInternal": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
+		"esModuleInterop": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
 		"moduleResolution": "node",
