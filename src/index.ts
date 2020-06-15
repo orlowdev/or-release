@@ -10,6 +10,7 @@ import { getLatestVersionCommit } from './pipes/get-latest-version-commit'
 import { getChanges } from './pipes/get-changes'
 import { blue, error, green, ILogger, info, orange, red, success, warning } from './utils/logger'
 import type { IAppCtx } from './types/app-ctx'
+import { forceBumping } from './pipes/force-version-bumping'
 
 export const processExit = (code: number) => process.exit(code)
 
@@ -35,6 +36,9 @@ ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(getLatestVersion({ execEither, logger }))
 	.pipeExtend(getLatestVersionCommit({ execEither, processExit, logger }))
 	.pipeExtend(getChanges({ execEither, processExit, logger }))
+	.pipeExtend(forceBumping('bumpPatch'))
+	.pipeExtend(forceBumping('bumpMinor'))
+	.pipeExtend(forceBumping('bumpMajor'))
 	.pipeTap(console.log)
 	.process()
 

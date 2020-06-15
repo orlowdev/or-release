@@ -5,7 +5,7 @@ const unsafeGet = Symbol('EitherUnsafeGet')
 
 export interface IEitherStatic {
 	try: <TSuccess, TFail>(thunk: Thunk<TSuccess>) => IEither<TSuccess, TFail>
-	right: <TContext>(x: TContext) => IEither<TContext>
+	right: <TContext, TLeftContext = TContext>(x: TContext) => IEither<TContext, TLeftContext>
 	left: <TContext, TRightContext = TContext>(x: TContext) => IEither<TRightContext, TContext>
 }
 
@@ -90,6 +90,6 @@ export const Either: IEitherStatic = {
 			return left(error)
 		}
 	},
-	right: (x) => right(x),
+	right: (x) => right(x) as any,
 	left: (x) => left(x),
 }
