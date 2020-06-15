@@ -24,6 +24,6 @@ jobs:
      uses: codecov/codecov-action@v1
      with:
       flags: unittests
-      env_vars: OS,PYTHON
+      env_vars: OS,NODE
       name: codecov-umbrella
       fail_ci_if_error: true
