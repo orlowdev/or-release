@@ -9,6 +9,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
+	"bin": "./index.js",
 	"repository": "https://github.com/priestine/versions.git",
 	"author": "Sergei Orlov <orlove.dev@gmail.com> (https://orlove.dev/)",
 	"keywords": [
@@ -38,17 +39,21 @@
 		"build": "tsc",
 		"test": "ava",
 		"test:cover": "nyc ava",
+		"format": "xo --fix",
 		"lint:ts": "xo",
 		"lint:tsc": "tsc --noEmit",
 		"lint": "yarn lint:ts && yarn lint:tsc",
 		"prettify": "pretty-quick"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"chalk": "^4.1.0"
+	},
 	"optionalDependencies": {},
 	"peerDependencies": {},
 	"devDependencies": {
 		"@commitlint/cli": "^8.3.5",
 		"@types/node": "^14.0.13",
+		"@types/sinon": "^9.0.4",
 		"ava": "^3.8.2",
 		"commitlint-config-gitmoji": "^1.0.1",
 		"cross-env": "^7.0.2",
@@ -57,6 +62,7 @@
 		"nyc": "^15.1.0",
 		"prettier": "^2.0.5",
 		"pretty-quick": "^2.0.1",
+		"sinon": "^9.0.2",
 		"ts-node": "^8.10.2",
 		"typescript": "^3.9.5",
 		"xo": "^0.32.0",
@@ -68,9 +74,24 @@
 			"pre-push": "yarn lint && yarn test:cover"
 		}
 	},
+	"prettier": {
+		"printWidth": 100,
+		"trailingComma": "all",
+		"singleQuote": true,
+		"semi": false,
+		"useTabs": true,
+		"tabWidth": 1,
+		"bracketSpacing": true
+	},
 	"xo": {
 		"semicolon": false,
-		"prettier": true
+		"prettier": true,
+		"rules": {
+			"unicorn/no-reduce": "off",
+			"unicorn/no-fn-reference-in-iterator": "off",
+			"unicorn/no-process-exit": "off",
+			"@typescript-eslint/no-unnecessary-type-arguments": "off"
+		}
 	},
 	"ava": {
 		"files": [

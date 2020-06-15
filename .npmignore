@@ -2,9 +2,6 @@
 node_modules
 test
 .eslinrc.js
-.prettierrc
-CODE_OF_CONDUCT.md
-CONTRIBUTING.md
 jest.config.js
 tsconfig.json
 yarn.lock
@@ -14,5 +11,5 @@ coverage
 !*.d.ts
 .gitignore
 tsconfig.tsbuildinfo
-CHANGELOG.md
+changelog.md
 .commitlintrc
