@@ -1,6 +1,7 @@
 # ||l @priestine/versions
 
 ![lint](https://github.com/priestine/versions/workflows/lint/badge.svg)
+![ava](https://github.com/priestine/versions/workflows/AVA/badge.svg)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/47fea726a5dfd86413cf/maintainability)](https://codeclimate.com/github/priestine/versions/maintainability)
 [![codecov](https://codecov.io/gh/priestine/versions/branch/master/graph/badge.svg)](https://codecov.io/gh/priestine/versions)
