@@ -39,6 +39,7 @@ ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(forceBumping({ key: 'bumpPatch', logger }))
 	.pipeExtend(forceBumping({ key: 'bumpMinor', logger }))
 	.pipeExtend(forceBumping({ key: 'bumpMajor', logger }))
+	.pipe(console.log)
 	.process()
 
 /*
