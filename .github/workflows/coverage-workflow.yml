@@ -15,11 +15,10 @@ jobs:
      uses: actions/setup-node@v1
      with:
       node-version: '12.x'
+   - name: Install dependencies
+     run: yarn
    - name: Generate coverage report
-     run: |
-      npm i -g yarn
-      yarn
-      yarn test:cover
+     run: yarn test:cover
    - name: Upload coverage to Codecov
      uses: codecov/codecov-action@v1
      with:
