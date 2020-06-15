@@ -36,10 +36,9 @@ ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(getLatestVersion({ execEither, logger }))
 	.pipeExtend(getLatestVersionCommit({ execEither, processExit, logger }))
 	.pipeExtend(getChanges({ execEither, processExit, logger }))
-	.pipeExtend(forceBumping('bumpPatch'))
-	.pipeExtend(forceBumping('bumpMinor'))
-	.pipeExtend(forceBumping('bumpMajor'))
-	.pipeTap(console.log)
+	.pipeExtend(forceBumping({ key: 'bumpPatch', logger }))
+	.pipeExtend(forceBumping({ key: 'bumpMinor', logger }))
+	.pipeExtend(forceBumping({ key: 'bumpMajor', logger }))
 	.process()
 
 /*
