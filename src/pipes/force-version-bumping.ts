@@ -20,7 +20,7 @@ const commitsOrNull = (key: BumpKey) => (commits: IRawCommit[]) => {
 }
 
 const logFoundCommits = (key: BumpKey, logger: ILogger) => (commits: IRawCommit[]) =>
-	logger.info(`${key.replace('bump', '')} level commits: ${logger.green(String(commits.length))}`)
+	logger.info(`${key.replace('bump', '')} level changes: ${logger.green(String(commits.length))}`)
 
 interface IForceBumpingDeps {
 	key: BumpKey
