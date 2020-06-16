@@ -1,0 +1,15 @@
+name: Priestine Versioning
+on:
+ push:
+  branches: [master]
+jobs:
+ versioning:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v2
+   - name: Setup Node
+     uses: actions/setup-node@v1
+     with:
+      node-version: '12.x'
+   - name: Publish new version if applicable
+     run: npx @priestine/versions --token=${{ secrets.GITHUB_TOKEN }} --force-major
