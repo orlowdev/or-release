@@ -1,0 +1,25 @@
+name: Publish Node.js Package
+on:
+ release:
+  types: [created]
+jobs:
+ build:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v2
+   - uses: actions/setup-node@v1
+     with:
+      node-version: '12.x'
+      registry-url: 'https://registry.npmjs.org'
+   - name: Set env
+     run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
+   - name: Install dependencies
+     run: yarn
+   - name: Transpile to JavaScript
+     run: yarn build
+   - run: |
+      sed -i s/"\"version\":.*/\"version\": \"$RELEASE_VERSION\","/ package.json
+   - name: Publish to NPM
+     run: npm publish
+     env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
