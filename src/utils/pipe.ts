@@ -11,7 +11,7 @@ interface IPipeStatic {
 
 interface IExtendPipeStatic extends IPipeStatic {
 	of: <TContext extends Record<string, any>, TProcess = Record<string, unknown>>(
-		f: Unary<TProcess, TContext>,
+		f: Unary<TProcess, TContext | void>,
 	) => IExtendPipe<TContext, TProcess>
 	from: <TContext extends Record<string, any>, TProcess = Record<string, unknown>>(
 		...functions: Array<Unary<any>>
@@ -35,7 +35,7 @@ interface IExtendPipe<TContext extends Record<string, any>, TProcess = Record<st
 	pipe: <TNewContext>(f: Unary<TContext, TNewContext>) => IExtendPipe<TNewContext, TProcess>
 	pipeTap: (f: Unary<TContext, any>) => IExtendPipe<TContext, TProcess>
 	pipeExtend: <TNewContext extends Record<string, any>>(
-		f: Unary<TContext, TNewContext>,
+		f: Unary<TContext, TNewContext | void>,
 	) => IExtendPipe<TContext extends TNewContext ? TContext : TContext & TNewContext, TProcess>
 	concat: <TOtherContext extends Record<string, any>>(
 		other: IPipe<TOtherContext, TContext>,

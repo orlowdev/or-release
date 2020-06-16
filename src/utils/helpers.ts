@@ -6,7 +6,7 @@ export const extendWith = <TArg extends Record<string, any>, TResult = TArg>(
 	f: Unary<TArg, TResult>,
 ) => (object: TArg) => ({
 	...object,
-	...f(object),
+	...(f(object) || {}),
 })
 
 export const trimCmdNewLine = (string: string) => string.replace(/\n$/, '')

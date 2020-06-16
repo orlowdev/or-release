@@ -15,11 +15,10 @@ export const exitIfNoBumping = ({ logger, processExit }: IExitIfNoBumpingDeps) =
 	bumpPatch,
 	bumpMinor,
 	bumpMajor,
-}: ExitIfNoBumpingCtx) => (
+}: ExitIfNoBumpingCtx) => {
 	any(bumpPatch)
 		.concat(any(bumpMinor))
 		.concat(any(bumpMajor))
 		.ifFalse(tap(() => logger.warning('Version bumping is not needed. Terminating.')))
-		.ifFalse(() => processExit(0)),
-	{}
-)
+		.ifFalse(() => processExit(0))
+}
