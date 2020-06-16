@@ -62,12 +62,12 @@ jobs:
       node-version: '12.x'
    # Do stuff
    - name: Publish new version if applicable
-     run: npx @priestine/versions@latest --token=${{ secrets.PRIESTINE_VERSIONS_TOKEN }} --repository=$GITHUB_REPOSITORY
+     run: npx @priestine/versions --token=${{ secrets.PRIESTINE_VERSIONS_TOKEN }} --repository=$GITHUB_REPOSITORY
 ```
 
 ## Configuration
 
-| CLI Option     | Short Description           | CLI Usage                      |
+| Option         | Short Description           | CLI Usage                      |
 | -------------- | --------------------------- | ------------------------------ |
 | Token          | Access token for publishing | --token=\$SOME_TOKEN           |
 | Repository     | Owner/Repo                  | --repository=octocat/github    |
