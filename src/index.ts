@@ -15,6 +15,9 @@ import { makeNewVersion } from './pipes/make-new-version'
 import { exitIfNoBumping } from './pipes/exit-if-no-bumping'
 import { makeChangelog } from './pipes/make-changelog'
 import { Conventions } from './types/common-types'
+import { getConfigFromArgv } from './pipes/get-config'
+
+const argv = process.argv
 
 export const processExit = (code: number) => process.exit(code)
 
@@ -42,6 +45,7 @@ const conventions: Conventions = {
 }
 
 ExtendPipe.empty<IAppCtx>()
+	.pipeExtend(getConfigFromArgv({ argv }))
 	.pipeExtend(getCurrentCommit({ execEither, processExit, logger }))
 	.pipeExtend(getLatestVersion({ execEither, logger }))
 	.pipeExtend(getLatestVersionCommit({ execEither, processExit, logger }))
@@ -52,4 +56,5 @@ ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(exitIfNoBumping({ logger, processExit }))
 	.pipeExtend(makeNewVersion({ logger }))
 	.pipeExtend(makeChangelog({ conventions }))
-	.process()
+	.pipe(console.log)
+	.process({ privateToken: '' })

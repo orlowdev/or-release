@@ -46,6 +46,7 @@
 		"prettify": "pretty-quick"
 	},
 	"dependencies": {
+		"@priestine/case-transformer": "^1.0.2",
 		"chalk": "^4.1.0"
 	},
 	"optionalDependencies": {},
@@ -91,7 +92,8 @@
 			"unicorn/no-fn-reference-in-iterator": "off",
 			"unicorn/no-process-exit": "off",
 			"@typescript-eslint/no-unnecessary-type-arguments": "off",
-			"@typescript-eslint/no-invalid-void-type": "off"
+			"@typescript-eslint/no-invalid-void-type": "off",
+			"prefer-destructuring": "off"
 		}
 	},
 	"ava": {
