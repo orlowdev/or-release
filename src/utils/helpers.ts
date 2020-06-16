@@ -9,6 +9,8 @@ export const extendWith = <TArg extends Record<string, any>, TResult = TArg>(
 	...(f(object) || {}),
 })
 
+export const option = <T>(x: T) => () => x
+
 export const trimCmdNewLine = (string: string) => string.replace(/\n$/, '')
 
 export const errorToString = (error: Error) =>

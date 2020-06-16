@@ -2,6 +2,7 @@
 
 import type { IAppCtx } from './types/app-ctx'
 import { execSync } from 'child_process'
+import httpTransport from 'got'
 import { Either } from './utils/either'
 import { execWith, trimCmdNewLine } from './utils/helpers'
 import { ExtendPipe } from './utils/pipe'
@@ -16,6 +17,7 @@ import { exitIfNoBumping } from './pipes/exit-if-no-bumping'
 import { makeChangelog } from './pipes/make-changelog'
 import { Conventions } from './types/common-types'
 import { getConfigFromArgv } from './pipes/get-config'
+import { publishTag } from './pipes/publish-tag'
 
 const argv = process.argv
 
@@ -56,5 +58,5 @@ ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(exitIfNoBumping({ logger, processExit }))
 	.pipeExtend(makeNewVersion({ logger }))
 	.pipeExtend(makeChangelog({ conventions }))
-	.pipe(console.log)
-	.process({ privateToken: '' })
+	.pipe(publishTag({ execEither, processExit, logger, httpTransport }))
+	.process({ privateToken: '', bumpPatch: false, bumpMinor: false, bumpMajor: false })

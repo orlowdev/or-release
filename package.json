@@ -47,7 +47,8 @@
 	},
 	"dependencies": {
 		"@priestine/case-transformer": "^1.0.2",
-		"chalk": "^4.1.0"
+		"chalk": "^4.1.0",
+		"got": "^11.3.0"
 	},
 	"optionalDependencies": {},
 	"peerDependencies": {},
