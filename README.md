@@ -67,13 +67,14 @@ jobs:
 
 ## Configuration
 
-| CLI Option | Short Description           | CLI Usage                      |
-| ---------- | --------------------------- | ------------------------------ |
-| Token      | Access token for publishing | --token=\$SOME_TOKEN           |
-| Repository | Owner/Repo                  | --repository=octocat/github    |
-| Bump Patch | Force bumping patch version | --bump-patch[=<true \| false>] |
-| Bump Minor | Force bumping minor version | --bump-minor[=<true \| false>] |
-| Bump Major | Force bumping major version | --bump-patch[=<true \| false>] |
+| CLI Option     | Short Description           | CLI Usage                      |
+| -------------- | --------------------------- | ------------------------------ |
+| Token          | Access token for publishing | --token=\$SOME_TOKEN           |
+| Repository     | Owner/Repo                  | --repository=octocat/github    |
+| Bump Patch     | Force bumping patch version | --bump-patch[=<true \| false>] |
+| Bump Minor     | Force bumping minor version | --bump-minor[=<true \| false>] |
+| Bump Major     | Force bumping major version | --bump-patch[=<true \| false>] |
+| Latest Version | A tag to check commits from | --latest-version=0.0.0         |
 
 ### Detailed description
 
@@ -97,7 +98,12 @@ If, for some reason, you want to force bumping the minor version, even if it is 
 
 If, for some reason, you want to force bumping the major version, even if it is not needed based on the types of commits you've made since the previous release, you can provide the `--bump-major`. Keep in mind that this may negatively affect the appearance of your changelog.
 
+#### Latest Version
+
+You can customize the tag from which @priestine/versions should start checking commits. **NOTE** - in this case, the version that will be produced by @priestine/versions may already be in place. Use carefully.
+
 ## Caveats
 
 - **Help needed** - for some reason, `$GITHUB_TOKEN` did not work for me when I tried to use it for creating releases from GitHub Actions. I am not very skilled with this tool so there's probably me doing something wrong.
 - Currently, @priestine/versions only works with GitHub (on-premise solutions not supported yet) and gitmoji as a commit convention.
+- There might be a problem with using @priestine/versions with git repositories that have multiple unrelated histories merged. Specifically, when there are no previous Semantic Version tags and the tool tries to check commits since the initial commit. The problem is that in this case there will be multiple initial commits. Current workaround is to manually tag the commit that is desired to be used as the initial one, with a tag like '0.0.0' and then execute @priestine/semantics with `--latest-version=0.0.0`.

@@ -79,4 +79,11 @@ ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(makeNewVersion({ logger, colors }))
 	.pipeExtend(makeChangelog({ conventions }))
 	.pipe(publishTag({ processExit, logger, httpTransport, colors }))
-	.process({ token: '', bumpPatch: false, bumpMinor: false, bumpMajor: false, repository: '' })
+	.process({
+		token: '',
+		bumpPatch: false,
+		bumpMinor: false,
+		bumpMajor: false,
+		repository: '',
+		latestVersion: '',
+	})
