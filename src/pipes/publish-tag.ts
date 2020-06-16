@@ -1,30 +1,28 @@
 import { Got } from 'got'
 import { ILogger, IColorizer } from '../utils/logger'
 import { Unary } from '../types/common-types'
-import { IEither } from '../utils/either'
+import { Either } from '../utils/either'
 import { IAppCtx } from '../types/app-ctx'
 import { errorToString } from '../utils/helpers'
 
 interface IPublishTagDeps {
 	logger: ILogger
-	execEither: Unary<string, IEither<string, Error>>
 	httpTransport: Got
 	processExit: Unary<number, never>
 	colors: IColorizer
 }
 
-type PublishTagCtx = Pick<IAppCtx, 'token' | 'changelog' | 'newVersion'>
+type PublishTagCtx = Pick<IAppCtx, 'token' | 'changelog' | 'newVersion' | 'repository'>
 
-export const publishTag = ({
-	execEither,
-	logger,
-	httpTransport,
-	processExit,
-	colors,
-}: IPublishTagDeps) => ({ token, changelog, newVersion }: PublishTagCtx) =>
-	execEither('git remote get-url origin')
-		.map((origin) => origin.replace('.git', '/releases'))
-		.map((origin) => origin.replace('https://github.com/', 'https://api.github.com/repos/'))
+export const publishTag = ({ logger, httpTransport, processExit, colors }: IPublishTagDeps) => ({
+	token,
+	changelog,
+	newVersion,
+	repository,
+}: PublishTagCtx) =>
+	Either.right('https://api.github.com/repos/')
+		.map((origin) => origin.concat(repository))
+		.map((origin) => origin.concat('/releases'))
 		.map(async (url) => {
 			try {
 				await httpTransport.post(url, {
