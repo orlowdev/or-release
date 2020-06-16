@@ -1,6 +1,7 @@
 import type { IAppCtx } from '../types/app-ctx'
 import type { ILogger } from '../utils/logger'
 import type { IRawCommit } from '../types/raw-commit'
+import type { BumpKey } from '../types/common-types'
 import { Either } from '../utils/either'
 import { tap } from '../utils/helpers'
 
@@ -9,8 +10,6 @@ const conventions = {
 	bumpMinor: [':sparkles:'],
 	bumpMajor: [':boom:'],
 }
-
-type BumpKey = 'bumpPatch' | 'bumpMinor' | 'bumpMajor'
 
 const commitsOrNull = (key: BumpKey) => (commits: IRawCommit[]) => {
 	const thisType = commits.filter((commit) => conventions[key].includes(commit.type))

@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
+import type { IAppCtx } from './types/app-ctx'
 import { execSync } from 'child_process'
 import { Either } from './utils/either'
-import { trimCmdNewLine, execWith } from './utils/helpers'
+import { execWith, trimCmdNewLine } from './utils/helpers'
 import { ExtendPipe } from './utils/pipe'
 import { getCurrentCommit } from './pipes/get-current-commit'
 import { getLatestVersion } from './pipes/get-latest-version'
 import { getLatestVersionCommit } from './pipes/get-latest-version-commit'
 import { getChanges } from './pipes/get-changes'
 import { blue, error, green, ILogger, info, orange, red, success, warning } from './utils/logger'
-import type { IAppCtx } from './types/app-ctx'
-import { forceBumping } from './pipes/force-version-bumping'
+import { forceBumping } from './pipes/force-bumping'
+import { makeNewVersion } from './pipes/make-new-version'
+import { exitIfNoBumping } from './pipes/exit-if-no-bumping'
 
 export const processExit = (code: number) => process.exit(code)
 
@@ -39,7 +41,8 @@ ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(forceBumping({ key: 'bumpPatch', logger }))
 	.pipeExtend(forceBumping({ key: 'bumpMinor', logger }))
 	.pipeExtend(forceBumping({ key: 'bumpMajor', logger }))
-	.pipe(console.log)
+	.pipeExtend(exitIfNoBumping({ logger, processExit }))
+	.pipeExtend(makeNewVersion({ logger }))
 	.process()
 
 /*
