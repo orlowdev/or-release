@@ -195,4 +195,14 @@ export interface IAppConfig {
 	 * @default false
 	 */
 	bumpMajor: boolean
+
+	/**
+	 * Repository path, e.g. "priestine/semantics". This value is needed
+	 * when API is used for publishing releases to GitHub or GitLab. In
+	 * most cases, it can be taken from an environment variable in your
+	 * CI tool.
+	 *
+	 * @default ""
+	 */
+	repository: string
 }
