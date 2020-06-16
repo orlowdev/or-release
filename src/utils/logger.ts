@@ -1,10 +1,9 @@
 import type { Unary } from '../types/common-types'
-import { red, green, blue, yellow } from 'chalk'
 
-export const errorPrefix = <T>(message: T) => `${red.inverse(' ERROR   ')} ${String(message)}`
-export const warningPrefix = <T>(message: T) => `${yellow.inverse(' WARNING ')} ${String(message)}`
-export const infoPrefix = <T>(message: T) => `${blue.inverse(' INFO    ')} ${String(message)}`
-export const successPrefix = <T>(message: T) => `${green.inverse(' SUCCESS ')} ${String(message)}`
+export const errorPrefix = <T>(message: T) => `💣 ${String(message)}`
+export const warningPrefix = <T>(message: T) => `🤔 ${String(message)}`
+export const infoPrefix = <T>(message: T) => `   ${String(message)}`
+export const successPrefix = <T>(message: T) => `🎉 ${String(message)}`
 
 export interface ILogger {
 	error: Unary<string, void>
