@@ -26,7 +26,10 @@ export const publishTag = ({
 		.map(async (url) => {
 			try {
 				await httpTransport.post(url, {
-					headers: { 'User-Agent': 'priestine-versions', Authorization: `Bearer ${token}` },
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
 					json: { tag_name: newVersion, name: newVersion, body: changelog },
 				})
 
