@@ -13,6 +13,8 @@ import { blue, error, green, ILogger, info, orange, red, success, warning } from
 import { forceBumping } from './pipes/force-bumping'
 import { makeNewVersion } from './pipes/make-new-version'
 import { exitIfNoBumping } from './pipes/exit-if-no-bumping'
+import { makeChangelog } from './pipes/make-changelog'
+import { Conventions } from './types/common-types'
 
 export const processExit = (code: number) => process.exit(code)
 
@@ -33,23 +35,21 @@ const logger: ILogger = {
 	success,
 }
 
+const conventions: Conventions = {
+	bumpPatch: [':ambulance:', ':bug:', ':lock:'],
+	bumpMinor: [':sparkles:'],
+	bumpMajor: [':boom:'],
+}
+
 ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(getCurrentCommit({ execEither, processExit, logger }))
 	.pipeExtend(getLatestVersion({ execEither, logger }))
 	.pipeExtend(getLatestVersionCommit({ execEither, processExit, logger }))
 	.pipeExtend(getChanges({ execEither, processExit, logger }))
-	.pipeExtend(forceBumping({ key: 'bumpPatch', logger }))
-	.pipeExtend(forceBumping({ key: 'bumpMinor', logger }))
-	.pipeExtend(forceBumping({ key: 'bumpMajor', logger }))
+	.pipeExtend(forceBumping({ key: 'bumpPatch', logger, conventions }))
+	.pipeExtend(forceBumping({ key: 'bumpMinor', logger, conventions }))
+	.pipeExtend(forceBumping({ key: 'bumpMajor', logger, conventions }))
 	.pipeExtend(exitIfNoBumping({ logger, processExit }))
 	.pipeExtend(makeNewVersion({ logger }))
+	.pipeExtend(makeChangelog({ conventions }))
 	.process()
-
-/*
-TODO:
-ForceBump
-MakeNewVersion
-ExitIfNoVersion(() => process.exit(0))
-MakeChangelogIfRequired
-Log(stdOut)
-*/
