@@ -14,4 +14,4 @@ jobs:
      with:
       node-version: '12.x'
    - name: Publish new version if applicable
-     run: npx @priestine/versions@latest --token=$GITHUB_TOKEN --force-major
+     run: npx @priestine/versions@latest --token=${{ secrets.GITHUB_TOKEN }} --force-major
