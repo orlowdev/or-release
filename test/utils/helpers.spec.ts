@@ -1,8 +1,8 @@
 import test from 'ava'
 import { errorToString, execWith, extendWith, tap, trimCmdNewLine } from '../../src/utils/helpers'
-import sinon from 'sinon'
+import * as sinon from 'sinon'
 
-test('uses provided function to extend provided object', (t) => {
+test('extendWith uses provided function to extend provided object', (t) => {
 	const object_ = { x: 1, y: 2 }
 
 	const extend = extendWith(({ x, y }: typeof object_) => ({
@@ -13,9 +13,16 @@ test('uses provided function to extend provided object', (t) => {
 	t.deepEqual(extend(object_), { x: 1, y: 5, z: 3 })
 })
 
+test('extendWith does not fail if provided function returns void', (t) => {
+	const object_ = { x: 1, y: 2 }
+	const extend = extendWith(() => undefined)
+
+	t.deepEqual(extend(object_), object_)
+})
+
 const spy = sinon.spy()
 
-test('calls provided function with provided argument and returns the argument back', (t) => {
+test('tap calls provided function with provided argument and returns the argument back', (t) => {
 	const tapTest = tap(spy)
 	const result = tapTest(1)
 	t.true(spy.called)

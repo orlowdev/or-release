@@ -70,7 +70,7 @@ test('ExtendPipe associativity (Semigroup)', (t) => {
 		ExtendPipe.of(efn1).concat(ExtendPipe.of(efn2)).concat(ExtendPipe.of(efn3)).process(),
 		ExtendPipe.of(efn1)
 			.concat(ExtendPipe.of(efn2).concat(ExtendPipe.of(efn3)))
-			.process(),
+			.process({}),
 	)
 })
 

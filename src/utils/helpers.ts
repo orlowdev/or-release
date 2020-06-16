@@ -4,12 +4,11 @@ export const execWith = (exec: (cmd: string) => string) => (cmd: string) => () =
 
 export const extendWith = <TArg extends Record<string, any>, TResult = TArg>(
 	f: Unary<TArg, TResult>,
-) => (object: TArg) => ({
-	...object,
-	...(f(object) || {}),
-})
-
-export const option = <T>(x: T) => () => x
+) => (object: TArg): TArg & TResult =>
+	({
+		...object,
+		...(f(object) || {}),
+	} as any)
 
 export const trimCmdNewLine = (string: string) => string.replace(/\n$/, '')
 
