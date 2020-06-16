@@ -1,7 +1,7 @@
 import type { IEither } from '../utils/either'
 import type { IAppCtx } from '../types/app-ctx'
 import type { Unary } from '../types/common-types'
-import type { ILogger } from '../utils/logger'
+import type { ILogger, IColorizer } from '../utils/logger'
 import { errorToString, tap } from '../utils/helpers'
 
 const getCommitCommand = (latestVersion: string) =>
@@ -13,6 +13,7 @@ interface IGetLatestVersionCommitDeps {
 	execEither: Unary<string, IEither<string, Error>>
 	processExit: Unary<number, never>
 	logger: ILogger
+	colors: IColorizer
 }
 
 type IGetLatestVersionCommitCtx = Pick<IAppCtx, 'latestVersion'>
@@ -21,6 +22,7 @@ export const getLatestVersionCommit = ({
 	execEither,
 	processExit,
 	logger,
+	colors,
 }: IGetLatestVersionCommitDeps) => ({ latestVersion }: IGetLatestVersionCommitCtx) => ({
 	latestVersionCommit: execEither(getCommitCommand(latestVersion))
 		.leftMap(tap(() => logger.error('Could not get latest version commit due to error:')))
@@ -28,7 +30,7 @@ export const getLatestVersionCommit = ({
 		.fold(
 			() => processExit(1),
 			tap((latestVersionCommit: string) =>
-				logger.info(`Latest version commit hash: ${logger.green(latestVersionCommit.slice(0, 7))}`),
+				logger.info(`Latest version commit hash: ${colors.green(latestVersionCommit.slice(0, 7))}`),
 			),
 		),
 })

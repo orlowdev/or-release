@@ -1,5 +1,5 @@
 import { Got } from 'got'
-import { ILogger } from '../utils/logger'
+import { ILogger, IColorizer } from '../utils/logger'
 import { Unary } from '../types/common-types'
 import { IEither } from '../utils/either'
 import { IAppCtx } from '../types/app-ctx'
@@ -10,6 +10,7 @@ interface IPublishTagDeps {
 	execEither: Unary<string, IEither<string, Error>>
 	httpTransport: Got
 	processExit: Unary<number, never>
+	colors: IColorizer
 }
 
 type PublishTagCtx = Pick<IAppCtx, 'token' | 'changelog' | 'newVersion'>
@@ -19,6 +20,7 @@ export const publishTag = ({
 	logger,
 	httpTransport,
 	processExit,
+	colors,
 }: IPublishTagDeps) => ({ token, changelog, newVersion }: PublishTagCtx) =>
 	execEither('git remote get-url origin')
 		.map((origin) => origin.replace('.git', '/releases'))
@@ -33,7 +35,7 @@ export const publishTag = ({
 					json: { tag_name: newVersion, name: newVersion, body: changelog },
 				})
 
-				logger.success(`Version ${newVersion} successfully released! 🥂`)
+				logger.success(`Version ${colors.green(newVersion)} successfully released! 🥂`)
 			} catch (error) {
 				logger.error('Could not publish the release due to the error:')
 				logger.error(errorToString(error))

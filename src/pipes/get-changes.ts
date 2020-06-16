@@ -2,7 +2,7 @@ import type { IAppCtx } from '../types/app-ctx'
 import type { IEither } from '../utils/either'
 import { Either } from '../utils/either'
 import type { Unary } from '../types/common-types'
-import type { ILogger } from '../utils/logger'
+import type { ILogger, IColorizer } from '../utils/logger'
 import { errorToString, tap } from '../utils/helpers'
 import { IRawCommit } from '../types/raw-commit'
 
@@ -39,11 +39,12 @@ interface IGetChangesDeps {
 	execEither: Unary<string, IEither<string, Error>>
 	processExit: Unary<number, never>
 	logger: ILogger
+	colors: IColorizer
 }
 
 type IGetChangesCtx = Pick<IAppCtx, 'latestVersionCommit'>
 
-export const getChanges = ({ execEither, processExit, logger }: IGetChangesDeps) => ({
+export const getChanges = ({ execEither, processExit, logger, colors }: IGetChangesDeps) => ({
 	latestVersionCommit,
 }: IGetChangesCtx) => ({
 	commitList: execEither(`git rev-list ${latestVersionCommit}..HEAD --format='${commitFormat}'`)
@@ -59,7 +60,7 @@ export const getChanges = ({ execEither, processExit, logger }: IGetChangesDeps)
 		.bimap(
 			(error: Error) => logger.error(errorToString(error)),
 			tap((changes: IRawCommit[]) =>
-				logger.info(`Changes found since previous version: ${logger.green(String(changes.length))}`),
+				logger.info(`Changes found since previous version: ${colors.green(String(changes.length))}`),
 			),
 		)
 		.fold(
