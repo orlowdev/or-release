@@ -76,6 +76,7 @@ jobs:
 | Bump Major     | Force bumping major version   | --bump-patch[=<true \| false>] |
 | Latest Version | A tag to check commits from   | --latest-version=0.0.0         |
 | prefix         | Custom prefix for the version | --prefix=v                     |
+| public         | Declare public API            | --public[=<true \| false>]     |
 
 ### Detailed description
 
@@ -106,6 +107,14 @@ You can customize the tag from which @priestine/versions should start checking c
 #### Prefix
 
 Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a common pattern as it enables easier glob matching for tags, but keep in mind that using a prefix makes the version non-compliant with Semantic Versioning.
+
+#### Public
+
+According to the Semantic Versioning specification, releases that have a MAJOR version of **0** are not considered stable. Breaking changes for these releases bump MINOR version instead of the MAJOR one. These rules also apply if you use @priestine/versions. The changelog is created with MAJOR changes separate from MINOR ones, though.
+
+You can provide this option to exit the experimental stage. The closest release will be `1.0.0`, thus declaring public API.
+
+NOTE: this option is only applicable if you don't have releases with MAJOR version higher than **0**.
 
 ## Caveats
 
