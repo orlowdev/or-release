@@ -1,22 +1,14 @@
 import type { IAppCtx } from '../types/app-ctx'
 import { transformCase } from '@priestine/case-transformer'
 import { isInteger, isFloat, isBoolean } from '../utils/guards'
+import { Switch } from '../utils/switch'
 
-const normalizeConfigValue = <T>(newValue: string, currentValue: T) => {
-	if (isInteger(currentValue)) {
-		return Number.parseInt(newValue, 10)
-	}
-
-	if (isFloat(currentValue)) {
-		return Number.parseFloat(newValue)
-	}
-
-	if (isBoolean(currentValue)) {
-		return newValue === 'true'
-	}
-
-	return newValue
-}
+const normalizeConfigValue = <T>(newValue: string, currentValue: T) =>
+	Switch.of(currentValue)
+		.case(isInteger, Number.parseInt(newValue, 10))
+		.case(isFloat, Number.parseFloat(newValue))
+		.case(isBoolean, newValue === 'true')
+		.default(newValue)
 
 const argvToObject = (argv: string[]): IAppCtx =>
 	argv.reduce<any>((acc, arg) => {
