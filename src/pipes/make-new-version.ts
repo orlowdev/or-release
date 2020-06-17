@@ -34,7 +34,7 @@ export const makeNewVersion = ({ logger, colors }: IMakeNewVersionDeps) => ({
 		.map((tuple) => tuple.join('.'))
 		.map((version) => prefix.concat(version))
 		.fold(
-			() => `${prefix}0.1.0`,
+			() => `${prefix}${isPublic ? '1.0' : '0.1'}.0`,
 			tap((newVersion) => logger.success(`Version candidate: ${colors.green(newVersion)}`)),
 		),
 })
