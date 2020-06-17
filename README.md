@@ -19,6 +19,10 @@ A tool for automating [Semantic Versioning](https://semver.org) on your project.
 - 📝 Automatically generated list of changes that is put into the release body. _An option to also write to a file will also be available!_
 - 🤔 Works with [gitmoji](https://gitmoji.carloscuesta.me) commits convention. _[conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) and [turbo-git](https://github.com/labs-js/turbo-git) comming soon, as well as custom conventions you can set up for your project_
 
+## 📝 Docs
+
+- [Publishing released version to NPM](./docs/js-ts/npm.en.md)
+
 ## Why
 
 I'll tell you why a little bit later, when I have some free time.
