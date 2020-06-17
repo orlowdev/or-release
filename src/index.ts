@@ -27,6 +27,8 @@ import { makeChangelog } from './pipes/make-changelog'
 import { Conventions } from './types/common-types'
 import { getConfigFromArgv } from './pipes/get-config'
 import { publishTag } from './pipes/publish-tag'
+import { appendPrefix } from './pipes/append-prefix'
+import { any } from './utils/any'
 
 const argv = process.argv
 
@@ -69,6 +71,12 @@ const conventions: Conventions = {
 ExtendPipe.empty<IAppCtx>()
 	.pipeExtend(getConfigFromArgv({ argv }))
 	.pipeExtend(getCurrentCommit({ execEither, processExit, logger, colors }))
+	.pipeExtend(appendPrefix)
+	.pipeTap(({ prefix }) =>
+		any(prefix).ifTrue(() =>
+			logger.info(`New version will be prefixed with "${colors.green(prefix)}"`),
+		),
+	)
 	.pipeExtend(getLatestVersion({ execEither, logger, colors }))
 	.pipeExtend(getLatestVersionCommit({ execEither, processExit, logger, colors }))
 	.pipeExtend(getChanges({ execEither, processExit, logger, colors }))
@@ -86,4 +94,5 @@ ExtendPipe.empty<IAppCtx>()
 		bumpMajor: false,
 		repository: '',
 		latestVersion: '',
+		prefix: '',
 	})

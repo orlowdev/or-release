@@ -32,7 +32,7 @@ Using @priestine/versions is quite simple. You need Node installed and with that
 Go to the folder where your project lives and:
 
 ```shell
-npx @priestine/versions --token=$TOKEN --repository=avajs/ava
+npx @priestine/versions --token=$TOKEN --repository=$OWNER/$REPO
 ```
 
 ### GitHub Actions Example
@@ -47,7 +47,7 @@ on:
 jobs:
  # This name may also be arbitrary
  versioning:
-  # I didn't test it on Windows but it should not be important
+  # I didn't test it on Windows but it should be ok
   runs-on: ubuntu-latest
   steps:
    # Use checkout action to get the code
@@ -67,14 +67,15 @@ jobs:
 
 ## Configuration
 
-| Option         | Short Description           | CLI Usage                      |
-| -------------- | --------------------------- | ------------------------------ |
-| Token          | Access token for publishing | --token=\$SOME_TOKEN           |
-| Repository     | Owner/Repo                  | --repository=octocat/github    |
-| Bump Patch     | Force bumping patch version | --bump-patch[=<true \| false>] |
-| Bump Minor     | Force bumping minor version | --bump-minor[=<true \| false>] |
-| Bump Major     | Force bumping major version | --bump-patch[=<true \| false>] |
-| Latest Version | A tag to check commits from | --latest-version=0.0.0         |
+| Option         | Short Description             | CLI Usage Example              |
+| -------------- | ----------------------------- | ------------------------------ |
+| Token          | Access token for publishing   | --token=\$SOME_TOKEN           |
+| Repository     | Owner/Repo                    | --repository=octocat/github    |
+| Bump Patch     | Force bumping patch version   | --bump-patch[=<true \| false>] |
+| Bump Minor     | Force bumping minor version   | --bump-minor[=<true \| false>] |
+| Bump Major     | Force bumping major version   | --bump-patch[=<true \| false>] |
+| Latest Version | A tag to check commits from   | --latest-version=0.0.0         |
+| prefix         | Custom prefix for the version | --prefix=v                     |
 
 ### Detailed description
 
@@ -101,6 +102,10 @@ If, for some reason, you want to force bumping the major version, even if it is 
 #### Latest Version
 
 You can customize the tag from which @priestine/versions should start checking commits. **NOTE** - in this case, the version that will be produced by @priestine/versions may already be in place. Use carefully.
+
+#### Prefix
+
+Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a common pattern as it enables easier glob matching for tags, but keep in mind that using a prefix makes the version non-compliant with Semantic Versioning.
 
 ## Caveats
 

@@ -10,19 +10,22 @@ interface IGetLatestVersionDeps {
 	colors: IColorizer
 }
 
-type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion'>
+type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'prefix'>
 
 export const getLatestVersion = ({ execEither, logger, colors }: IGetLatestVersionDeps) => ({
 	latestVersion,
+	prefix,
 }: GetLatestVersionCtx) => ({
 	latestVersion: latestVersion
 		? latestVersion
-		: execEither('git describe --match "*[0-9].*[0-9].*[0-9]" --abbrev=0 HEAD --tags')
+		: execEither(`git describe --match "${prefix}*[0-9].*[0-9].*[0-9]" --abbrev=0 HEAD --tags`)
 				.leftMap(() =>
-					logger.warning(`Could not find previous semantic versions. Using ${colors.yellow('0.0.0')}.`),
+					logger.warning(
+						`Could not find previous semantic versions. Using ${colors.yellow(`${prefix}0.0.0`)}.`,
+					),
 				)
 				.fold(
-					() => '0.0.0',
+					() => `${prefix}0.0.0`,
 					tap((latestVersion: string) => logger.info(`Latest version: ${colors.green(latestVersion)}`)),
 				),
 })

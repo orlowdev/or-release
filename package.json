@@ -94,7 +94,9 @@
 			"unicorn/no-process-exit": "off",
 			"@typescript-eslint/no-unnecessary-type-arguments": "off",
 			"@typescript-eslint/no-invalid-void-type": "off",
-			"prefer-destructuring": "off"
+			"prefer-destructuring": "off",
+			"no-eq-null": "off",
+			"eqeqeq": "off"
 		}
 	},
 	"ava": {

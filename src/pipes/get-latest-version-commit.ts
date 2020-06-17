@@ -4,8 +4,8 @@ import type { Unary } from '../types/common-types'
 import type { ILogger, IColorizer } from '../utils/logger'
 import { errorToString, tap } from '../utils/helpers'
 
-const getCommitCommand = (latestVersion: string) =>
-	latestVersion === '0.0.0'
+const getCommitCommand = (latestVersion: string, prefix: string) =>
+	latestVersion === `${prefix}0.0.0`
 		? 'git rev-list --max-parents=0 HEAD'
 		: `git show-ref ${latestVersion} -s`
 
@@ -16,15 +16,15 @@ interface IGetLatestVersionCommitDeps {
 	colors: IColorizer
 }
 
-type IGetLatestVersionCommitCtx = Pick<IAppCtx, 'latestVersion'>
+type IGetLatestVersionCommitCtx = Pick<IAppCtx, 'latestVersion' | 'prefix'>
 
 export const getLatestVersionCommit = ({
 	execEither,
 	processExit,
 	logger,
 	colors,
-}: IGetLatestVersionCommitDeps) => ({ latestVersion }: IGetLatestVersionCommitCtx) => ({
-	latestVersionCommit: execEither(getCommitCommand(latestVersion))
+}: IGetLatestVersionCommitDeps) => ({ latestVersion, prefix }: IGetLatestVersionCommitCtx) => ({
+	latestVersionCommit: execEither(getCommitCommand(latestVersion, prefix))
 		.leftMap(tap(() => logger.error('Could not get latest version commit due to error:')))
 		.leftMap((error: Error) => logger.error(errorToString(error)))
 		.fold(
