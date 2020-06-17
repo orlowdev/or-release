@@ -110,11 +110,9 @@ Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a com
 
 #### Public
 
-According to the Semantic Versioning specification, releases that have a MAJOR version of **0** are not considered stable. Breaking changes for these releases bump MINOR version instead of the MAJOR one. These rules also apply if you use @priestine/versions. The changelog is created with MAJOR changes separate from MINOR ones, though.
+According to the Semantic Versioning specification, releases that have a MAJOR version of **0** are not considered stable. Breaking changes for these releases bump MINOR version instead of the MAJOR one. These rules also apply if you use @priestine/versions - by default, your versions will have MAJOR version of **0**. The changelog is created with MAJOR changes separate from MINOR ones, though. You can provide this option to exit the experimental stage. The closest release will be `1.0.0`, thus declaring public API.
 
-You can provide this option to exit the experimental stage. The closest release will be `1.0.0`, thus declaring public API.
-
-NOTE: this option is only applicable if you don't have releases with MAJOR version higher than **0**.
+Applying this option is irreversible. This option is only applicable if you don't have releases with MAJOR version higher than **0**. Otherwise, your project is considered to have public API declared already and you cannot publish `0.x.x` versions anymore.
 
 ## Caveats
 
