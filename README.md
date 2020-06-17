@@ -67,16 +67,16 @@ jobs:
 
 ## Configuration
 
-| Option         | Short Description             | CLI Usage Example              |
-| -------------- | ----------------------------- | ------------------------------ |
-| Token          | Access token for publishing   | --token=\$SOME_TOKEN           |
-| Repository     | Owner/Repo                    | --repository=octocat/github    |
-| Bump Patch     | Force bumping patch version   | --bump-patch[=<true \| false>] |
-| Bump Minor     | Force bumping minor version   | --bump-minor[=<true \| false>] |
-| Bump Major     | Force bumping major version   | --bump-patch[=<true \| false>] |
-| Latest Version | A tag to check commits from   | --latest-version=0.0.0         |
-| prefix         | Custom prefix for the version | --prefix=v                     |
-| public         | Declare public API            | --public[=<true \| false>]     |
+| Option         | Short Description             | CLI Usage Example               |
+| -------------- | ----------------------------- | ------------------------------- |
+| Token          | Access token for publishing   | --token=\$SOME_TOKEN            |
+| Repository     | Owner/Repo                    | --repository=octocat/github     |
+| Bump Patch     | Force bumping patch version   | --bump-patch[=\<true \| false>] |
+| Bump Minor     | Force bumping minor version   | --bump-minor[=\<true \| false>] |
+| Bump Major     | Force bumping major version   | --bump-patch[=\<true \| false>] |
+| Latest Version | A tag to check commits from   | --latest-version=0.0.0          |
+| prefix         | Custom prefix for the version | --prefix=v                      |
+| public         | Declare public API            | --public[=\<true \| false>]     |
 
 ### Detailed description
 
