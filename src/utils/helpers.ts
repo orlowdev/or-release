@@ -20,3 +20,6 @@ export const tap = <TArg>(f: Unary<TArg, any>) => (x: TArg): TArg => {
 
 	return x
 }
+
+export const extractVersionTuple = (versionString: string) =>
+	/(\d+)\.(\d+)\.(\d+)/.exec(versionString)

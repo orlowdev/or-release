@@ -29,6 +29,7 @@ import { getConfigFromArgv } from './pipes/get-config'
 import { publishTag } from './pipes/publish-tag'
 import { appendPrefix } from './pipes/append-prefix'
 import { any } from './utils/any'
+import { setPublicOption } from './pipes/set-public-option'
 
 const argv = process.argv
 
@@ -78,6 +79,16 @@ ExtendPipe.empty<IAppCtx>()
 		),
 	)
 	.pipeExtend(getLatestVersion({ execEither, logger, colors }))
+	.pipeExtend(setPublicOption)
+	.pipeTap(({ public: isPublic }) =>
+		any(isPublic)
+			.ifTrue(() => logger.success('Public API is declared.'))
+			.ifFalse(() =>
+				logger.warning(
+					'Public API is not declared. MAJOR changes will bump MINOR version to stay within 0.x.x.',
+				),
+			),
+	)
 	.pipeExtend(getLatestVersionCommit({ execEither, processExit, logger, colors }))
 	.pipeExtend(getChanges({ execEither, processExit, logger, colors }))
 	.pipeExtend(forceBumping({ key: 'bumpPatch', logger, conventions, colors }))
@@ -95,4 +106,5 @@ ExtendPipe.empty<IAppCtx>()
 		repository: '',
 		latestVersion: '',
 		prefix: '',
+		public: false,
 	})
