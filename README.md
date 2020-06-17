@@ -75,8 +75,9 @@ jobs:
 | Bump Minor     | Force bumping minor version   | --bump-minor[=\<true \| false>] |
 | Bump Major     | Force bumping major version   | --bump-patch[=\<true \| false>] |
 | Latest Version | A tag to check commits from   | --latest-version=0.0.0          |
-| prefix         | Custom prefix for the version | --prefix=v                      |
-| public         | Declare public API            | --public[=\<true \| false>]     |
+| Prefix         | Custom prefix for the version | --prefix=v                      |
+| Public         | Declare public API            | --public[=\<true \| false>]     |
+| Dry Run        | Skip publishing the release   | --dry-run[=\<true \| false>]    |
 
 ### Detailed description
 
@@ -113,6 +114,10 @@ Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a com
 According to the Semantic Versioning specification, releases that have a MAJOR version of **0** are not considered stable. Breaking changes for these releases bump MINOR version instead of the MAJOR one. These rules also apply if you use @priestine/versions - by default, your versions will have MAJOR version of **0**. The changelog is created with MAJOR changes separate from MINOR ones, though. You can provide this option to exit the experimental stage. The closest release will be `1.0.0`, thus declaring public API.
 
 Applying this option is irreversible. This option is only applicable if you don't have releases with MAJOR version higher than **0**. Otherwise, your project is considered to have public API declared already and you cannot publish `0.x.x` versions anymore.
+
+#### Dry Run
+
+Execute the command but skip publishing the release. May be useful for debugging or just to check what version your application is going to have next.
 
 ## Caveats
 

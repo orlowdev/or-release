@@ -69,7 +69,7 @@ const conventions: Conventions = {
 	bumpMajor: [':boom:'],
 }
 
-ExtendPipe.empty<IAppCtx>()
+ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(getConfigFromArgv({ argv }))
 	.pipeExtend(getCurrentCommit({ execEither, processExit, logger, colors }))
 	.pipeExtend(appendPrefix)
@@ -107,4 +107,5 @@ ExtendPipe.empty<IAppCtx>()
 		latestVersion: '',
 		prefix: '',
 		public: false,
+		dryRun: false,
 	})
