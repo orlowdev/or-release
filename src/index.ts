@@ -4,6 +4,7 @@ import type { IAppCtx } from './types/app-ctx'
 import type { Unary } from './types/common-types'
 import { execSync } from 'child_process'
 import httpTransport from 'got'
+import { transformCase } from '@priestine/case-transformer'
 import { red, yellow, blue, green } from 'chalk'
 import {
 	ILogger,
@@ -25,13 +26,11 @@ import { makeNewVersion } from './pipes/make-new-version'
 import { exitIfNoBumping } from './pipes/exit-if-no-bumping'
 import { makeChangelog } from './pipes/make-changelog'
 import { Conventions } from './types/common-types'
-import { getConfigFromArgv } from './pipes/get-config'
+import { mergeConfig } from './pipes/merge-config'
 import { publishTag } from './pipes/publish-tag'
 import { appendPrefix } from './pipes/append-prefix'
 import { any } from './utils/any'
 import { setPublicOption } from './pipes/set-public-option'
-
-const argv = process.argv
 
 const processExit = (code: number) => process.exit(code)
 
@@ -69,8 +68,38 @@ const conventions: Conventions = {
 	bumpMajor: [':boom:'],
 }
 
+const argvToObject = (argv: string[]): IAppCtx =>
+	argv.reduce<any>((acc, arg) => {
+		if (!arg.startsWith('--')) {
+			return acc
+		}
+
+		let [key, value] = arg.includes('=') ? arg.split('=') : [arg]
+		const validKey = transformCase(key.slice(2)).from.kebab.to.camel.toString()
+
+		if (!value) {
+			value = 'true'
+		}
+
+		acc[validKey] = value
+
+		return acc
+	}, {})
+
+const envToObject = (env: NodeJS.ProcessEnv) =>
+	Object.keys(env)
+		.filter((key) => key.startsWith('PRIESTINE_VERSIONS_'))
+		.reduce(
+			(acc, key) => ({
+				...acc,
+				[transformCase(key.slice(19)).from.upperSnake.to.camel.toString()]: env[key],
+			}),
+			{},
+		)
+
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
-	.pipeExtend(getConfigFromArgv({ argv }))
+	.pipeExtend(mergeConfig(envToObject(process.env)))
+	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
 	.pipeExtend(getCurrentCommit({ execEither, processExit, logger, colors }))
 	.pipeExtend(appendPrefix)
 	.pipeTap(({ prefix }) =>
