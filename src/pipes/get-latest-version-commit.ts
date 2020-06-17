@@ -1,7 +1,6 @@
 import type { IEither } from '../utils/either'
 import type { IAppCtx } from '../types/app-ctx'
-import type { Unary } from '../types/common-types'
-import type { ILogger, IColorizer } from '../utils/logger'
+import type { Unary, ILogger, IColorizer } from '../types/common-types'
 import { errorToString, tap } from '../utils/helpers'
 
 const getCommitCommand = (latestVersion: string, prefix: string) =>

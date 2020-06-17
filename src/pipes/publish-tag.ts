@@ -1,7 +1,6 @@
 import type { Got } from 'got'
 import type { IAppCtx } from '../types/app-ctx'
-import type { Unary } from '../types/common-types'
-import type { IColorizer, ILogger } from '../utils/logger'
+import type { Unary, IColorizer, ILogger } from '../types/common-types'
 import { Either } from '../utils/either'
 import { errorToString } from '../utils/helpers'
 import { any } from '../utils/any'

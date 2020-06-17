@@ -1,6 +1,5 @@
-import type { ILogger, IColorizer } from '../utils/logger'
 import type { IEither } from '../utils/either'
-import type { Unary } from '../types/common-types'
+import type { Unary, ILogger, IColorizer } from '../types/common-types'
 import { errorToString, tap } from '../utils/helpers'
 
 export interface IGetCurrentCommitDeps {

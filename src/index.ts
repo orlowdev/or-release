@@ -1,19 +1,11 @@
 #!/usr/bin/env node
 
 import type { IAppCtx } from './types/app-ctx'
-import type { Unary } from './types/common-types'
+import type { Unary, ILogger, IColorizer } from './types/common-types'
 import { execSync } from 'child_process'
 import httpTransport from 'got'
 import { transformCase } from '@priestine/case-transformer'
 import { red, yellow, blue, green } from 'chalk'
-import {
-	ILogger,
-	IColorizer,
-	errorPrefix,
-	warningPrefix,
-	infoPrefix,
-	successPrefix,
-} from './utils/logger'
 import { Either } from './utils/either'
 import { execWith, trimCmdNewLine } from './utils/helpers'
 import { ExtendPipe } from './utils/pipe'
@@ -37,6 +29,11 @@ const processExit = (code: number) => process.exit(code)
 const execCmdSync = execWith((cmd: string) =>
 	execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }),
 )
+
+export const errorPrefix = <T>(message: T) => `💣 ${String(message)}`
+export const warningPrefix = <T>(message: T) => `🤔 ${String(message)}`
+export const infoPrefix = <T>(message: T) => `   ${String(message)}`
+export const successPrefix = <T>(message: T) => `🎉 ${String(message)}`
 
 const log = <T>(applyColor: Unary<T, string>) => (message: T): void =>
 	console.log(applyColor(message))

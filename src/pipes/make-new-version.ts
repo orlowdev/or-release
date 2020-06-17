@@ -1,6 +1,5 @@
-import type { ILogger, IColorizer } from '../utils/logger'
 import type { IAppCtx } from '../types/app-ctx'
-import type { BumpKey } from '../types/common-types'
+import type { BumpKey, ILogger, IColorizer } from '../types/common-types'
 import { Either } from '../utils/either'
 import { tap, extractVersionTuple } from '../utils/helpers'
 

@@ -1,7 +1,6 @@
 import type { IAppCtx } from '../types/app-ctx'
-import type { ILogger, IColorizer } from '../utils/logger'
 import type { IRawCommit } from '../types/raw-commit'
-import type { BumpKey, Conventions } from '../types/common-types'
+import type { BumpKey, Conventions, ILogger, IColorizer } from '../types/common-types'
 import { Either } from '../utils/either'
 import { tap } from '../utils/helpers'
 
