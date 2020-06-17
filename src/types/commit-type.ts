@@ -1,4 +1,4 @@
-import { Version } from './common-types'
+import type { Version } from './common-types'
 
 export interface ICommitType {
 	match: string

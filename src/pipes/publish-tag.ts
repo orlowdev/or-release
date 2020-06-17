@@ -1,8 +1,8 @@
-import { Got } from 'got'
-import { ILogger, IColorizer } from '../utils/logger'
-import { Unary } from '../types/common-types'
+import type { Got } from 'got'
+import type { IAppCtx } from '../types/app-ctx'
+import type { Unary } from '../types/common-types'
+import type { IColorizer, ILogger } from '../utils/logger'
 import { Either } from '../utils/either'
-import { IAppCtx } from '../types/app-ctx'
 import { errorToString } from '../utils/helpers'
 
 interface IPublishTagDeps {

@@ -1,5 +1,5 @@
-import { IRawCommit } from '../types/raw-commit'
-import { IAppCtx } from '../types/app-ctx'
+import type { IRawCommit } from '../types/raw-commit'
+import type { IAppCtx } from '../types/app-ctx'
 
 const changelogTag = (
 	_: TemplateStringsArray,

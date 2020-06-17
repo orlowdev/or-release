@@ -1,5 +1,5 @@
+import type { IAppCtx } from '../types/app-ctx'
 import { transformCase } from '@priestine/case-transformer'
-import { IAppCtx } from '../types/app-ctx'
 import { isInteger, isFloat, isBoolean } from '../utils/guards'
 
 const normalizeConfigValue = <T>(newValue: string, currentValue: T) => {

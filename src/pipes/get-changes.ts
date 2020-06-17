@@ -1,8 +1,8 @@
 import type { IAppCtx } from '../types/app-ctx'
 import type { IEither } from '../utils/either'
-import { Either } from '../utils/either'
 import type { Unary } from '../types/common-types'
 import type { ILogger, IColorizer } from '../utils/logger'
+import { Either } from '../utils/either'
 import { errorToString, tap } from '../utils/helpers'
 import { IRawCommit } from '../types/raw-commit'
 
