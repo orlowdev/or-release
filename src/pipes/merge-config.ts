@@ -2,6 +2,9 @@ import type { IAppCtx } from '../types/app-ctx'
 import { isInteger, isFloat, isBoolean } from '../utils/guards'
 import { Switch } from '../utils/switch'
 
+export const mergeConfig = <T extends Partial<IAppCtx>>(config: T) => (ctx: IAppCtx) =>
+	mergeObjects(ctx, config)
+
 const normalizeConfigValue = <T>(newValue: string, currentValue: T) =>
 	Switch.of(currentValue)
 		.case(isInteger, Number.parseInt(newValue, 10))
@@ -22,6 +25,3 @@ const mergeObjects = <T extends Record<string, any>, K extends Partial<T> = T>(
 
 		return result
 	}, previous)
-
-export const mergeConfig = <T extends Partial<IAppCtx>>(config: T) => (ctx: IAppCtx) =>
-	mergeObjects(ctx, config)

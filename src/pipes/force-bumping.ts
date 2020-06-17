@@ -4,13 +4,6 @@ import type { BumpKey, Conventions, ILogger, IColorizer } from '../types/common-
 import { Either } from '../utils/either'
 import { tap } from '../utils/helpers'
 
-const commitsOrNull = (convention: string[]) => (commits: IRawCommit[]) => {
-	const thisType = commits.filter((commit) => convention.includes(commit.type))
-	return thisType.length > 0
-		? Either.right<IRawCommit[]>(thisType)
-		: Either.left<null, IRawCommit[]>(null)
-}
-
 interface IForceBumpingDeps {
 	key: BumpKey
 	logger: ILogger
@@ -37,3 +30,10 @@ export const forceBumping = ({ key, logger, conventions, colors }: IForceBumping
 			() => true,
 		),
 })
+
+const commitsOrNull = (convention: string[]) => (commits: IRawCommit[]) => {
+	const thisType = commits.filter((commit) => convention.includes(commit.type))
+	return thisType.length > 0
+		? Either.right<IRawCommit[]>(thisType)
+		: Either.left<null, IRawCommit[]>(null)
+}
