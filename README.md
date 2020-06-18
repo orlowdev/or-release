@@ -71,17 +71,23 @@ jobs:
 
 ## Configuration
 
-| Option         | Short Description             | CLI Usage Example               |
-| -------------- | ----------------------------- | ------------------------------- |
-| Token          | Access token for publishing   | --token=\$SOME_TOKEN            |
-| Repository     | Owner/Repo                    | --repository=octocat/github     |
-| Bump Patch     | Force bumping patch version   | --bump-patch[=\<true \| false>] |
-| Bump Minor     | Force bumping minor version   | --bump-minor[=\<true \| false>] |
-| Bump Major     | Force bumping major version   | --bump-patch[=\<true \| false>] |
-| Latest Version | A tag to check commits from   | --latest-version=0.0.0          |
-| Prefix         | Custom prefix for the version | --prefix=v                      |
-| Public         | Declare public API            | --public[=\<true \| false>]     |
-| Dry Run        | Skip publishing the release   | --dry-run[=\<true \| false>]    |
+All options that accept `true` or `false` as a value are **false** by default.
+
+| Option                            | CLI Usage Example                   | Environment Usage Example                          | Default |
+| --------------------------------- | ----------------------------------- | -------------------------------------------------- | ------- |
+| [Token](#token)                   | **--token=\$SOME_TOKEN**            | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN          | `""`    |
+| [Repository](#repository)         | **--repository=octocat/github**     | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github   | `""`    |
+| [Latest Version](#latest-version) | **--latest-version=0.0.0**          | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0        | `""`    |
+| [Prefix](#prefix)                 | **--prefix=v**                      | **PRIESTINE_VERSIONS_PREFIX**=v                    | `""`    |
+| [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>] | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false> | `false` |
+| [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>] | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false> | `false` |
+| [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>] | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false> | `false` |
+| [Public](#public)                 | **--public**[=\<true \| false>]     | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>     | `false` |
+| [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]    | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>    | `false` |
+
+> With CLI options that accept **boolean** values, providing those values is **_optional_**. `--bump-patch` and `--bump-patch=true` are completely the same.
+>
+> With environment variables that accept **boolean** values, providing those values is **_required_**.
 
 ### Detailed description
 
@@ -91,7 +97,15 @@ Token is used to publish the tag with associated release using GitHub API. For s
 
 #### Repository
 
-You MUST provide `--repository=$REPOSITORY` option that is usually available in CI tools already, e.g. `$GITHUB_REPOSITORY` in GitHub Actions. Internally, it is a part of the repository URL containing the owner and the repo name, e.g. **priestine/versions**. Even if your CI tool doesn't provide it, it's not too complicated so you can put it yourself.
+You MUST provide `--repository=$REPOSITORY` option that is usually available in CI tools already, e.g. `$GITHUB_REPOSITORY` in GitHub Actions. Internally, it is a part of the repository URL containing the owner and the repo name, e.g. **priestine/versions** for the @priestine/versions repository. Even if your CI tool doesn't provide it, it's not too complicated so you can put it yourself.
+
+#### Latest Version
+
+You can customize the tag from which @priestine/versions should start checking commits. **NOTE** - in this case, the version that will be produced by @priestine/versions may already be in place. Use carefully.
+
+#### Prefix
+
+Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a common pattern as it enables easier glob matching for tags, but keep in mind that using a prefix makes the version non-compliant with Semantic Versioning.
 
 #### Bump Patch
 
@@ -104,14 +118,6 @@ If, for some reason, you want to force bumping the minor version, even if it is 
 #### Bump Major
 
 If, for some reason, you want to force bumping the major version, even if it is not needed based on the types of commits you've made since the previous release, you can provide the `--bump-major`. Keep in mind that this may negatively affect the appearance of your changelog.
-
-#### Latest Version
-
-You can customize the tag from which @priestine/versions should start checking commits. **NOTE** - in this case, the version that will be produced by @priestine/versions may already be in place. Use carefully.
-
-#### Prefix
-
-Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a common pattern as it enables easier glob matching for tags, but keep in mind that using a prefix makes the version non-compliant with Semantic Versioning.
 
 #### Public
 
