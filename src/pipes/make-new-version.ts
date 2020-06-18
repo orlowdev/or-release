@@ -1,16 +1,11 @@
 import type { IAppCtx } from '../types/app-ctx'
-import type { BumpKey, ILogger, IColorizer } from '../types/common-types'
+import type { BumpKey } from '../types/common-types'
 import { Either } from '../utils/either'
-import { tap, extractVersionTuple } from '../utils/helpers'
-
-interface IMakeNewVersionDeps {
-	logger: ILogger
-	colors: IColorizer
-}
+import { extractVersionTuple } from '../utils/helpers'
 
 type MakeNewVersionCtx = Pick<IAppCtx, 'latestVersion' | 'prefix' | 'public' | BumpKey>
 
-export const makeNewVersion = ({ logger, colors }: IMakeNewVersionDeps) => ({
+export const makeNewVersion = ({
 	latestVersion,
 	prefix,
 	public: isPublic,
@@ -34,6 +29,6 @@ export const makeNewVersion = ({ logger, colors }: IMakeNewVersionDeps) => ({
 		.map((version) => prefix.concat(version))
 		.fold(
 			() => `${prefix}${isPublic ? '1.0' : '0.1'}.0`,
-			tap((newVersion) => logger.success(`Version candidate: ${colors.green(newVersion)}`)),
+			(newVersion) => newVersion,
 		),
 })

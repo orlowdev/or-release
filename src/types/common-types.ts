@@ -27,3 +27,8 @@ export interface IColorizer {
 	green: Unary<string>
 	blue: Unary<string>
 }
+
+export type ILogFunction = (
+	strings: TemplateStringsArray,
+	...values: Array<Unary<IColorizer, string> | string | number | boolean>
+) => void

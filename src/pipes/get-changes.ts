@@ -1,19 +1,16 @@
 import type { IAppCtx } from '../types/app-ctx'
-import type { Unary, ILogger, IColorizer } from '../types/common-types'
+import type { Unary } from '../types/common-types'
+import type { IRawCommit } from '../types/raw-commit'
 import { Either, IEither } from '../utils/either'
-import { errorToString, tap } from '../utils/helpers'
-import { IRawCommit } from '../types/raw-commit'
 
 interface IGetChangesDeps {
 	execEither: Unary<string, IEither<string, Error>>
-	processExit: Unary<number, never>
-	logger: ILogger
-	colors: IColorizer
+	logFatalError: Unary<string, Unary<Error, never>>
 }
 
 type IGetChangesCtx = Pick<IAppCtx, 'latestVersionCommit'>
 
-export const getChanges = ({ execEither, processExit, logger, colors }: IGetChangesDeps) => ({
+export const getChanges = ({ execEither, logFatalError }: IGetChangesDeps) => ({
 	latestVersionCommit,
 }: IGetChangesCtx) => ({
 	commitList: execEither(`git rev-list ${latestVersionCommit}..HEAD --format='${commitFormat}'`)
@@ -22,19 +19,9 @@ export const getChanges = ({ execEither, processExit, logger, colors }: IGetChan
 		.map(normalizeChangeString)
 		.map((changes) => `[ ${changes} ]`)
 		.chain((changes) => Either.try<IRawCommit[], Error>(() => JSON.parse(changes)))
-		.bimap(
-			tap(() => logger.error('Could not get recent changes due to error:')),
-			(changes) => changes.map(setCommitType),
-		)
-		.bimap(
-			(error: Error) => logger.error(errorToString(error)),
-			tap((changes: IRawCommit[]) =>
-				logger.info(`Changes found since previous version: ${colors.green(String(changes.length))}`),
-			),
-		)
-		.fold(
-			() => processExit(1),
-			(changes) => changes.reverse(),
+		.map((changes) => changes.map(setCommitType))
+		.fold(logFatalError('Could not get changes since previous release.'), (changes) =>
+			changes.reverse(),
 		),
 })
 

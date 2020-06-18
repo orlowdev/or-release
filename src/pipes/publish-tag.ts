@@ -1,20 +1,19 @@
 import type { Got } from 'got'
 import type { IAppCtx } from '../types/app-ctx'
-import type { Unary, IColorizer, ILogger } from '../types/common-types'
-import { Either } from '../utils/either'
-import { errorToString } from '../utils/helpers'
+import type { IColorizer, ILogger, Unary } from '../types/common-types'
 import { any } from '../utils/any'
+import { Either } from '../utils/either'
 
 interface IPublishTagDeps {
 	logger: ILogger
 	httpTransport: Got
-	processExit: Unary<number, never>
+	logFatalError: Unary<string, Unary<Error, never>>
 	colors: IColorizer
 }
 
 type PublishTagCtx = Pick<IAppCtx, 'token' | 'changelog' | 'newVersion' | 'repository' | 'dryRun'>
 
-export const publishTag = ({ logger, httpTransport, processExit, colors }: IPublishTagDeps) => ({
+export const publishTag = ({ logger, httpTransport, logFatalError, colors }: IPublishTagDeps) => ({
 	token,
 	changelog,
 	newVersion,
@@ -39,9 +38,7 @@ export const publishTag = ({ logger, httpTransport, processExit, colors }: IPubl
 
 						logger.success(`Version ${colors.green(newVersion)} successfully released! 🥂`)
 					} catch (error) {
-						logger.error('Could not publish the release due to the error:')
-						logger.error(errorToString(error))
-						processExit(1)
+						logFatalError('Could not publish the release due to the error:')(error)
 					}
 				}),
 		)
