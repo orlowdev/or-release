@@ -79,12 +79,12 @@ All options that accept `true` or `false` as a value are **false** by default.
 | [Repository](#repository)         | **--repository=octocat/github**            | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github            | `""`      |
 | [Latest Version](#latest-version) | **--latest-version=0.0.0**                 | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                 | `""`      |
 | [Prefix](#prefix)                 | **--prefix=v**                             | **PRIESTINE_VERSIONS_PREFIX**=v                             | `""`      |
+| [Merges](#merges)                 | **--merges=\<include \| exclude \| only>** | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only> | `exclude` |
 | [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>          | `false`   |
 | [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>          | `false`   |
 | [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>          | `false`   |
 | [Public](#public)                 | **--public**[=\<true \| false>]            | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>              | `false`   |
 | [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]           | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>             | `false`   |
-| [Merges](#merges)                 | **--merges=\<include \| exclude \| only>** | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only> | `exclude` |
 
 > With CLI options that accept **boolean** values, providing those values is **_optional_**. `--bump-patch` and `--bump-patch=true` are completely the same.
 >
@@ -108,6 +108,10 @@ You can customize the tag from which @priestine/versions should start checking c
 
 Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a common pattern as it enables easier glob matching for tags, but keep in mind that using a prefix makes the version non-compliant with Semantic Versioning.
 
+#### Merges
+
+This option configures the usage of **merge** commits. If you want to use merge commits as the main source information about codebase changes, you may set up this option to `only` to avoid evaluating other commits. By default, merge commits are _excluded_.
+
 #### Bump Patch
 
 If, for some reason, you want to force bumping the patch version, even if it is not needed based on the types of commits you've made since the previous release, you can provide the `--bump-patch`. Keep in mind that this may negatively affect the appearance of your changelog.
@@ -129,10 +133,6 @@ Applying this option is irreversible. This option is only applicable if you don'
 #### Dry Run
 
 Execute the command but skip publishing the release. May be useful for debugging or just to check what version your application is going to have next.
-
-#### Merges
-
-This option configures the usage of **merge** commits. If you want to use merge commits as the main source information about codebase changes, you may set up this option to `only` to avoid evaluating other commits. By default, merge commits are _excluded_.
 
 ## Caveats
 
