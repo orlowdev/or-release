@@ -1,5 +1,12 @@
 import test from 'ava'
-import { errorToString, execWith, extendWith, tap, trimCmdNewLine } from '../../src/utils/helpers'
+import {
+	errorToString,
+	execWith,
+	extendWith,
+	tap,
+	trimCmdNewLine,
+	extractVersionTuple,
+} from '../../src/utils/helpers'
 import * as sinon from 'sinon'
 
 test('extendWith uses provided function to extend provided object', (t) => {
@@ -43,4 +50,12 @@ test('errorToString should properly transform error to a console-ready string', 
 
 test('trimCmdNewLine should remove ending \\n', (t) => {
 	t.notRegex(trimCmdNewLine('test\n'), /\n$/)
+})
+
+test('extractVersionTuple should take version tuple from a version string', (t) => {
+	const tuple: any = extractVersionTuple('1.0.0')
+	t.is(tuple[0], '1.0.0')
+	t.is(tuple[1], '1')
+	t.is(tuple[2], '0')
+	t.is(tuple[3], '0')
 })

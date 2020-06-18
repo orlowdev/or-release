@@ -8,12 +8,19 @@ interface IGetChangesDeps {
 	logFatalError: Unary<string, Unary<Error, never>>
 }
 
-type IGetChangesCtx = Pick<IAppCtx, 'latestVersionCommit'>
+type IGetChangesCtx = Pick<IAppCtx, 'latestVersionCommit' | 'merges'>
 
 export const getChanges = ({ execEither, logFatalError }: IGetChangesDeps) => ({
 	latestVersionCommit,
+	merges,
 }: IGetChangesCtx) => ({
-	commitList: execEither(`git rev-list ${latestVersionCommit}..HEAD --format='${commitFormat}'`)
+	commitList: execEither(
+		'git rev-list'
+			.concat(merges === 'only' ? ' --merges' : '')
+			.concat(merges === 'exclude' ? ' --no-merges' : '')
+			.concat(` ${latestVersionCommit}..HEAD`)
+			.concat(` --format='${commitFormat}'`),
+	)
 		.map((changes) => changes.split('\n'))
 		.map(filterOutCommitHeadings)
 		.map(normalizeChangeString)

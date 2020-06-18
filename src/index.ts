@@ -26,6 +26,7 @@ import { publishTag } from './pipes/publish-tag'
 import { appendPrefix } from './pipes/append-prefix'
 import { setPublicOption } from './pipes/set-public-option'
 import { exitIfDryRun } from './pipes/exit-if-dry-run'
+import { setMergeStrategy } from './pipes/set-merge-strategy'
 
 const processExit = (code: number) => process.exit(code)
 
@@ -156,6 +157,24 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		({ latestVersionCommit }) =>
 			logInfo`Latest version commit: ${({ green }) => green(latestVersionCommit)}`,
 	)
+	.pipeExtend(setMergeStrategy)
+	.pipeTap(({ merges }) =>
+		Switch.of(merges)
+			.case(
+				'exclude',
+				() =>
+					logInfo`Merge commits are ${({ green }) => green('excluded')} from commit evaluation list.`,
+			)
+			.case(
+				'only',
+				() =>
+					logInfo`${({ green }) => green('Only')} merge commits are ${({ green }) =>
+						green('included')} in commit evaluation list.`,
+			)
+			.default(
+				() => logInfo`Merge commits are ${({ green }) => green('included')} in commit evaluation list.`,
+			)(),
+	)
 	.pipeExtend(getChanges({ execEither, logFatalError }))
 	.pipeTap(
 		({ commitList }) =>
@@ -181,4 +200,5 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		prefix: '',
 		public: false,
 		dryRun: false,
+		merges: 'exclude',
 	})
