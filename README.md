@@ -73,17 +73,18 @@ jobs:
 
 All options that accept `true` or `false` as a value are **false** by default.
 
-| Option                            | CLI Usage Example                   | Environment Usage Example                          | Default |
-| --------------------------------- | ----------------------------------- | -------------------------------------------------- | ------- |
-| [Token](#token)                   | **--token=\$SOME_TOKEN**            | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN          | `""`    |
-| [Repository](#repository)         | **--repository=octocat/github**     | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github   | `""`    |
-| [Latest Version](#latest-version) | **--latest-version=0.0.0**          | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0        | `""`    |
-| [Prefix](#prefix)                 | **--prefix=v**                      | **PRIESTINE_VERSIONS_PREFIX**=v                    | `""`    |
-| [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>] | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false> | `false` |
-| [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>] | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false> | `false` |
-| [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>] | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false> | `false` |
-| [Public](#public)                 | **--public**[=\<true \| false>]     | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>     | `false` |
-| [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]    | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>    | `false` |
+| Option                            | CLI Usage Example                          | Environment Usage Example                                   | Default   |
+| --------------------------------- | ------------------------------------------ | ----------------------------------------------------------- | --------- |
+| [Token](#token)                   | **--token=\$SOME_TOKEN**                   | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN                   | `""`      |
+| [Repository](#repository)         | **--repository=octocat/github**            | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github            | `""`      |
+| [Latest Version](#latest-version) | **--latest-version=0.0.0**                 | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                 | `""`      |
+| [Prefix](#prefix)                 | **--prefix=v**                             | **PRIESTINE_VERSIONS_PREFIX**=v                             | `""`      |
+| [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>          | `false`   |
+| [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>          | `false`   |
+| [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>          | `false`   |
+| [Public](#public)                 | **--public**[=\<true \| false>]            | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>              | `false`   |
+| [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]           | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>             | `false`   |
+| [Merges](#merges)                 | **--merges=\<include \| exclude \| only>** | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only> | `exclude` |
 
 > With CLI options that accept **boolean** values, providing those values is **_optional_**. `--bump-patch` and `--bump-patch=true` are completely the same.
 >
@@ -128,6 +129,10 @@ Applying this option is irreversible. This option is only applicable if you don'
 #### Dry Run
 
 Execute the command but skip publishing the release. May be useful for debugging or just to check what version your application is going to have next.
+
+#### Merges
+
+This option configures the usage of **merge** commits. If you want to use merge commits as the main source information about codebase changes, you may set up this option to `only` to avoid evaluating other commits. By default, merge commits are _excluded_.
 
 ## Caveats
 
