@@ -12,6 +12,10 @@
 
 A tool for automating [Semantic Versioning](https://semver.org) on your project.
 
+This intentionally over-complicated diagram depicts the application execution process:
+
+![execution process](./images/diagram.png)
+
 ## Features
 
 - ✅ Compatible with GitHub releases. _GitLab releases and direct git tagging (hello, BitBucket) on the way!_
