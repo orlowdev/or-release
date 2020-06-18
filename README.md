@@ -12,10 +12,6 @@
 
 A tool for automating [Semantic Versioning](https://semver.org) on your project.
 
-This intentionally over-complicated diagram depicts the application execution process:
-
-![execution process](./images/diagram.png)
-
 ## Features
 
 - ✅ Compatible with GitHub releases. _GitLab releases and direct git tagging (hello, BitBucket) on the way!_
@@ -137,6 +133,12 @@ Applying this option is irreversible. This option is only applicable if you don'
 #### Dry Run
 
 Execute the command but skip publishing the release. May be useful for debugging or just to check what version your application is going to have next.
+
+## How it works
+
+This intentionally over-complicated diagram depicts the application execution process:
+
+![execution process](./images/diagram.png)
 
 ## Caveats
 
