@@ -9,6 +9,9 @@ import { red, yellow, blue, green } from 'chalk'
 import { Either } from './utils/either'
 import { execWith, trimCmdNewLine, errorToString } from './utils/helpers'
 import { ExtendPipe } from './utils/pipe'
+import { any } from './utils/any'
+import { isFunction } from './utils/guards'
+import { Switch } from './utils/switch'
 import { getCurrentCommit } from './pipes/get-current-commit'
 import { getLatestVersion } from './pipes/get-latest-version'
 import { getLatestVersionCommit } from './pipes/get-latest-version-commit'
@@ -21,10 +24,8 @@ import { Conventions } from './types/common-types'
 import { mergeConfig } from './pipes/merge-config'
 import { publishTag } from './pipes/publish-tag'
 import { appendPrefix } from './pipes/append-prefix'
-import { any } from './utils/any'
 import { setPublicOption } from './pipes/set-public-option'
-import { isFunction } from './utils/guards'
-import { Switch } from './utils/switch'
+import { exitIfDryRun } from './pipes/exit-if-dry-run'
 
 const processExit = (code: number) => process.exit(code)
 
@@ -168,7 +169,8 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(makeNewVersion)
 	.pipeTap(({ newVersion }) => logSuccess`Version candidate: ${({ green }) => green(newVersion)}`)
 	.pipeExtend(makeChangelog({ conventions }))
-	.pipe(publishTag({ logFatalError, logger, httpTransport, colors }))
+	.pipeTap(exitIfDryRun({ logWarning, processExit }))
+	.pipe(publishTag({ logFatalError, logSuccess, httpTransport }))
 	.process({
 		token: '',
 		bumpPatch: false,
