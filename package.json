@@ -1,4 +1,5 @@
 {
+	"dryRun": true,
 	"name": "@priestine/versions",
 	"description": "A tool for automating Semantic Versioning on your project",
 	"version": "0.0.0",
@@ -48,7 +49,9 @@
 	"dependencies": {
 		"@priestine/case-transformer": "^1.0.2",
 		"chalk": "^4.1.0",
-		"got": "^11.3.0"
+		"got": "^11.3.0",
+		"toml": "^3.0.0",
+		"yaml": "^1.10.0"
 	},
 	"optionalDependencies": {},
 	"peerDependencies": {},

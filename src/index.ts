@@ -27,6 +27,8 @@ import { appendPrefix } from './pipes/append-prefix'
 import { setPublicOption } from './pipes/set-public-option'
 import { exitIfDryRun } from './pipes/exit-if-dry-run'
 import { setMergeStrategy } from './pipes/set-merge-strategy'
+import { getConfigFromFile } from './pipes/get-config-from-file'
+import { readFileSync } from 'fs'
 
 const processExit = (code: number) => process.exit(code)
 
@@ -35,6 +37,7 @@ const execCmdSync = execWith((cmd: string) =>
 )
 
 const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
+const readFileEither = (path: string) => Either.try<string, Error>(() => readFileSync(path, 'utf8'))
 
 const colors: IColorizer = {
 	red,
@@ -136,6 +139,9 @@ const envToObject = (env: NodeJS.ProcessEnv) =>
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(mergeConfig(envToObject(process.env)))
 	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
+	.pipeExtend(getConfigFromFile({ readFileEither }))
+	.pipeExtend(mergeConfig(envToObject(process.env)))
+	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
 	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ green }) => green(currentCommit)}`)
 	.pipeExtend(appendPrefix)
@@ -201,4 +207,5 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		public: false,
 		dryRun: false,
 		merges: 'exclude',
+		configFile: '',
 	})
