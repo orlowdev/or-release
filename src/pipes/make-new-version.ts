@@ -22,7 +22,7 @@ export const makeNewVersion = ({
 			bumpMajor && isPublic
 				? [major + 1, 0, 0]
 				: bumpMajor && !isPublic
-				? [major, minor + 1, 0]
+				? [major, bumpMajor ? minor : minor + 1, 0]
 				: [major, minor, patch],
 		)
 		.map((tuple) => tuple.join('.'))
