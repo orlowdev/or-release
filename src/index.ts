@@ -1,36 +1,33 @@
 #!/usr/bin/env node
 
-import type { IAppCtx } from './types/app-ctx'
-import type { Unary, ILogger, IColorizer, ILogFunction } from './types/common-types'
+import { blue, green, red, yellow } from 'chalk'
 import { execSync } from 'child_process'
 import httpTransport from 'got'
-import { transformCase } from '@priestine/case-transformer'
-import { red, yellow, blue, green } from 'chalk'
-import { Either } from './utils/either'
-import { execWith, trimCmdNewLine, errorToString } from './utils/helpers'
-import { ExtendPipe } from './utils/pipe'
-import { any } from './utils/bool'
-import { isFunction } from './utils/guards'
-import { Switch } from './utils/switch'
+import { getConfigurationPipe } from './pipes/get-configuration-pipe'
+import { exitIfDryRun } from './pure/exits/exit-if-dry-run'
+import { exitIfInvalidBuildMetadata } from './pure/exits/exit-if-invalid-build-metadata'
+import { exitIfInvalidPreRelease } from './pure/exits/exit-if-invalid-pre-release'
+import { exitIfNoBumping } from './pure/exits/exit-if-no-bumping'
+import { forceBumping } from './pure/force-bumping'
+import { getAllTags } from './pure/getters/get-all-tags'
+import { getChanges } from './pure/getters/get-changes'
 import { getCurrentCommit } from './pure/getters/get-current-commit'
 import { getLatestVersion } from './pure/getters/get-latest-version'
 import { getLatestVersionCommit } from './pure/getters/get-latest-version-commit'
-import { getChanges } from './pure/getters/get-changes'
-import { forceBumping } from './pure/force-bumping'
-import { makeNewVersion } from './pure/make-new-version'
-import { exitIfNoBumping } from './pure/exits/exit-if-no-bumping'
 import { makeChangelog } from './pure/make-changelog'
-import { Conventions } from './types/common-types'
-import { mergeConfig } from './pure/merge-config'
+import { makeNewVersion } from './pure/make-new-version'
 import { publishTag } from './pure/publish-tag'
-import { validatePublic } from './pure/validators/validate-public'
-import { exitIfDryRun } from './pure/exits/exit-if-dry-run'
 import { validateMergeStrategy } from './pure/validators/validate-merges'
-import { getConfigFromFile } from './pure/getters/get-config-from-file'
-import { readFileSync } from 'fs'
-import { getAllTags } from './pure/getters/get-all-tags'
-import { exitIfInvalidBuildMetadata } from './pure/exits/exit-if-invalid-build-metadata'
-import { exitIfInvalidPreRelease } from './pure/exits/exit-if-invalid-pre-release'
+import { validatePublic } from './pure/validators/validate-public'
+import type { IAppCtx } from './types/app-ctx'
+import { Conventions } from './types/common-types'
+import type { IColorizer, ILogFunction, ILogger, Unary } from './types/common-types'
+import { any } from './utils/bool'
+import { Either } from './utils/either'
+import { isFunction } from './utils/guards'
+import { errorToString, execWith, trimCmdNewLine } from './utils/helpers'
+import { ExtendPipe } from './utils/pipe'
+import { Switch } from './utils/switch'
 
 const processExit = (code: number) => process.exit(code)
 
@@ -39,7 +36,6 @@ const execCmdSync = execWith((cmd: string) =>
 )
 
 const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
-const readFileEither = (path: string) => Either.try<string, Error>(() => readFileSync(path, 'utf8'))
 
 const colors: IColorizer = {
 	red,
@@ -109,41 +105,20 @@ const conventions: Conventions = {
 	bumpMajor: [':boom:'],
 }
 
-const argvToObject = (argv: string[]): IAppCtx =>
-	argv.reduce<any>((acc, arg) => {
-		if (!arg.startsWith('--')) {
-			return acc
-		}
+const argv = process.argv.slice(2)
 
-		let [key, value] = arg.includes('=') ? arg.split('=') : [arg]
-		const validKey = transformCase(key.slice(2)).from.kebab.to.camel.toString()
-
-		if (!value) {
-			value = 'true'
-		}
-
-		acc[validKey] = value
-
-		return acc
-	}, {})
-
-const envToObject = (env: NodeJS.ProcessEnv) =>
-	Object.keys(env)
-		.filter((key) => key.startsWith('PRIESTINE_VERSIONS_'))
-		.reduce(
-			(acc, key) => ({
-				...acc,
-				[transformCase(key.slice(19)).from.upperSnake.to.camel.toString()]: env[key],
-			}),
-			{},
-		)
+const env: Record<string, string> = Object.keys(process.env)
+	.filter((key) => key.startsWith('PRIESTINE_VERSIONS_'))
+	.reduce(
+		(acc, key) => ({
+			...acc,
+			[key]: env[key],
+		}),
+		{},
+	)
 
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
-	.pipeExtend(mergeConfig(envToObject(process.env)))
-	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
-	.pipeExtend(getConfigFromFile({ readFileEither }))
-	.pipeExtend(mergeConfig(envToObject(process.env)))
-	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
+	.concat(getConfigurationPipe({ argv, env }))
 	.pipeTap(exitIfInvalidBuildMetadata({ logFatalError }))
 	.pipeTap(exitIfInvalidPreRelease({ logFatalError }))
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
