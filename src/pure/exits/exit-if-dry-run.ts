@@ -1,9 +1,9 @@
 import type { IAppCtx } from 'types/app-ctx'
-import type { Unary } from 'types/common-types'
+import type { LogExitingWarning } from '../../utils/logger'
 import { any } from '../../utils/bool'
 
 interface IExitIfDryRunDeps {
-	logExitingWarning: Unary<string, never>
+	logExitingWarning: LogExitingWarning
 }
 
 type ExitIfDryRunCtx = Pick<IAppCtx, 'dryRun'>

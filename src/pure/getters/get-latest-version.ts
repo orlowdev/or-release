@@ -1,9 +1,9 @@
 import type { IAppCtx } from 'types/app-ctx'
-import type { ILogFunction } from '../../types/common-types'
+import type { LogFunction } from '../../utils/logger'
 import { Either } from '../../utils/either'
 
 interface IGetLatestVersionDeps {
-	logWarning: ILogFunction
+	logWarning: LogFunction
 }
 
 type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'allTags'>
@@ -16,9 +16,7 @@ export const getLatestVersion = ({ logWarning }: IGetLatestVersionDeps) => ({
 		? latestVersion
 		: Either.fromNullable(allTags.find((tag) => /^(\w+)?\d+\.\d+\.\d+/.test(tag)))
 				.leftMap(
-					() =>
-						logWarning`Could not find previous semantic versions. Using ${({ yellow }) =>
-							yellow('0.0.0')}.`,
+					() => logWarning`Could not find previous semantic versions. Using ${({ y }) => y('0.0.0')}.`,
 				)
 				.fold(
 					() => '0.0.0',

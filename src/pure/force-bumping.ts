@@ -1,12 +1,13 @@
 import type { IAppCtx } from '../types/app-ctx'
 import type { IRawCommit } from '../types/raw-commit'
-import type { BumpKey, Conventions, ILogFunction } from '../types/common-types'
+import type { BumpKey, Conventions } from '../types/common-types'
+import type { LogFunction } from '../utils/logger'
 import { Either } from '../utils/either'
 import { tap } from '../utils/helpers'
 
 interface IForceBumpingDeps {
 	key: BumpKey
-	logInfo: ILogFunction
+	logInfo: LogFunction
 	conventions: Conventions
 }
 
@@ -19,9 +20,7 @@ export const forceBumping = ({ key, logInfo, conventions }: IForceBumpingDeps) =
 		.chain(commitsOrNull(conventions[key]))
 		.map(
 			tap(
-				(commits) =>
-					logInfo`${key.replace('bump', '')} level changes: ${({ green }) =>
-						green(String(commits.length))}`,
+				(commits) => logInfo`${key.replace('bump', '')} level changes: ${({ g }) => g(commits.length)}`,
 			),
 		)
 		.fold(

@@ -1,11 +1,12 @@
 import type { IAppCtx } from '../../types/app-ctx'
 import type { Unary } from '../../types/common-types'
 import type { IRawCommit } from '../../types/raw-commit'
+import type { LogFatalError } from '../../utils/logger'
 import { Either, IEither } from '../../utils/either'
 
 interface IGetChangesDeps {
 	execEither: Unary<string, IEither<string, Error>>
-	logFatalError: Unary<string, Unary<Error, never>>
+	logFatalError: LogFatalError
 }
 
 type IGetChangesCtx = Pick<IAppCtx, 'latestVersionCommit' | 'merges'>

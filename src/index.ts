@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { blue, green, red, yellow } from 'chalk'
 import { execSync } from 'child_process'
 import httpTransport from 'got'
 import { getConfigurationPipe } from './pipes/get-configuration-pipe'
@@ -21,73 +20,18 @@ import { validateMergeStrategy } from './pure/validators/validate-merges'
 import { validatePublic } from './pure/validators/validate-public'
 import type { IAppCtx } from './types/app-ctx'
 import { Conventions } from './types/common-types'
-import type { IColorizer, ILogFunction, ILogger, Unary } from './types/common-types'
 import { any } from './utils/bool'
 import { Either } from './utils/either'
-import { isFunction } from './utils/guards'
-import { errorToString, execWith, trimCmdNewLine } from './utils/helpers'
+import { execWith, trimCmdNewLine } from './utils/helpers'
 import { ExtendPipe } from './utils/pipe'
 import { Switch } from './utils/switch'
+import { logInfo, logWarning, logSuccess, logFatalError, logExitingWarning } from './utils/logger'
 
 const execCmdSync = execWith((cmd: string) =>
 	execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }),
 )
 
 const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
-
-const colors: IColorizer = {
-	red,
-	yellow,
-	blue,
-	green,
-}
-
-const logger: ILogger = {
-	error: <T>(message: T) => console.log(`💣  ${String(message)}`),
-	warning: <T>(message: T) => console.log(`🤔  ${String(message)}`),
-	info: <T>(message: T) => console.log(`    ${String(message)}`),
-	success: <T>(message: T) => console.log(`🎉  ${String(message)}`),
-}
-
-const logWithLevel = (level: keyof ILogger): ILogFunction => (
-	strings: TemplateStringsArray | string,
-	...values: Array<Unary<IColorizer, string> | any>
-) =>
-	logger[level](
-		(Array.isArray(strings) ? strings : ([strings] as any[])).reduce(
-			(acc, string, i) =>
-				acc.concat(string).concat(
-					Either.fromNullable(values[i])
-						.map((value) =>
-							Switch.of(value)
-								.case(isFunction, () => value(colors))
-								.default(() => value),
-						)
-						.map((f) => f())
-						.fold(
-							() => '',
-							(x) => x,
-						),
-				),
-			'',
-		),
-	)
-
-const logInfo = logWithLevel('info')
-const logError = logWithLevel('error')
-const logWarning = logWithLevel('warning')
-const logSuccess = logWithLevel('success')
-
-const logFatalError = (message: string) => (error: Error) => {
-	logError(message)
-	logError(errorToString(error))
-	return process.exit(1)
-}
-
-const logExitingWarning = (message: string) => {
-	logWarning(message)
-	return process.exit(0)
-}
 
 const conventions: Conventions = {
 	bumpPatch: [':ambulance:', ':bug:', ':lock:'],
@@ -112,15 +56,13 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeTap(exitIfInvalidBuildMetadata({ logFatalError }))
 	.pipeTap(exitIfInvalidPreRelease({ logFatalError }))
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
-	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ green }) => green(currentCommit)}`)
+	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ g }) => g(currentCommit)}`)
 	.pipeTap(({ prefix }) =>
-		any(prefix).ifTrue(
-			() => logInfo`New version will be prefixed with "${({ green }) => green(prefix)}"`,
-		),
+		any(prefix).ifTrue(() => logInfo`New version will be prefixed with "${({ g }) => g(prefix)}"`),
 	)
 	.pipeExtend(getAllTags({ execEither }))
 	.pipeExtend(getLatestVersion({ logWarning }))
-	.pipeTap(({ latestVersion }) => logInfo`Latest version: ${({ green }) => green(latestVersion)}`)
+	.pipeTap(({ latestVersion }) => logInfo`Latest version: ${({ g }) => g(latestVersion)}`)
 	.pipeExtend(validatePublic)
 	.pipeTap(({ public: isPublic }) =>
 		any(isPublic)
@@ -132,28 +74,26 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		Switch.of(merges)
 			.case(
 				'exclude',
-				() => logInfo`Merge commits are ${({ red }) => red('excluded')} from commit evaluation list.`,
+				() => logInfo`Merge commits are ${({ r }) => r('excluded')} from commit evaluation list.`,
 			)
 			.case(
 				'only',
 				() =>
-					logInfo`${({ blue }) => blue('Only')} merge commits are ${({ blue }) =>
-						blue('included')} in commit evaluation list.`,
+					logInfo`${({ b }) => b('Only')} merge commits are ${({ b }) =>
+						b('included')} in commit evaluation list.`,
 			)
 			.default(
-				() => logInfo`Merge commits are ${({ green }) => green('included')} in commit evaluation list.`,
+				() => logInfo`Merge commits are ${({ g }) => g('included')} in commit evaluation list.`,
 			)(),
 	)
 	.pipeExtend(getLatestVersionCommit({ execEither, logFatalError }))
 	.pipeTap(
-		({ latestVersionCommit }) =>
-			logInfo`Latest version commit: ${({ green }) => green(latestVersionCommit)}`,
+		({ latestVersionCommit }) => logInfo`Latest version commit: ${({ g }) => g(latestVersionCommit)}`,
 	)
 	.pipeExtend(getChanges({ execEither, logFatalError }))
 	.pipeTap(
 		({ commitList }) =>
-			logInfo`Changes found since previous version: ${({ green }) =>
-				green(String(commitList.length))}`,
+			logInfo`Changes found since previous version: ${({ g }) => g(commitList.length)}`,
 	)
 	.pipeExtend(forceBumping({ key: 'bumpPatch', logInfo, conventions }))
 	.pipeExtend(forceBumping({ key: 'bumpMinor', logInfo, conventions }))
@@ -179,7 +119,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(({ newVersion, prefix }) => ({
 		newVersion: `${prefix}${newVersion}`,
 	}))
-	.pipeTap(({ newVersion }) => logSuccess`Version candidate: ${({ green }) => green(newVersion)}`)
+	.pipeTap(({ newVersion }) => logSuccess`Version candidate: ${({ g }) => g(newVersion)}`)
 	.pipeExtend(makeChangelog({ conventions }))
 	.pipeTap(exitIfDryRun({ logExitingWarning }))
 	.pipe(publishTag({ logFatalError, logSuccess, httpTransport }))

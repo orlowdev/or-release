@@ -1,9 +1,9 @@
-import { Unary } from '../../types/common-types'
-import { IAppCtx } from '../../types/app-ctx'
+import type { IAppCtx } from '../../types/app-ctx'
+import type { LogFatalError } from '../../utils/logger'
 import { Either } from '../../utils/either'
 
 interface IExitIfInvalidPreReleaseDeps {
-	logFatalError: Unary<string, Unary<Error, never>>
+	logFatalError: LogFatalError
 }
 
 type ExitIfInvalidPreReleaseCtx = Pick<IAppCtx, 'preRelease'>

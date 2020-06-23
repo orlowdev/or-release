@@ -1,9 +1,10 @@
 import type { IAppCtx } from '../../types/app-ctx'
-import type { BumpKey, Unary } from '../../types/common-types'
+import type { BumpKey } from '../../types/common-types'
+import type { LogExitingWarning } from '../../utils/logger'
 import { any } from '../../utils/bool'
 
 interface IExitIfNoBumpingDeps {
-	logExitingWarning: Unary<string, never>
+	logExitingWarning: LogExitingWarning
 }
 
 type ExitIfNoBumpingCtx = Pick<IAppCtx, BumpKey>

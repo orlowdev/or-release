@@ -1,6 +1,7 @@
 import type { IAppCtx } from '../../types/app-ctx'
 import type { Unary } from '../../types/common-types'
 import type { IEither } from '../../utils/either'
+import type { LogFatalError } from '../../utils/logger'
 
 const getCommitCommand = (latestVersion: string) =>
 	latestVersion === '0.0.0'
@@ -9,7 +10,7 @@ const getCommitCommand = (latestVersion: string) =>
 
 interface IGetLatestVersionCommitDeps {
 	execEither: Unary<string, IEither<string, Error>>
-	logFatalError: Unary<string, Unary<Error, never>>
+	logFatalError: LogFatalError
 }
 
 type IGetLatestVersionCommitCtx = Pick<IAppCtx, 'latestVersion'>

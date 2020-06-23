@@ -13,22 +13,3 @@ export type Email = string
 export type BumpKey = 'bumpPatch' | 'bumpMinor' | 'bumpMajor'
 
 export type Conventions = Record<BumpKey, string[]>
-
-export interface ILogger {
-	error: Unary<string, void>
-	warning: Unary<string, void>
-	info: Unary<string, void>
-	success: Unary<string, void>
-}
-
-export interface IColorizer {
-	red: Unary<string>
-	yellow: Unary<string>
-	green: Unary<string>
-	blue: Unary<string>
-}
-
-export type ILogFunction = (
-	strings: TemplateStringsArray | string,
-	...values: Array<Unary<IColorizer, string> | string | number | boolean>
-) => void
