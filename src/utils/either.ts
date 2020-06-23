@@ -25,6 +25,9 @@ export interface IEither<TRightContext, TLeftContext = TRightContext> {
 	leftMap: <TNewContext>(
 		onLeft: Unary<TLeftContext, TNewContext>,
 	) => IEither<TRightContext, TNewContext>
+	leftChain: <TNewContext>(
+		onLeft: (ctx: TLeftContext) => IEither<TRightContext, TNewContext>,
+	) => IEither<TRightContext, TNewContext>
 	ap: <TNewContext>(
 		other: IEither<
 			TNewContext extends Unary<TRightContext>
@@ -34,6 +37,7 @@ export interface IEither<TRightContext, TLeftContext = TRightContext> {
 				: never
 		>,
 	) => IEither<TNewContext, TLeftContext>
+	swap: () => IEither<TLeftContext, TRightContext>
 	chain: <TNewContext, TFail>(
 		onRight: (ctx: TRightContext) => IEither<TNewContext, TFail>,
 	) => IEither<TNewContext, TLeftContext | TFail>
@@ -53,6 +57,8 @@ export const left = <TLeftContext, TRightContext = TLeftContext>(
 	map: () => left(x),
 	bimap: (onLeft) => left(onLeft(x)),
 	leftMap: (f) => left(f(x)),
+	leftChain: (f) => f(x),
+	swap: () => right(x) as any,
 	ap: () => left(x),
 	chain: () => left(x),
 	fold: (onLeft) => onLeft(x),
@@ -66,6 +72,8 @@ export const right = <TContext>(x: TContext): IEither<TContext> => ({
 	map: (f) => right(f(x)) as any,
 	bimap: (_, onRight) => right(onRight(x)) as any,
 	leftMap: () => right(x) as any,
+	leftChain: () => right(x) as any,
+	swap: () => left(x),
 	ap: (other) => {
 		const y: any = other.fold(
 			() => undefined,
