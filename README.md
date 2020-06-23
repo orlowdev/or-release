@@ -86,6 +86,7 @@ All options that accept `true` or `false` as a value are **false** by default.
 | [Repository](#repository)         | **--repository=octocat/github**            | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github            | `""`      |
 | [Latest Version](#latest-version) | **--latest-version=0.0.0**                 | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                 | `""`      |
 | [Prefix](#prefix)                 | **--prefix=v**                             | **PRIESTINE_VERSIONS_PREFIX**=v                             | `""`      |
+| [Pre-Release](#pre-release)       | **--pre-release=\$(git rev-parse HEAD)**   | **PRIESTINE_VERSIONS_PRE_RELEAS**=\$(git rev-parse HEAD)    | `""`      |
 | [Build Metadata](#build-metadata) | **--build-metadata=\$(date)**              | **PRIESTINE_VERSIONS_BUILD_METADATA**=\$(date)              | `""`      |
 | [Merges](#merges)                 | **--merges=\<include \| exclude \| only>** | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only> | `exclude` |
 | [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>          | `false`   |
@@ -119,6 +120,10 @@ You can customize the tag from which @priestine/versions should start checking c
 #### Prefix
 
 Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a common pattern as it enables easier glob matching for tags, but keep in mind that using a prefix makes the version non-compliant with Semantic Versioning.
+
+#### Pre-Release
+
+Allows setting SemVer pre-releases, e.g. `rc` or `alpha`. Do not add `-` at the beginning. @priestine/versions adds `.1` at the end of the pre-release. If you specify `--pre-release=rc`, the pre-release on the version will look like `-rc.1`. @priestine/versions automatically checks if there is a pair of the same X.Y.Z version and pre-release. If it does exist, @priestine/versions automatically bumps the number at the end (`-rc.1` -> `-rc.2`). This is done to prevent potential clashes in versions from different sources that represent candidates with the same potential version and pre-release.
 
 #### Build Metadata
 
@@ -164,6 +169,7 @@ You can provide a `.json` file with a path relative to the current working direc
 	"prefix": "",
 	"merges": "exclude",
 	"buildMetadata": "",
+	"preRelease": "",
 	"bumpPatch": false,
 	"bumpMinor": false,
 	"bumpMajor": false,
@@ -183,6 +189,7 @@ latestVersion: ''
 prefix: ''
 merges: 'exclude'
 buildMetadata: ''
+preRelease: ''
 bumpPatch: false
 bumpMinor: false
 bumpMajor: false
@@ -201,6 +208,7 @@ latestVersion = ""
 prefix = ""
 merges = "exclude"
 buildMetadata = ""
+preRelease = ""
 bumpPatch = false
 bumpMinor = false
 bumpMajor = false
