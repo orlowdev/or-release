@@ -1,17 +1,16 @@
-import type { ILogFunction, Unary } from 'types/common-types'
 import type { IAppCtx } from 'types/app-ctx'
+import type { Unary } from 'types/common-types'
 import { any } from '../../utils/bool'
 
 interface IExitIfDryRunDeps {
-	logWarning: ILogFunction
-	processExit: Unary<number, never>
+	logExitingWarning: Unary<string, never>
 }
 
 type ExitIfDryRunCtx = Pick<IAppCtx, 'dryRun'>
 
-export const exitIfDryRun = ({ logWarning, processExit }: IExitIfDryRunDeps) => ({
+export const exitIfDryRun = ({ logExitingWarning }: IExitIfDryRunDeps) => ({
 	dryRun,
 }: ExitIfDryRunCtx) =>
-	any(dryRun)
-		.ifTrue(() => logWarning`Dry run mode. New version will not be published. Terminating.`)
-		.ifTrue(() => processExit(1))
+	any(dryRun).ifTrue(() =>
+		logExitingWarning('Dry run mode. New version will not be published. Terminating.'),
+	)

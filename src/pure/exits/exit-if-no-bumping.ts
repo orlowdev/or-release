@@ -1,16 +1,14 @@
-import type { Unary, BumpKey, ILogFunction } from '../../types/common-types'
 import type { IAppCtx } from '../../types/app-ctx'
+import type { BumpKey, Unary } from '../../types/common-types'
 import { any } from '../../utils/bool'
-import { tap } from '../../utils/helpers'
 
 interface IExitIfNoBumpingDeps {
-	logWarning: ILogFunction
-	processExit: Unary<number, never>
+	logExitingWarning: Unary<string, never>
 }
 
 type ExitIfNoBumpingCtx = Pick<IAppCtx, BumpKey>
 
-export const exitIfNoBumping = ({ logWarning, processExit }: IExitIfNoBumpingDeps) => ({
+export const exitIfNoBumping = ({ logExitingWarning }: IExitIfNoBumpingDeps) => ({
 	bumpPatch,
 	bumpMinor,
 	bumpMajor,
@@ -18,5 +16,4 @@ export const exitIfNoBumping = ({ logWarning, processExit }: IExitIfNoBumpingDep
 	any(bumpPatch)
 		.concat(any(bumpMinor))
 		.concat(any(bumpMajor))
-		.ifFalse(tap(() => logWarning`Version bumping is not needed. Terminating.`))
-		.ifFalse(() => processExit(0))
+		.ifFalse(() => logExitingWarning('Version bumping is not needed. Terminating.'))

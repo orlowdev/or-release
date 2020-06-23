@@ -29,8 +29,6 @@ import { errorToString, execWith, trimCmdNewLine } from './utils/helpers'
 import { ExtendPipe } from './utils/pipe'
 import { Switch } from './utils/switch'
 
-const processExit = (code: number) => process.exit(code)
-
 const execCmdSync = execWith((cmd: string) =>
 	execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }),
 )
@@ -84,6 +82,11 @@ const logFatalError = (message: string) => (error: Error) => {
 	logError`${message}`
 	logError`${errorToString(error)}`
 	return process.exit(1)
+}
+
+const logExitingWarning = (message: string) => {
+	logWarning`${message}`
+	return process.exit(0)
 }
 
 const conventions: Conventions = {
@@ -155,7 +158,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(forceBumping({ key: 'bumpPatch', logInfo, conventions }))
 	.pipeExtend(forceBumping({ key: 'bumpMinor', logInfo, conventions }))
 	.pipeExtend(forceBumping({ key: 'bumpMajor', logInfo, conventions }))
-	.pipeTap(exitIfNoBumping({ logWarning, processExit }))
+	.pipeTap(exitIfNoBumping({ logExitingWarning }))
 	.pipeExtend(makeNewVersion)
 	.pipeExtend(({ newVersion, preRelease, allTags }) => ({
 		newVersion: preRelease
@@ -175,7 +178,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	}))
 	.pipeTap(({ newVersion }) => logSuccess`Version candidate: ${({ green }) => green(newVersion)}`)
 	.pipeExtend(makeChangelog({ conventions }))
-	.pipeTap(exitIfDryRun({ logWarning, processExit }))
+	.pipeTap(exitIfDryRun({ logExitingWarning }))
 	.pipe(publishTag({ logFatalError, logSuccess, httpTransport }))
 	.process({
 		token: '',
