@@ -44,24 +44,11 @@ const colors: IColorizer = {
 	green,
 }
 
-export const errorPrefix = <T>(message: T) => `💣 ${String(message)}`
-export const warningPrefix = <T>(message: T) => `🤔 ${String(message)}`
-export const infoPrefix = <T>(message: T) => `   ${String(message)}`
-export const successPrefix = <T>(message: T) => `🎉 ${String(message)}`
-
-const log = <T>(applyColor: Unary<T, string>) => (message: T): void =>
-	console.log(applyColor(message))
-
-const error = log(errorPrefix)
-const warning = log(warningPrefix)
-const info = log(infoPrefix)
-const success = log(successPrefix)
-
 const logger: ILogger = {
-	error,
-	warning,
-	info,
-	success,
+	error: <T>(message: T) => console.log(`💣 ${String(message)}`),
+	warning: <T>(message: T) => console.log(`🤔 ${String(message)}`),
+	info: <T>(message: T) => console.log(`   ${String(message)}`),
+	success: <T>(message: T) => console.log(`🎉 ${String(message)}`),
 }
 
 const logWithLevel = (level: keyof ILogger): ILogFunction => (
