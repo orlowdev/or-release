@@ -4,8 +4,6 @@ import { execSync } from 'child_process'
 import httpTransport from 'got'
 import { getConfigurationPipe } from './pipes/get-configuration-pipe'
 import { exitIfDryRun } from './pure/exits/exit-if-dry-run'
-import { exitIfInvalidBuildMetadata } from './pure/exits/exit-if-invalid-build-metadata'
-import { exitIfInvalidPreRelease } from './pure/exits/exit-if-invalid-pre-release'
 import { exitIfNoBumping } from './pure/exits/exit-if-no-bumping'
 import { forceBumping } from './pure/force-bumping'
 import { getAllTags } from './pure/getters/get-all-tags'
@@ -23,9 +21,10 @@ import { Conventions } from './types/common-types'
 import { any } from './utils/bool'
 import { Either } from './utils/either'
 import { execWith, trimCmdNewLine } from './utils/helpers'
+import { logExitingWarning, logFatalError, logInfo, logSuccess, logWarning } from './utils/logger'
 import { ExtendPipe } from './utils/pipe'
 import { Switch } from './utils/switch'
-import { logInfo, logWarning, logSuccess, logFatalError, logExitingWarning } from './utils/logger'
+import { validateInputPipe } from './pipes/validate-input-pipe'
 
 const execCmdSync = execWith((cmd: string) =>
 	execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }),
@@ -53,8 +52,7 @@ const env: Record<string, string> = Object.keys(process.env)
 
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.concat(getConfigurationPipe({ argv, env }))
-	.pipeTap(exitIfInvalidBuildMetadata({ logFatalError }))
-	.pipeTap(exitIfInvalidPreRelease({ logFatalError }))
+	.concat(validateInputPipe({ logFatalError }))
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
 	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ g }) => g(currentCommit)}`)
 	.pipeTap(({ prefix }) =>
