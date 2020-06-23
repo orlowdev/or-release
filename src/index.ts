@@ -140,7 +140,16 @@ export const validateBuildMetadata = ({ buildMetadata }: any) =>
 	Either.fromNullable(buildMetadata || null).chain((metadata) =>
 		Either.fromNullable(/^[\da-zA-Z-]+(\.[\da-zA-Z-]+)*$/.exec(metadata))
 			.leftMap(() => new Error('Build metadata syntax is invalid'))
-			.leftMap(logFatalError('Could not start the application:') as any),
+			.leftMap(logFatalError('Could not start the application:')),
+	)
+
+export const validatePreRelease = ({ preRelease }: any) =>
+	Either.fromNullable(preRelease || null).chain((pr) =>
+		Either.fromNullable(
+			/^(0|[1-9]\d*|\d*[a-zA-Z-][\da-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][\da-zA-Z-]*))*$/.exec(pr),
+		)
+			.leftMap(() => new Error('Pre-Release syntax is invalid'))
+			.leftMap(logFatalError('Could not start the application:')),
 	)
 
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
@@ -150,6 +159,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(mergeConfig(envToObject(process.env)))
 	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
 	.pipeTap(validateBuildMetadata)
+	.pipeTap(validatePreRelease)
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
 	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ green }) => green(currentCommit)}`)
 	.pipeTap(({ prefix }) =>
