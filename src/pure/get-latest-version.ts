@@ -11,20 +11,17 @@ type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'allTags' | 'prefix'>
 export const getLatestVersion = ({ logWarning }: IGetLatestVersionDeps) => ({
 	latestVersion,
 	allTags,
-	prefix,
 }: GetLatestVersionCtx) => ({
 	latestVersion: latestVersion
 		? latestVersion
-		: Either.fromNullable(allTags.find((tag) => makeRx(prefix).test(tag)))
+		: Either.fromNullable(allTags.find((tag) => /^(\w+)?\d+\.\d+\.\d+/.test(tag)))
 				.leftMap(
 					() =>
 						logWarning`Could not find previous semantic versions. Using ${({ yellow }) =>
-							yellow(`${prefix}0.0.0`)}.`,
+							yellow('0.0.0')}.`,
 				)
 				.fold(
-					() => `${prefix}0.0.0`,
+					() => '0.0.0',
 					(latestVersion) => latestVersion,
 				),
 })
-
-const makeRx = (prefix: string) => new RegExp(`^${prefix}\\d+.\\d+.\\d+$`)
