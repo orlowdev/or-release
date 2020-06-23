@@ -29,6 +29,8 @@ import { validateMergeStrategy } from './pure/validators/validate-merges'
 import { getConfigFromFile } from './pure/getters/get-config-from-file'
 import { readFileSync } from 'fs'
 import { getAllTags } from './pure/getters/get-all-tags'
+import { exitIfInvalidBuildMetadata } from './pure/exits/exit-if-invalid-build-metadata'
+import { exitIfInvalidPreRelease } from './pure/exits/exit-if-invalid-pre-release'
 
 const processExit = (code: number) => process.exit(code)
 
@@ -135,38 +137,6 @@ const envToObject = (env: NodeJS.ProcessEnv) =>
 			}),
 			{},
 		)
-
-interface IExitIfInvalidBuildMetadataDeps {
-	logFatalError: Unary<string, Unary<Error, never>>
-}
-
-type ExitIfInvalidBuildMetadataCtx = Pick<IAppCtx, 'buildMetadata'>
-
-export const exitIfInvalidBuildMetadata = ({ logFatalError }: IExitIfInvalidBuildMetadataDeps) => ({
-	buildMetadata,
-}: ExitIfInvalidBuildMetadataCtx) =>
-	Either.fromNullable(buildMetadata || null).chain((metadata) =>
-		Either.fromNullable(/^[\da-zA-Z-]+(\.[\da-zA-Z-]+)*$/.exec(metadata))
-			.leftMap(() => new Error('Build metadata syntax is invalid'))
-			.leftMap(logFatalError('Could not start the application:')),
-	)
-
-interface IExitIfInvalidPreReleaseDeps {
-	logFatalError: Unary<string, Unary<Error, never>>
-}
-
-type ExitIfInvalidPreReleaseCtx = Pick<IAppCtx, 'preRelease'>
-
-export const exitIfInvalidPreRelease = ({ logFatalError }: IExitIfInvalidPreReleaseDeps) => ({
-	preRelease,
-}: ExitIfInvalidPreReleaseCtx) =>
-	Either.fromNullable(preRelease || null).chain((pr) =>
-		Either.fromNullable(
-			/^(0|[1-9]\d*|\d*[a-zA-Z-][\da-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][\da-zA-Z-]*))*$/.exec(pr),
-		)
-			.leftMap(() => new Error('Pre-Release syntax is invalid'))
-			.leftMap(logFatalError('Could not start the application:')),
-	)
 
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(mergeConfig(envToObject(process.env)))
