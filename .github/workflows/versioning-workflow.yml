@@ -14,6 +14,7 @@ jobs:
      with:
       node-version: '12.x'
    - name: Publish new version if applicable
-     run: npx @priestine/versions@1.6.0 --repository=$GITHUB_REPOSITORY
+     run: npx @priestine/versions@latest --latest-version=1.7.1 --prefix=v
      env:
       PRIESTINE_VERSIONS_TOKEN: ${{ secrets.PRIESTINE_VERSIONS_TOKEN }}
+      PRIESTINE_VERSIONS_REPOSITORY: $GITHUB_REPOSITORY
