@@ -86,6 +86,7 @@ All options that accept `true` or `false` as a value are **false** by default.
 | [Repository](#repository)         | **--repository=octocat/github**            | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github            | `""`      |
 | [Latest Version](#latest-version) | **--latest-version=0.0.0**                 | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                 | `""`      |
 | [Prefix](#prefix)                 | **--prefix=v**                             | **PRIESTINE_VERSIONS_PREFIX**=v                             | `""`      |
+| [Build Metadata](#build-metadata) | **--build-metadata=\$(date)**              | **PRIESTINE_VERSIONS_BUILD_METADATA**=\$(date)              | `""`      |
 | [Merges](#merges)                 | **--merges=\<include \| exclude \| only>** | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only> | `exclude` |
 | [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>          | `false`   |
 | [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>          | `false`   |
@@ -118,6 +119,10 @@ You can customize the tag from which @priestine/versions should start checking c
 #### Prefix
 
 Allows prefixing versions with things like **v** (e.g., `v1.0.0`). This is a common pattern as it enables easier glob matching for tags, but keep in mind that using a prefix makes the version non-compliant with Semantic Versioning.
+
+#### Build Metadata
+
+You can specify custom build metadata that will be appended to the version. Do not add the `+` at the beginning. @priestine/versions does not apply any modifications to build metadata so it is your responsibility to ensure their uniqueness.
 
 #### Merges
 
@@ -158,6 +163,7 @@ You can provide a `.json` file with a path relative to the current working direc
 	"latestVersion": "",
 	"prefix": "",
 	"merges": "exclude",
+	"buildMetadata": "",
 	"bumpPatch": false,
 	"bumpMinor": false,
 	"bumpMajor": false,
@@ -176,6 +182,7 @@ repository: ''
 latestVersion: ''
 prefix: ''
 merges: 'exclude'
+buildMetadata: ''
 bumpPatch: false
 bumpMinor: false
 bumpMajor: false
@@ -193,6 +200,7 @@ repository = ""
 latestVersion = ""
 prefix = ""
 merges = "exclude"
+buildMetadata = ""
 bumpPatch = false
 bumpMinor = false
 bumpMajor = false
