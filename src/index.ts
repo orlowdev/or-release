@@ -50,11 +50,11 @@ const logger: ILogger = {
 }
 
 const logWithLevel = (level: keyof ILogger): ILogFunction => (
-	strings: TemplateStringsArray,
+	strings: TemplateStringsArray | string,
 	...values: Array<Unary<IColorizer, string> | any>
 ) =>
 	logger[level](
-		strings.reduce(
+		(Array.isArray(strings) ? strings : ([strings] as any[])).reduce(
 			(acc, string, i) =>
 				acc.concat(string).concat(
 					Either.fromNullable(values[i])
@@ -79,13 +79,13 @@ const logWarning = logWithLevel('warning')
 const logSuccess = logWithLevel('success')
 
 const logFatalError = (message: string) => (error: Error) => {
-	logError`${message}`
-	logError`${errorToString(error)}`
+	logError(message)
+	logError(errorToString(error))
 	return process.exit(1)
 }
 
 const logExitingWarning = (message: string) => {
-	logWarning`${message}`
+	logWarning(message)
 	return process.exit(0)
 }
 

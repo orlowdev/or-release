@@ -29,6 +29,6 @@ export interface IColorizer {
 }
 
 export type ILogFunction = (
-	strings: TemplateStringsArray,
+	strings: TemplateStringsArray | string,
 	...values: Array<Unary<IColorizer, string> | string | number | boolean>
 ) => void
