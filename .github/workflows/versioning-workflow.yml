@@ -17,4 +17,4 @@ jobs:
      run: npx @priestine/versions@latest
      env:
       PRIESTINE_VERSIONS_TOKEN: ${{ secrets.PRIESTINE_VERSIONS_TOKEN }}
-      PRIESTINE_VERSIONS_REPOSITORY: $GITHUB_REPOSITORY
+      PRIESTINE_VERSIONS_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
