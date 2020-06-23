@@ -19,7 +19,7 @@ export const getLatestVersion = ({ execEither, logWarning }: IGetLatestVersionDe
 				.map((string) => string.split('\n'))
 				.map((strings) => strings.map((string) => string.replace(/.*refs\/tags\//, '')))
 				.map((tags) => tags.reverse())
-				.map((tags) => tags[0])
+				.map((tags) => tags.find((tag) => new RegExp(`${prefix}\\d+.\\d+.\\d+`).test(tag)))
 				.leftMap(
 					() =>
 						logWarning`Could not find previous semantic versions. Using ${({ yellow }) =>
