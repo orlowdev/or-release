@@ -136,14 +136,30 @@ const envToObject = (env: NodeJS.ProcessEnv) =>
 			{},
 		)
 
-export const validateBuildMetadata = ({ buildMetadata }: any) =>
+interface IExitIfInvalidBuildMetadataDeps {
+	logFatalError: Unary<string, Unary<Error, never>>
+}
+
+type ExitIfInvalidBuildMetadataCtx = Pick<IAppCtx, 'buildMetadata'>
+
+export const exitIfInvalidBuildMetadata = ({ logFatalError }: IExitIfInvalidBuildMetadataDeps) => ({
+	buildMetadata,
+}: ExitIfInvalidBuildMetadataCtx) =>
 	Either.fromNullable(buildMetadata || null).chain((metadata) =>
 		Either.fromNullable(/^[\da-zA-Z-]+(\.[\da-zA-Z-]+)*$/.exec(metadata))
 			.leftMap(() => new Error('Build metadata syntax is invalid'))
 			.leftMap(logFatalError('Could not start the application:')),
 	)
 
-export const validatePreRelease = ({ preRelease }: any) =>
+interface IExitIfInvalidPreReleaseDeps {
+	logFatalError: Unary<string, Unary<Error, never>>
+}
+
+type ExitIfInvalidPreReleaseCtx = Pick<IAppCtx, 'preRelease'>
+
+export const exitIfInvalidPreRelease = ({ logFatalError }: IExitIfInvalidPreReleaseDeps) => ({
+	preRelease,
+}: ExitIfInvalidPreReleaseCtx) =>
 	Either.fromNullable(preRelease || null).chain((pr) =>
 		Either.fromNullable(
 			/^(0|[1-9]\d*|\d*[a-zA-Z-][\da-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][\da-zA-Z-]*))*$/.exec(pr),
@@ -158,8 +174,8 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(getConfigFromFile({ readFileEither }))
 	.pipeExtend(mergeConfig(envToObject(process.env)))
 	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
-	.pipeTap(validateBuildMetadata)
-	.pipeTap(validatePreRelease)
+	.pipeTap(exitIfInvalidBuildMetadata({ logFatalError }))
+	.pipeTap(exitIfInvalidPreRelease({ logFatalError }))
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
 	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ green }) => green(currentCommit)}`)
 	.pipeTap(({ prefix }) =>
@@ -173,31 +189,30 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(validatePublic)
 	.pipeTap(({ public: isPublic }) =>
 		any(isPublic)
-			.ifTrue(() => logSuccess`Public API is declared.`)
+			.ifTrue(() => logInfo`Public API is declared.`)
 			.ifFalse(() => logWarning`Public API is not declared.`),
-	)
-	.pipeExtend(getLatestVersionCommit({ execEither, logFatalError }))
-	.pipeTap(
-		({ latestVersionCommit }) =>
-			logInfo`Latest version commit: ${({ green }) => green(latestVersionCommit)}`,
 	)
 	.pipeExtend(validateMergeStrategy)
 	.pipeTap(({ merges }) =>
 		Switch.of(merges)
 			.case(
 				'exclude',
-				() =>
-					logInfo`Merge commits are ${({ green }) => green('excluded')} from commit evaluation list.`,
+				() => logInfo`Merge commits are ${({ red }) => red('excluded')} from commit evaluation list.`,
 			)
 			.case(
 				'only',
 				() =>
-					logInfo`${({ green }) => green('Only')} merge commits are ${({ green }) =>
-						green('included')} in commit evaluation list.`,
+					logInfo`${({ blue }) => blue('Only')} merge commits are ${({ blue }) =>
+						blue('included')} in commit evaluation list.`,
 			)
 			.default(
 				() => logInfo`Merge commits are ${({ green }) => green('included')} in commit evaluation list.`,
 			)(),
+	)
+	.pipeExtend(getLatestVersionCommit({ execEither, logFatalError }))
+	.pipeTap(
+		({ latestVersionCommit }) =>
+			logInfo`Latest version commit: ${({ green }) => green(latestVersionCommit)}`,
 	)
 	.pipeExtend(getChanges({ execEither, logFatalError }))
 	.pipeTap(
