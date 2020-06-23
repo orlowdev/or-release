@@ -1,4 +1,3 @@
-import { PathLike } from 'fs'
 import { ICommitType } from './commit-type'
 import { MergeEvaluationStrategy, Email, ReleaseTransport } from './common-types'
 
@@ -47,7 +46,7 @@ export interface IAppConfig {
 	 * @note In most cases, JSON is valid YAML but keep caveats in mind
 	 * @see https://metacpan.org/pod/JSON::XS#JSON-and-YAML
 	 */
-	configFile: PathLike
+	configFile: string
 
 	/**
 	 * Commit types that are important for the application (either for
@@ -99,7 +98,7 @@ export interface IAppConfig {
 	 *
 	 * @default []
 	 */
-	writeChangelogToFile: PathLike[]
+	writeChangelogToFile: string[]
 
 	/**
 	 * Configure writing changelog to files so that new changes are
