@@ -23,7 +23,6 @@ import { makeChangelog } from './pure/make-changelog'
 import { Conventions } from './types/common-types'
 import { mergeConfig } from './pure/merge-config'
 import { publishTag } from './pure/publish-tag'
-import { appendPrefix } from './pure/append-prefix'
 import { setPublicOption } from './pure/set-public-option'
 import { exitIfDryRun } from './pure/exit-if-dry-run'
 import { setMergeStrategy } from './pure/set-merge-strategy'
@@ -152,7 +151,6 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeTap(validateBuildMetadata)
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
 	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ green }) => green(currentCommit)}`)
-	.pipeExtend(appendPrefix)
 	.pipeTap(({ prefix }) =>
 		any(prefix).ifTrue(
 			() => logInfo`New version will be prefixed with "${({ green }) => green(prefix)}"`,
