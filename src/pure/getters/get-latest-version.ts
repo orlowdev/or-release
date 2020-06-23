@@ -6,7 +6,7 @@ interface IGetLatestVersionDeps {
 	logWarning: ILogFunction
 }
 
-type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'allTags' | 'prefix'>
+type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'allTags'>
 
 export const getLatestVersion = ({ logWarning }: IGetLatestVersionDeps) => ({
 	latestVersion,
