@@ -71,10 +71,17 @@ jobs:
 
 ## Configuration
 
+The provided configuration means have the following precedence:
+
+1. Configuration files are checked first and provided values replace defaults
+2. Environment variables are checked second and provided values replace defaults and configuration file values
+3. CLI options are checked last and provided values replace defaults, configuration file values and enviroment variable values
+
 All options that accept `true` or `false` as a value are **false** by default.
 
 | Option                            | CLI Usage Example                          | Environment Usage Example                                   | Default   |
 | --------------------------------- | ------------------------------------------ | ----------------------------------------------------------- | --------- |
+| [Config File](#config-file)       | **--config-file=PATH**                     | **PRIESTINE_VERSIONS_CONFIG_FILE**=PATH                     | `""`      |
 | [Token](#token)                   | **--token=\$SOME_TOKEN**                   | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN                   | `""`      |
 | [Repository](#repository)         | **--repository=octocat/github**            | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github            | `""`      |
 | [Latest Version](#latest-version) | **--latest-version=0.0.0**                 | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                 | `""`      |
@@ -91,6 +98,10 @@ All options that accept `true` or `false` as a value are **false** by default.
 > With environment variables that accept **boolean** values, providing those values is **_required_**.
 
 ### Detailed description
+
+#### Config File
+
+You can provide a custom config file that contains application setup. Supported file formats are **JSON**, **YAML** and **TOML**. The files are allowed to provide any of the configuration for the app, including additional options that cannot be provided by other means.
 
 #### Token
 
@@ -133,6 +144,61 @@ Applying this option is irreversible. This option is only applicable if you don'
 #### Dry Run
 
 Execute the command but skip publishing the release. May be useful for debugging or just to check what version your application is going to have next.
+
+### Config Files
+
+#### JSON Config File
+
+You can provide a `.json` file with a path relative to the current working directory and it will be parsed as a JSON file.
+
+```json
+{
+	"token": "",
+	"repository": "",
+	"latestVersion": "",
+	"prefix": "",
+	"merges": "exclude",
+	"bumpPatch": false,
+	"bumpMinor": false,
+	"bumpMajor": false,
+	"public": false,
+	"dryRun": false
+}
+```
+
+#### YAML Config File
+
+You can provide a `.yml` or `.yaml` file with a path relative to the current working directory and it will be parsed as a YAML file.
+
+```yaml
+token: ''
+repository: ''
+latestVersion: ''
+prefix: ''
+merges: 'exclude'
+bumpPatch: false
+bumpMinor: false
+bumpMajor: false
+public: false
+dryRun: false
+```
+
+#### TOML Config File
+
+You can provide a `.toml` file with a path relative to the current working directory and it will be parsed as a TOML file.
+
+```toml
+token = ""
+repository = ""
+latestVersion = ""
+prefix = ""
+merges = "exclude"
+bumpPatch = false
+bumpMinor = false
+bumpMajor = false
+public = false
+dryRun = false
+```
 
 ## How it works
 
