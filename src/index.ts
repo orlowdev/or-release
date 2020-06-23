@@ -9,7 +9,7 @@ import { red, yellow, blue, green } from 'chalk'
 import { Either } from './utils/either'
 import { execWith, trimCmdNewLine, errorToString } from './utils/helpers'
 import { ExtendPipe } from './utils/pipe'
-import { any } from './utils/any'
+import { any } from './utils/bool'
 import { isFunction } from './utils/guards'
 import { Switch } from './utils/switch'
 import { getCurrentCommit } from './pipes/get-current-commit'
@@ -136,12 +136,21 @@ const envToObject = (env: NodeJS.ProcessEnv) =>
 			{},
 		)
 
+export const validateBuildMetadata = ({ buildMetadata }: any) =>
+	Either.fromNullable(buildMetadata).chain((metadata) =>
+		Either.fromNullable(/^[\da-zA-Z-]+(\.[\da-zA-Z-]+)*$/.exec(metadata))
+			.map(console.log)
+			.leftMap(() => new Error('Build metadata syntax is invalid'))
+			.leftMap(logFatalError('Could not start the application:') as any),
+	)
+
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(mergeConfig(envToObject(process.env)))
 	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
 	.pipeExtend(getConfigFromFile({ readFileEither }))
 	.pipeExtend(mergeConfig(envToObject(process.env)))
 	.pipeExtend(mergeConfig(argvToObject(process.argv.slice(2))))
+	.pipeTap(validateBuildMetadata)
 	.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
 	.pipeTap(({ currentCommit }) => logInfo`Current commit: ${({ green }) => green(currentCommit)}`)
 	.pipeExtend(appendPrefix)
@@ -208,4 +217,5 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		dryRun: false,
 		merges: 'exclude',
 		configFile: '',
+		buildMetadata: '',
 	})

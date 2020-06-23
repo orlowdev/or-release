@@ -31,4 +31,4 @@ export const getLatestVersion = ({ execEither, logWarning }: IGetLatestVersionDe
 				),
 })
 
-const makeRx = (prefix: string) => new RegExp(`^${prefix}\\d+.\\d+.\\d`)
+const makeRx = (prefix: string) => new RegExp(`^${prefix}\\d+.\\d+.\\d+$`)
