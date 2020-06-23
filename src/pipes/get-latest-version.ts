@@ -15,7 +15,11 @@ export const getLatestVersion = ({ execEither, logWarning }: IGetLatestVersionDe
 }: GetLatestVersionCtx) => ({
 	latestVersion: latestVersion
 		? latestVersion
-		: execEither(`git describe --match "${prefix}*[0-9].*[0-9].*[0-9]" --abbrev=0 HEAD --tags`)
+		: execEither('git show-ref --tags')
+				.map((string) => string.split('\n'))
+				.map((strings) => strings.map((string) => string.replace(/.*refs\/tags\//, '')))
+				.map((tags) => tags.reverse())
+				.map((tags) => tags[0])
 				.leftMap(
 					() =>
 						logWarning`Could not find previous semantic versions. Using ${({ yellow }) =>
