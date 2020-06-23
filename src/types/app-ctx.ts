@@ -7,4 +7,5 @@ export interface IAppCtx extends IAppConfig {
 	currentCommit: string
 	changelog: string
 	newVersion: string
+	allTags: string[]
 }

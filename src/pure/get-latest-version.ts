@@ -1,25 +1,21 @@
 import type { IAppCtx } from 'types/app-ctx'
-import type { ILogFunction, Unary } from '../types/common-types'
-import { Either, IEither } from '../utils/either'
+import type { ILogFunction } from '../types/common-types'
+import { Either } from '../utils/either'
 
 interface IGetLatestVersionDeps {
-	execEither: Unary<string, IEither<string, Error>>
 	logWarning: ILogFunction
 }
 
-type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'prefix'>
+type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'allTags' | 'prefix'>
 
-export const getLatestVersion = ({ execEither, logWarning }: IGetLatestVersionDeps) => ({
+export const getLatestVersion = ({ logWarning }: IGetLatestVersionDeps) => ({
 	latestVersion,
+	allTags,
 	prefix,
 }: GetLatestVersionCtx) => ({
 	latestVersion: latestVersion
 		? latestVersion
-		: execEither('git show-ref --tags')
-				.map((string) => string.split('\n'))
-				.map((strings) => strings.map((string) => string.replace(/.*refs\/tags\//, '')))
-				.map((tags) => tags.reverse())
-				.chain((tags) => Either.fromNullable(tags.find((tag) => makeRx(prefix).test(tag))))
+		: Either.fromNullable(allTags.find((tag) => makeRx(prefix).test(tag)))
 				.leftMap(
 					() =>
 						logWarning`Could not find previous semantic versions. Using ${({ yellow }) =>

@@ -3,10 +3,7 @@ import type { BumpKey } from '../types/common-types'
 import { Either } from '../utils/either'
 import { extractVersionTuple } from '../utils/helpers'
 
-type MakeNewVersionCtx = Pick<
-	IAppCtx,
-	'latestVersion' | 'prefix' | 'public' | 'buildMetadata' | BumpKey
->
+type MakeNewVersionCtx = Pick<IAppCtx, 'latestVersion' | 'prefix' | 'public' | BumpKey>
 
 export const makeNewVersion = ({
 	latestVersion,
@@ -15,7 +12,6 @@ export const makeNewVersion = ({
 	bumpPatch,
 	bumpMinor,
 	bumpMajor,
-	buildMetadata,
 }: MakeNewVersionCtx) => ({
 	newVersion: Either.fromNullable(extractVersionTuple(latestVersion))
 		.map((tuple) => tuple.slice(1, 4))
@@ -32,14 +28,10 @@ export const makeNewVersion = ({
 		.map((tuple) => tuple.join('.'))
 		.leftMap(() => `${prefix}${isPublic ? '1.0' : '0.1'}.0`)
 		.bimap(prependPrefix(prefix), prependPrefix(prefix))
-		.bimap(appendBuildMetadata(buildMetadata), appendBuildMetadata(buildMetadata))
 		.fold(
 			(x) => x,
 			(x) => x,
 		),
 })
-
-const appendBuildMetadata = (buildMetadata: string) => (version: string) =>
-	buildMetadata ? version.concat('+').concat(buildMetadata) : version
 
 const prependPrefix = (prefix: string) => (version: string) => `${prefix}${version}`

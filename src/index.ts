@@ -28,6 +28,7 @@ import { exitIfDryRun } from './pure/exit-if-dry-run'
 import { setMergeStrategy } from './pure/set-merge-strategy'
 import { getConfigFromFile } from './pure/get-config-from-file'
 import { readFileSync } from 'fs'
+import { getAllTags } from './pure/get-all-tags'
 
 const processExit = (code: number) => process.exit(code)
 
@@ -156,7 +157,8 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 			() => logInfo`New version will be prefixed with "${({ green }) => green(prefix)}"`,
 		),
 	)
-	.pipeExtend(getLatestVersion({ execEither, logWarning }))
+	.pipeExtend(getAllTags({ execEither }))
+	.pipeExtend(getLatestVersion({ logWarning }))
 	.pipeTap(({ latestVersion }) => logInfo`Latest version: ${({ green }) => green(latestVersion)}`)
 	.pipeExtend(setPublicOption)
 	.pipeTap(({ public: isPublic }) =>
@@ -198,6 +200,22 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(forceBumping({ key: 'bumpMajor', logInfo, conventions }))
 	.pipeTap(exitIfNoBumping({ logWarning, processExit }))
 	.pipeExtend(makeNewVersion)
+	.pipeExtend(({ newVersion, preRelease, allTags }) => ({
+		newVersion: preRelease
+			? Either.fromNullable(
+					allTags.find((tag) => new RegExp(`${newVersion}-${preRelease}\\.\\d+`).test(tag)),
+			  )
+					.chain((tag) => Either.fromNullable(tag?.split('.').slice(-1)[0]))
+					.map(Number)
+					.fold(
+						() => `${newVersion}-${preRelease}.1`,
+						(latestPreRelease) => `${newVersion}-${preRelease}.${latestPreRelease + 1}`,
+					)
+			: newVersion,
+	}))
+	.pipeExtend(({ newVersion, buildMetadata }) => ({
+		newVersion: buildMetadata ? newVersion.concat('+').concat(buildMetadata) : newVersion,
+	}))
 	.pipeTap(({ newVersion }) => logSuccess`Version candidate: ${({ green }) => green(newVersion)}`)
 	.pipeExtend(makeChangelog({ conventions }))
 	.pipeTap(exitIfDryRun({ logWarning, processExit }))
@@ -215,4 +233,5 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		merges: 'exclude',
 		configFile: '',
 		buildMetadata: '',
+		preRelease: '',
 	})
