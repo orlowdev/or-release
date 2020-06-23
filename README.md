@@ -204,7 +204,7 @@ dryRun = false
 
 This intentionally over-complicated diagram depicts the application execution process:
 
-![execution process](./images/diagram.png)
+![execution process](https://raw.githubusercontent.com/priestine/versions/master/images/diagram.png)
 
 ## Caveats
 
