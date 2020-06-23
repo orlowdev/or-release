@@ -176,6 +176,9 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(({ newVersion, buildMetadata }) => ({
 		newVersion: buildMetadata ? newVersion.concat('+').concat(buildMetadata) : newVersion,
 	}))
+	.pipeExtend(({ newVersion, prefix }) => ({
+		newVersion: `${prefix}${newVersion}`,
+	}))
 	.pipeTap(({ newVersion }) => logSuccess`Version candidate: ${({ green }) => green(newVersion)}`)
 	.pipeExtend(makeChangelog({ conventions }))
 	.pipeTap(exitIfDryRun({ logExitingWarning }))
