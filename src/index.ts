@@ -45,10 +45,10 @@ const colors: IColorizer = {
 }
 
 const logger: ILogger = {
-	error: <T>(message: T) => console.log(`💣 ${String(message)}`),
-	warning: <T>(message: T) => console.log(`🤔 ${String(message)}`),
-	info: <T>(message: T) => console.log(`   ${String(message)}`),
-	success: <T>(message: T) => console.log(`🎉 ${String(message)}`),
+	error: <T>(message: T) => console.log(`💣  ${String(message)}`),
+	warning: <T>(message: T) => console.log(`🤔  ${String(message)}`),
+	info: <T>(message: T) => console.log(`    ${String(message)}`),
+	success: <T>(message: T) => console.log(`🎉  ${String(message)}`),
 }
 
 const logWithLevel = (level: keyof ILogger): ILogFunction => (
