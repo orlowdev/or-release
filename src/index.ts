@@ -139,7 +139,6 @@ const envToObject = (env: NodeJS.ProcessEnv) =>
 export const validateBuildMetadata = ({ buildMetadata }: any) =>
 	Either.fromNullable(buildMetadata).chain((metadata) =>
 		Either.fromNullable(/^[\da-zA-Z-]+(\.[\da-zA-Z-]+)*$/.exec(metadata))
-			.map(console.log)
 			.leftMap(() => new Error('Build metadata syntax is invalid'))
 			.leftMap(logFatalError('Could not start the application:') as any),
 	)
