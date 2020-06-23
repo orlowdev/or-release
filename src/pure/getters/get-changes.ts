@@ -55,8 +55,9 @@ const normalizeChangeString = (changes: string[]) =>
 
 const setCommitType = (rawCommit: IRawCommit): IRawCommit => ({
 	...rawCommit,
-	type: /^(:.*:)/.exec(rawCommit.description)
-		? (/^(:.*:)/.exec(rawCommit.description) as any)[0]
-		: ':construction:', // TODO
+	type: Either.fromNullable(/^(:.*:)/.exec(rawCommit.description)).fold(
+		() => ':construction:',
+		(match) => match[0],
+	),
 	description: rawCommit.description.replace(/^:.*:\s+/, ''),
 })
