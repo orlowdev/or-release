@@ -1,6 +1,6 @@
 import type { IAppCtx } from 'types/app-ctx'
 import type { ILogFunction, Unary } from '../types/common-types'
-import type { IEither } from '../utils/either'
+import { Either, IEither } from '../utils/either'
 
 interface IGetLatestVersionDeps {
 	execEither: Unary<string, IEither<string, Error>>
@@ -15,7 +15,11 @@ export const getLatestVersion = ({ execEither, logWarning }: IGetLatestVersionDe
 }: GetLatestVersionCtx) => ({
 	latestVersion: latestVersion
 		? latestVersion
-		: execEither(`git describe --match "${prefix}*[0-9].*[0-9].*[0-9]" --abbrev=0 HEAD --tags`)
+		: execEither('git show-ref --tags')
+				.map((string) => string.split('\n'))
+				.map((strings) => strings.map((string) => string.replace(/.*refs\/tags\//, '')))
+				.map((tags) => tags.reverse())
+				.chain((tags) => Either.fromNullable(tags.find((tag) => makeRx(prefix).test(tag))))
 				.leftMap(
 					() =>
 						logWarning`Could not find previous semantic versions. Using ${({ yellow }) =>
@@ -26,3 +30,5 @@ export const getLatestVersion = ({ execEither, logWarning }: IGetLatestVersionDe
 					(latestVersion) => latestVersion,
 				),
 })
+
+const makeRx = (prefix: string) => new RegExp(`^${prefix}\\d+.\\d+.\\d+$`)
