@@ -1,7 +1,7 @@
-import type { Unary, BumpKey, ILogFunction } from '../types/common-types'
-import type { IAppCtx } from '../types/app-ctx'
-import { any } from '../utils/bool'
-import { tap } from '../utils/helpers'
+import type { Unary, BumpKey, ILogFunction } from '../../types/common-types'
+import type { IAppCtx } from '../../types/app-ctx'
+import { any } from '../../utils/bool'
+import { tap } from '../../utils/helpers'
 
 interface IExitIfNoBumpingDeps {
 	logWarning: ILogFunction

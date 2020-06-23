@@ -1,5 +1,5 @@
-import type { IEither } from '../utils/either'
-import type { Unary } from '../types/common-types'
+import type { IEither } from '../../utils/either'
+import type { Unary } from '../../types/common-types'
 
 export interface IGetCurrentCommitDeps {
 	execEither: Unary<string, IEither<string, Error>>

@@ -1,6 +1,6 @@
-import type { IAppCtx } from '../types/app-ctx'
-import type { Unary } from '../types/common-types'
-import type { IEither } from '../utils/either'
+import type { IAppCtx } from '../../types/app-ctx'
+import type { Unary } from '../../types/common-types'
+import type { IEither } from '../../utils/either'
 
 const getCommitCommand = (latestVersion: string, prefix: string) =>
 	latestVersion === `${prefix}0.0.0`

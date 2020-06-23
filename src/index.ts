@@ -12,23 +12,23 @@ import { ExtendPipe } from './utils/pipe'
 import { any } from './utils/bool'
 import { isFunction } from './utils/guards'
 import { Switch } from './utils/switch'
-import { getCurrentCommit } from './pure/get-current-commit'
-import { getLatestVersion } from './pure/get-latest-version'
-import { getLatestVersionCommit } from './pure/get-latest-version-commit'
-import { getChanges } from './pure/get-changes'
+import { getCurrentCommit } from './pure/getters/get-current-commit'
+import { getLatestVersion } from './pure/getters/get-latest-version'
+import { getLatestVersionCommit } from './pure/getters/get-latest-version-commit'
+import { getChanges } from './pure/getters/get-changes'
 import { forceBumping } from './pure/force-bumping'
 import { makeNewVersion } from './pure/make-new-version'
-import { exitIfNoBumping } from './pure/exit-if-no-bumping'
+import { exitIfNoBumping } from './pure/exits/exit-if-no-bumping'
 import { makeChangelog } from './pure/make-changelog'
 import { Conventions } from './types/common-types'
 import { mergeConfig } from './pure/merge-config'
 import { publishTag } from './pure/publish-tag'
-import { setPublicOption } from './pure/set-public-option'
-import { exitIfDryRun } from './pure/exit-if-dry-run'
-import { setMergeStrategy } from './pure/set-merge-strategy'
-import { getConfigFromFile } from './pure/get-config-from-file'
+import { validatePublic } from './pure/validators/validate-public'
+import { exitIfDryRun } from './pure/exits/exit-if-dry-run'
+import { validateMergeStrategy } from './pure/validators/validate-merges'
+import { getConfigFromFile } from './pure/getters/get-config-from-file'
 import { readFileSync } from 'fs'
-import { getAllTags } from './pure/get-all-tags'
+import { getAllTags } from './pure/getters/get-all-tags'
 
 const processExit = (code: number) => process.exit(code)
 
@@ -170,7 +170,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.pipeExtend(getAllTags({ execEither }))
 	.pipeExtend(getLatestVersion({ logWarning }))
 	.pipeTap(({ latestVersion }) => logInfo`Latest version: ${({ green }) => green(latestVersion)}`)
-	.pipeExtend(setPublicOption)
+	.pipeExtend(validatePublic)
 	.pipeTap(({ public: isPublic }) =>
 		any(isPublic)
 			.ifTrue(() => logSuccess`Public API is declared.`)
@@ -181,7 +181,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		({ latestVersionCommit }) =>
 			logInfo`Latest version commit: ${({ green }) => green(latestVersionCommit)}`,
 	)
-	.pipeExtend(setMergeStrategy)
+	.pipeExtend(validateMergeStrategy)
 	.pipeTap(({ merges }) =>
 		Switch.of(merges)
 			.case(

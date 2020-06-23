@@ -1,7 +1,7 @@
-import type { IAppCtx } from '../types/app-ctx'
-import type { Unary } from '../types/common-types'
-import type { IRawCommit } from '../types/raw-commit'
-import { Either, IEither } from '../utils/either'
+import type { IAppCtx } from '../../types/app-ctx'
+import type { Unary } from '../../types/common-types'
+import type { IRawCommit } from '../../types/raw-commit'
+import { Either, IEither } from '../../utils/either'
 
 interface IGetChangesDeps {
 	execEither: Unary<string, IEither<string, Error>>

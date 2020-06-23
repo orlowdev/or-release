@@ -1,6 +1,6 @@
 import type { ILogFunction, Unary } from 'types/common-types'
 import type { IAppCtx } from 'types/app-ctx'
-import { any } from '../utils/bool'
+import { any } from '../../utils/bool'
 
 interface IExitIfDryRunDeps {
 	logWarning: ILogFunction

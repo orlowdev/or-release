@@ -1,6 +1,6 @@
 import type { IAppCtx } from 'types/app-ctx'
-import type { ILogFunction } from '../types/common-types'
-import { Either } from '../utils/either'
+import type { ILogFunction } from '../../types/common-types'
+import { Either } from '../../utils/either'
 
 interface IGetLatestVersionDeps {
 	logWarning: ILogFunction
