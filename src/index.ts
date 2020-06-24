@@ -3,6 +3,8 @@
 import type { IAppCtx } from './types/app-ctx'
 import type { Conventions } from './types/common-types'
 import httpTransport from 'got'
+import { readFileSync } from 'fs'
+import { execSync } from 'child_process'
 import { makeNewVersionPipe } from './pipes/make-new-version-pipe'
 import { getConfigurationPipe } from './pipes/get-configuration-pipe'
 import { getGitDataPipe } from './pipes/get-git-data-pipe'
@@ -12,6 +14,16 @@ import { makeChangelog } from './pure/make-changelog'
 import { publishTag } from './pure/publish-tag'
 import { logExitingWarning, logFatalError, logInfo, logSuccess, logWarning } from './utils/logger'
 import { ExtendPipe } from './utils/pipe'
+import { Either } from './utils/either'
+import { execWith, trimCmdNewLine } from './utils/helpers'
+
+const readFileEither = (path: string) => Either.try<string, Error>(() => readFileSync(path, 'utf8'))
+
+const execCmdSync = execWith((cmd: string) =>
+	execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }),
+)
+
+const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
 
 const conventions: Conventions = {
 	bumpPatch: [':ambulance:', ':bug:', ':lock:'],
@@ -32,9 +44,9 @@ const env: Record<string, string> = Object.keys(process.env)
 	)
 
 ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
-	.concat(getConfigurationPipe({ argv, env }))
+	.concat(getConfigurationPipe({ argv, env, readFileEither }))
 	.concat(validateInputPipe({ logFatalError }))
-	.concat(getGitDataPipe({ logFatalError, logInfo, logWarning }))
+	.concat(getGitDataPipe({ logFatalError, logInfo, logWarning, execEither }))
 	.concat(makeNewVersionPipe({ logInfo, logSuccess, conventions, logExitingWarning }))
 	.pipeExtend(makeChangelog({ conventions }))
 	.pipeTap(exitIfDryRun({ logExitingWarning }))

@@ -1,18 +1,19 @@
 import type { IAppCtx } from '../types/app-ctx'
-import { readFileSync } from 'fs'
+import type { Unary } from '../types/common-types'
+import type { IEither } from '../utils/either'
 import { transformCase } from '@priestine/case-transformer'
-import { ExtendPipe } from '../utils/pipe'
 import { getConfigFromFile } from '../pure/getters/get-config-from-file'
-import { Either } from '../utils/either'
-import { isInteger, isFloat, isBoolean } from '../utils/guards'
+import { isBoolean, isFloat, isInteger } from '../utils/guards'
+import { ExtendPipe } from '../utils/pipe'
 import { Switch } from '../utils/switch'
 
 interface IGetConfigurationPipeDeps {
 	argv: string[]
 	env: Record<string, string>
+	readFileEither: Unary<string, IEither<string, Error>>
 }
 
-export const getConfigurationPipe = ({ argv, env }: IGetConfigurationPipeDeps) =>
+export const getConfigurationPipe = ({ argv, env, readFileEither }: IGetConfigurationPipeDeps) =>
 	ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		.pipeExtend(mergeConfig(envToObject(env)))
 		.pipeExtend(mergeConfig(argvToObject(argv)))
@@ -21,8 +22,6 @@ export const getConfigurationPipe = ({ argv, env }: IGetConfigurationPipeDeps) =
 		.pipeExtend(mergeConfig(argvToObject(argv)))
 
 // ------------------------------------------------------------------------------------------------
-
-const readFileEither = (path: string) => Either.try<string, Error>(() => readFileSync(path, 'utf8'))
 
 const argvToObject = (argv: string[]): IAppCtx =>
 	argv.reduce<any>((acc, arg) => {

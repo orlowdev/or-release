@@ -1,31 +1,36 @@
 import type { IAppCtx } from '../types/app-ctx'
+import type { Unary } from '../types/common-types'
+import type { IEither } from '../utils/either'
 import type { LogFatalError, LogFunction } from '../utils/logger'
-import { execSync } from 'child_process'
-import { ExtendPipe } from '../utils/pipe'
-import { getCurrentCommit } from '../pure/getters/get-current-commit'
-import { logCurrentCommit } from '../pure/loggers/log-current-commit'
-import { logPrefix } from '../pure/loggers/log-prefix'
 import { getAllTags } from '../pure/getters/get-all-tags'
+import { getChanges } from '../pure/getters/get-changes'
+import { getCurrentCommit } from '../pure/getters/get-current-commit'
 import { getLatestVersion } from '../pure/getters/get-latest-version'
+import { getLatestVersionCommit } from '../pure/getters/get-latest-version-commit'
+import { logChanges } from '../pure/loggers/log-changes'
+import { logCurrentCommit } from '../pure/loggers/log-current-commit'
 import { logLatestVersion } from '../pure/loggers/log-latest-version'
-import { validatePublic } from '../pure/normalizers/normalize-public'
+import { logLatestVersionCommit } from '../pure/loggers/log-latest-version-commit'
+import { logMerges } from '../pure/loggers/log-merges'
+import { logPrefix } from '../pure/loggers/log-prefix'
 import { logPublic } from '../pure/loggers/log-public'
 import { validateMergeStrategy } from '../pure/normalizers/normalize-merges'
-import { logMerges } from '../pure/loggers/log-merges'
-import { getLatestVersionCommit } from '../pure/getters/get-latest-version-commit'
-import { logLatestVersionCommit } from '../pure/loggers/log-latest-version-commit'
-import { getChanges } from '../pure/getters/get-changes'
-import { logChanges } from '../pure/loggers/log-changes'
-import { execWith, trimCmdNewLine } from '../utils/helpers'
-import { Either } from '../utils/either'
+import { validatePublic } from '../pure/normalizers/normalize-public'
+import { ExtendPipe } from '../utils/pipe'
 
 interface IGetGitDataPipeDeps {
 	logFatalError: LogFatalError
 	logInfo: LogFunction
 	logWarning: LogFunction
+	execEither: Unary<string, IEither<string, Error>>
 }
 
-export const getGitDataPipe = ({ logFatalError, logInfo, logWarning }: IGetGitDataPipeDeps) =>
+export const getGitDataPipe = ({
+	logFatalError,
+	logInfo,
+	logWarning,
+	execEither,
+}: IGetGitDataPipeDeps) =>
 	ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
 		.pipeTap(logCurrentCommit(logInfo))
@@ -41,11 +46,3 @@ export const getGitDataPipe = ({ logFatalError, logInfo, logWarning }: IGetGitDa
 		.pipeTap(logLatestVersionCommit(logInfo))
 		.pipeExtend(getChanges({ execEither, logFatalError }))
 		.pipeTap(logChanges(logInfo))
-
-// ------------------------------------------------------------------------------------------------
-
-const execCmdSync = execWith((cmd: string) =>
-	execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] }),
-)
-
-const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
