@@ -1,6 +1,7 @@
 import type { IRawCommit } from '../types/raw-commit'
 import type { IAppCtx } from '../types/app-ctx'
 import { Either } from '../utils/either'
+import { IConvention } from '../types/convention'
 
 type Ctx = Pick<IAppCtx, 'newVersion' | 'commitList' | 'conventions'>
 
@@ -15,7 +16,7 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 					commitList.filter((commit) =>
 						convention.match.some((match) => new RegExp(match).test(commit.type)),
 					),
-				).map((commits) => commits.map(prettifyCommit)),
+				).map((commits) => commits.map(prettifyCommit(convention))),
 			)
 			.fold(
 				() => [],
@@ -29,7 +30,7 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 					commitList.filter((commit) =>
 						convention.match.some((match) => new RegExp(match).test(commit.type)),
 					),
-				).map((commits) => commits.map(prettifyCommit)),
+				).map((commits) => commits.map(prettifyCommit(convention))),
 			)
 			.fold(
 				() => [],
@@ -43,7 +44,7 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 					commitList.filter((commit) =>
 						convention.match.some((match) => new RegExp(match).test(commit.type)),
 					),
-				).map((commits) => commits.map(prettifyCommit)),
+				).map((commits) => commits.map(prettifyCommit(convention))),
 			)
 			.fold(
 				() => [],
@@ -70,5 +71,16 @@ const changelogTag = (
 		.concat(fixes.join('\n'))
 		.concat('\n')
 
-const prettifyCommit = (commit: IRawCommit): string =>
-	`- ${commit.description} (${commit.abbrevHash})`
+const prettifyCommit = (convention: IConvention) => (commit: IRawCommit): string =>
+	convention.itemDescriptionFormat
+		.replace('%commit.type%', commit.type)
+		.replace('%commit.description%', commit.description)
+		.replace('%commit.abbrevHash%', commit.abbrevHash)
+		.replace('%commit.hash%', commit.hash)
+		.replace('%commit.author.email%', commit.author.email)
+		.replace('%commit.author.name%', commit.author.name)
+		.concat(
+			commit.body
+				? '\n\n'.concat(convention.itemBodyFormat.replace('%commit.body%', commit.body))
+				: '',
+		)
