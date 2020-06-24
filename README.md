@@ -12,6 +12,37 @@
 
 A tool for automating [Semantic Versioning](https://semver.org) on your project.
 
+## Table of Contents
+
+- [||l](#l)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [🏁 Getting Started](#-getting-started)
+    - [Local Machine Example](#local-machine-example)
+    - [GitHub Actions Example](#github-actions-example)
+  - [📝 Docs](#-docs)
+    - [Common](#common)
+    - [JavaScript](#javascript)
+  - [⚙️ Configuration](#️-configuration)
+    - [Detailed description](#detailed-description)
+      - [Config File](#config-file)
+      - [Token](#token)
+      - [Repository](#repository)
+      - [Latest Version](#latest-version)
+      - [Prefix](#prefix)
+      - [Pre-Release](#pre-release)
+      - [Build Metadata](#build-metadata)
+      - [Merges](#merges)
+      - [Bump Patch](#bump-patch)
+      - [Bump Minor](#bump-minor)
+      - [Bump Major](#bump-major)
+      - [Public](#public)
+      - [Dry Run](#dry-run)
+      - [Conventions](#conventions)
+    - [Config Files](#config-files)
+  - [How it works](#how-it-works)
+  - [Caveats](#caveats)
+
 ## Features
 
 - ✅ Compatible with GitHub releases. _GitLab releases and direct git tagging (hello, BitBucket) on the way!_
@@ -19,7 +50,7 @@ A tool for automating [Semantic Versioning](https://semver.org) on your project.
 - 📝 Automatically generated list of changes that is put into the release body. _An option to also write to a file will also be available!_
 - 🤔 Works with [gitmoji](https://gitmoji.carloscuesta.me) commits convention, but you can configure it to your heart's content (see [Conventions](#conventions)).
 
-## Getting Started
+## 🏁 Getting Started
 
 Using @priestine/versions is quite simple. You need Node installed and with that in place, you just `npx @priestine/versions`. Take a look at the examples provided below.
 
@@ -71,7 +102,7 @@ jobs:
 
 - [Publishing released version to NPM](./docs/js-ts/npm.en.md)
 
-## Configuration
+## ⚙️ Configuration
 
 The provided configuration means have the following precedence:
 
