@@ -29,7 +29,7 @@ if (argv.includes('--help')) {
 	const { version } = require(resolve(__dirname, 'package.json'))
 
 	logInfo`
-Priestine Versions ${version as string}
+Priestine Versions ${version}
 
 A tool for automating Semantic Versioning on your project.
 
@@ -52,6 +52,7 @@ ${({ g }) => g('--bump-minor')}[=<true|false>]		Force bumping minor version
 ${({ g }) => g('--bump-major')}[=<true|false>]		Force bumping major version
 ${({ g }) => g('--public')}[=<true|false>]			Declare public API (allow bumping major versions)
 ${({ g }) => g('--dry-run')}[=<true|false>]		Skip publishing new release
+${({ g }) => g('--debug')}[=<true|false>]			Run the app in debug mode
 
 --version				Display current @priestine/versions version
 --help					Show usage help message (this one)
