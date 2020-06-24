@@ -17,7 +17,14 @@ interface IDeps {
 
 type Ctx = Pick<
 	IAppCtx,
-	'token' | 'changelog' | 'newVersion' | 'repository' | 'dryRun' | 'customUrl'
+	| 'token'
+	| 'changelog'
+	| 'newVersion'
+	| 'repository'
+	| 'dryRun'
+	| 'customUrl'
+	| 'currentCommit'
+	| 'preRelease'
 >
 
 export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }: IDeps) => ({
@@ -26,6 +33,8 @@ export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }
 	newVersion,
 	repository,
 	customUrl,
+	currentCommit,
+	preRelease,
 }: Ctx) =>
 	Either.fromNullable(customUrl || null)
 		.map(tap((url) => logInfo`Custom URL used for publishing the tag: ${({ g }) => g(url)}`))
@@ -39,7 +48,13 @@ export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }
 						Authorization: `Bearer ${token}`,
 						'Content-Type': 'application/json',
 					},
-					json: { tag_name: newVersion, name: newVersion, body: changelog },
+					json: {
+						tag_name: newVersion,
+						name: newVersion,
+						body: changelog,
+						target_commitish: currentCommit,
+						prerelease: Boolean(preRelease),
+					},
 				})
 
 				logSuccess`Version ${({ g }) => g(newVersion)} successfully released! 🥂`
