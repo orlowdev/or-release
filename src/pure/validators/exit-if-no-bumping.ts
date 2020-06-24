@@ -3,17 +3,17 @@ import type { BumpKey } from '../../types/common-types'
 import type { LogExitingWarning } from '../../utils/logger'
 import { any } from '../../utils/bool'
 
-interface IExitIfNoBumpingDeps {
+interface IDeps {
 	logExitingWarning: LogExitingWarning
 }
 
-type ExitIfNoBumpingCtx = Pick<IAppCtx, BumpKey>
+type Ctx = Pick<IAppCtx, BumpKey>
 
-export const exitIfNoBumping = ({ logExitingWarning }: IExitIfNoBumpingDeps) => ({
+export const exitIfNoBumping = ({ logExitingWarning }: IDeps) => ({
 	bumpPatch,
 	bumpMinor,
 	bumpMajor,
-}: ExitIfNoBumpingCtx) =>
+}: Ctx) =>
 	any(bumpPatch)
 		.concat(any(bumpMinor))
 		.concat(any(bumpMajor))

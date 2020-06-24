@@ -7,13 +7,13 @@ import { isBoolean, isFloat, isInteger } from '../utils/guards'
 import { ExtendPipe } from '../utils/pipe'
 import { Switch } from '../utils/switch'
 
-interface IGetConfigurationPipeDeps {
+interface IDeps {
 	argv: string[]
 	env: Record<string, string>
 	readFileEither: Unary<string, IEither<string, Error>>
 }
 
-export const getConfigurationPipe = ({ argv, env, readFileEither }: IGetConfigurationPipeDeps) =>
+export const getConfigurationPipe = ({ argv, env, readFileEither }: IDeps) =>
 	ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		.pipeExtend(mergeConfig(envToObject(env)))
 		.pipeExtend(mergeConfig(argvToObject(argv)))

@@ -1,16 +1,14 @@
 import type { IRawCommit } from '../types/raw-commit'
 import type { IAppCtx } from '../types/app-ctx'
+import type { Conventions } from '../types/common-types'
 
-interface IMakeChangelogDeps {
-	conventions: any
+interface IDeps {
+	conventions: Conventions
 }
 
-type MakeChangelogCtx = Pick<IAppCtx, 'newVersion' | 'commitList'>
+type Ctx = Pick<IAppCtx, 'newVersion' | 'commitList'>
 
-export const makeChangelog = ({ conventions }: IMakeChangelogDeps) => ({
-	newVersion,
-	commitList,
-}: MakeChangelogCtx) => ({
+export const makeChangelog = ({ conventions }: IDeps) => ({ newVersion, commitList }: Ctx) => ({
 	changelog: changelogTag`
 		## ${newVersion}
 		

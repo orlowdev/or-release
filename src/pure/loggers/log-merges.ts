@@ -2,7 +2,13 @@ import type { IAppCtx } from '../../types/app-ctx'
 import type { LogFunction } from '../../utils/logger'
 import { Switch } from '../../utils/switch'
 
-export const logMerges = (logInfo: LogFunction) => ({ merges }: Pick<IAppCtx, 'merges'>) =>
+interface IDeps {
+	logInfo: LogFunction
+}
+
+type Ctx = Pick<IAppCtx, 'merges'>
+
+export const logMerges = ({ logInfo }: IDeps) => ({ merges }: Ctx) =>
 	Switch.of(merges)
 		.case(
 			'exclude',

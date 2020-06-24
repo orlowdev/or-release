@@ -3,17 +3,16 @@ import type { Unary } from '../../types/common-types'
 import type { IEither } from '../../utils/either'
 import type { LogFatalError } from '../../utils/logger'
 
-interface IGetLatestVersionCommitDeps {
+interface IDeps {
 	execEither: Unary<string, IEither<string, Error>>
 	logFatalError: LogFatalError
 }
 
-type IGetLatestVersionCommitCtx = Pick<IAppCtx, 'latestVersion'>
+type Ctx = Pick<IAppCtx, 'latestVersion'>
 
-export const getLatestVersionCommit = ({
-	execEither,
-	logFatalError,
-}: IGetLatestVersionCommitDeps) => ({ latestVersion }: IGetLatestVersionCommitCtx) => ({
+export const getLatestVersionCommit = ({ execEither, logFatalError }: IDeps) => ({
+	latestVersion,
+}: Ctx) => ({
 	latestVersionCommit: execEither(getCommitCommand(latestVersion)).fold(
 		logFatalError('Could not get latest version commit due to error.'),
 		(latestVersionCommit) => latestVersionCommit,

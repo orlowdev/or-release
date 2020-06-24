@@ -1,7 +1,7 @@
 import type { IAppCtx } from '../types/app-ctx'
 
-type AddPrefixCtx = Pick<IAppCtx, 'newVersion' | 'prefix'>
+type Ctx = Pick<IAppCtx, 'newVersion' | 'prefix'>
 
-export const addPrefix = ({ newVersion, prefix }: AddPrefixCtx) => ({
+export const addPrefix = ({ newVersion, prefix }: Ctx) => ({
 	newVersion: `${prefix}${newVersion}`,
 })

@@ -2,9 +2,9 @@ import type { IAppCtx } from '../../types/app-ctx'
 import { Either } from '../../utils/either'
 import { extractVersionTuple } from '../../utils/helpers'
 
-type ValidatePublicCtx = Pick<IAppCtx, 'latestVersion' | 'public'>
+type Ctx = Pick<IAppCtx, 'latestVersion' | 'public'>
 
-export const validatePublic = ({ latestVersion, public: isPublic }: ValidatePublicCtx) => ({
+export const validatePublic = ({ latestVersion, public: isPublic }: Ctx) => ({
 	public: isPublic
 		? isPublic
 		: Either.fromNullable(extractVersionTuple(latestVersion))

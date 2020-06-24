@@ -10,7 +10,7 @@ import { ExtendPipe } from '../utils/pipe'
 import { addBuildMetadata } from '../pure/add-build-metadata'
 import { addPrefix } from '../pure/add-prefix'
 
-interface IMakeNewVersionPipeDeps {
+interface IDeps {
 	logSuccess: LogFunction
 	logInfo: LogFunction
 	conventions: Conventions
@@ -22,7 +22,7 @@ export const makeNewVersionPipe = ({
 	logInfo,
 	conventions,
 	logExitingWarning,
-}: IMakeNewVersionPipeDeps) =>
+}: IDeps) =>
 	ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		.pipeExtend(forceBumping({ key: 'bumpPatch', logInfo, conventions }))
 		.pipeExtend(forceBumping({ key: 'bumpMinor', logInfo, conventions }))
@@ -32,4 +32,4 @@ export const makeNewVersionPipe = ({
 		.pipeExtend(addPreRelease)
 		.pipeExtend(addBuildMetadata)
 		.pipeExtend(addPrefix)
-		.pipeTap(logNewVersion(logSuccess))
+		.pipeTap(logNewVersion({ logSuccess }))

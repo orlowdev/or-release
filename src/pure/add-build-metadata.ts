@@ -1,7 +1,7 @@
 import { IAppCtx } from '../types/app-ctx'
 
-type AddBuildMetadataCtx = Pick<IAppCtx, 'newVersion' | 'buildMetadata'>
+type Ctx = Pick<IAppCtx, 'newVersion' | 'buildMetadata'>
 
-export const addBuildMetadata = ({ newVersion, buildMetadata }: AddBuildMetadataCtx) => ({
+export const addBuildMetadata = ({ newVersion, buildMetadata }: Ctx) => ({
 	newVersion: buildMetadata ? newVersion.concat('+').concat(buildMetadata) : newVersion,
 })

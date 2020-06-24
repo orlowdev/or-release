@@ -2,7 +2,7 @@ import type { IAppCtx } from '../types/app-ctx'
 import type { LogFunction, LogFatalError } from '../utils/logger'
 import { Either } from '../utils/either'
 
-interface IPublishTagDeps {
+interface IDeps {
 	logSuccess: LogFunction
 	httpTransport: {
 		post: (
@@ -13,14 +13,14 @@ interface IPublishTagDeps {
 	logFatalError: LogFatalError
 }
 
-type PublishTagCtx = Pick<IAppCtx, 'token' | 'changelog' | 'newVersion' | 'repository' | 'dryRun'>
+type Ctx = Pick<IAppCtx, 'token' | 'changelog' | 'newVersion' | 'repository' | 'dryRun'>
 
-export const publishTag = ({ logSuccess, httpTransport, logFatalError }: IPublishTagDeps) => ({
+export const publishTag = ({ logSuccess, httpTransport, logFatalError }: IDeps) => ({
 	token,
 	changelog,
 	newVersion,
 	repository,
-}: PublishTagCtx) =>
+}: Ctx) =>
 	Either.right('https://api.github.com/repos/')
 		.map((origin) => origin.concat(repository))
 		.map((origin) => origin.concat('/releases'))

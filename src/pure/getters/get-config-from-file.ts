@@ -6,13 +6,11 @@ import * as YAML from 'yaml'
 import * as TOML from 'toml'
 import { resolve } from 'path'
 
-interface IGetConfigFromFileDeps {
+interface IDeps {
 	readFileEither: Unary<string, IEither<string, Error>>
 }
 
-export const getConfigFromFile = ({ readFileEither }: IGetConfigFromFileDeps) => (
-	ctx: IAppCtx,
-): any =>
+export const getConfigFromFile = ({ readFileEither }: IDeps) => (ctx: IAppCtx): any =>
 	Either.fromNullable(ctx.configFile)
 		.chain(() =>
 			readFileEither(getAbsolutePath(ctx.configFile)).map(

@@ -18,31 +18,26 @@ import { validateMergeStrategy } from '../pure/normalizers/normalize-merges'
 import { validatePublic } from '../pure/normalizers/normalize-public'
 import { ExtendPipe } from '../utils/pipe'
 
-interface IGetGitDataPipeDeps {
+interface IDeps {
 	logFatalError: LogFatalError
 	logInfo: LogFunction
 	logWarning: LogFunction
 	execEither: Unary<string, IEither<string, Error>>
 }
 
-export const getGitDataPipe = ({
-	logFatalError,
-	logInfo,
-	logWarning,
-	execEither,
-}: IGetGitDataPipeDeps) =>
+export const getGitDataPipe = ({ logFatalError, logInfo, logWarning, execEither }: IDeps) =>
 	ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		.pipeExtend(getCurrentCommit({ execEither, logFatalError }))
-		.pipeTap(logCurrentCommit(logInfo))
-		.pipeTap(logPrefix(logInfo))
+		.pipeTap(logCurrentCommit({ logInfo }))
+		.pipeTap(logPrefix({ logInfo }))
 		.pipeExtend(getAllTags({ execEither }))
 		.pipeExtend(getLatestVersion({ logWarning }))
-		.pipeTap(logLatestVersion(logInfo))
+		.pipeTap(logLatestVersion({ logInfo }))
 		.pipeExtend(validatePublic)
-		.pipeTap(logPublic(logWarning))
+		.pipeTap(logPublic({ logWarning }))
 		.pipeExtend(validateMergeStrategy)
-		.pipeTap(logMerges(logInfo))
+		.pipeTap(logMerges({ logInfo }))
 		.pipeExtend(getLatestVersionCommit({ execEither, logFatalError }))
-		.pipeTap(logLatestVersionCommit(logInfo))
+		.pipeTap(logLatestVersionCommit({ logInfo }))
 		.pipeExtend(getChanges({ execEither, logFatalError }))
-		.pipeTap(logChanges(logInfo))
+		.pipeTap(logChanges({ logInfo }))

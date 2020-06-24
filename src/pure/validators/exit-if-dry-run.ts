@@ -2,15 +2,13 @@ import type { IAppCtx } from 'types/app-ctx'
 import type { LogExitingWarning } from '../../utils/logger'
 import { any } from '../../utils/bool'
 
-interface IExitIfDryRunDeps {
+interface IDeps {
 	logExitingWarning: LogExitingWarning
 }
 
-type ExitIfDryRunCtx = Pick<IAppCtx, 'dryRun'>
+type Ctx = Pick<IAppCtx, 'dryRun'>
 
-export const exitIfDryRun = ({ logExitingWarning }: IExitIfDryRunDeps) => ({
-	dryRun,
-}: ExitIfDryRunCtx) =>
+export const exitIfDryRun = ({ logExitingWarning }: IDeps) => ({ dryRun }: Ctx) =>
 	any(dryRun).ifTrue(() =>
 		logExitingWarning('Dry run mode. New version will not be published. Terminating.'),
 	)

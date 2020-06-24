@@ -4,17 +4,17 @@ import type { IRawCommit } from '../../types/raw-commit'
 import type { LogFatalError } from '../../utils/logger'
 import { Either, IEither } from '../../utils/either'
 
-interface IGetChangesDeps {
+interface IDeps {
 	execEither: Unary<string, IEither<string, Error>>
 	logFatalError: LogFatalError
 }
 
-type IGetChangesCtx = Pick<IAppCtx, 'latestVersionCommit' | 'merges'>
+type Ctx = Pick<IAppCtx, 'latestVersionCommit' | 'merges'>
 
-export const getChanges = ({ execEither, logFatalError }: IGetChangesDeps) => ({
+export const getChanges = ({ execEither, logFatalError }: IDeps) => ({
 	latestVersionCommit,
 	merges,
-}: IGetChangesCtx) => ({
+}: Ctx) => ({
 	commitList: execEither(
 		'git rev-list'
 			.concat(merges === 'only' ? ' --merges' : '')

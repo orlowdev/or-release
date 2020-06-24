@@ -1,9 +1,9 @@
 import type { IAppCtx } from '../types/app-ctx'
 import { Either } from '../utils/either'
 
-type AddPreReleaseCtx = Pick<IAppCtx, 'newVersion' | 'preRelease' | 'allTags'>
+type Ctx = Pick<IAppCtx, 'newVersion' | 'preRelease' | 'allTags'>
 
-export const addPreRelease = ({ newVersion, preRelease, allTags }: AddPreReleaseCtx) => ({
+export const addPreRelease = ({ newVersion, preRelease, allTags }: Ctx) => ({
 	newVersion: preRelease
 		? Either.fromNullable(
 				allTags.find((tag) => new RegExp(`${newVersion}-${preRelease}\\.\\d+`).test(tag)),

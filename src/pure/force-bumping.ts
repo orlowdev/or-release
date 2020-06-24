@@ -5,17 +5,15 @@ import type { LogFunction } from '../utils/logger'
 import { Either } from '../utils/either'
 import { tap } from '../utils/helpers'
 
-interface IForceBumpingDeps {
+interface IDeps {
 	key: BumpKey
 	logInfo: LogFunction
 	conventions: Conventions
 }
 
-type ForceBumpingCtx = Pick<IAppCtx, 'commitList' | BumpKey>
+type Ctx = Pick<IAppCtx, 'commitList' | BumpKey>
 
-export const forceBumping = ({ key, logInfo, conventions }: IForceBumpingDeps) => (
-	ctx: ForceBumpingCtx,
-) => ({
+export const forceBumping = ({ key, logInfo, conventions }: IDeps) => (ctx: Ctx) => ({
 	[key]: Either.right(ctx.commitList)
 		.chain(commitsOrNull(conventions[key]))
 		.map(

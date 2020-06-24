@@ -1,8 +1,8 @@
 import type { IAppCtx } from '../../types/app-ctx'
 import { Switch } from '../../utils/switch'
 
-type ValidateMergeStrategyCtx = Pick<IAppCtx, 'merges'>
+type Ctx = Pick<IAppCtx, 'merges'>
 
-export const validateMergeStrategy = ({ merges }: ValidateMergeStrategyCtx) => ({
+export const validateMergeStrategy = ({ merges }: Ctx) => ({
 	merges: Switch.of(merges).case('include', 'include').case('only', 'only').default('exclude'),
 })

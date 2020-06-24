@@ -2,16 +2,13 @@ import type { IAppCtx } from 'types/app-ctx'
 import type { LogFunction } from '../../utils/logger'
 import { Either } from '../../utils/either'
 
-interface IGetLatestVersionDeps {
+interface IDeps {
 	logWarning: LogFunction
 }
 
-type GetLatestVersionCtx = Pick<IAppCtx, 'latestVersion' | 'allTags'>
+type Ctx = Pick<IAppCtx, 'latestVersion' | 'allTags'>
 
-export const getLatestVersion = ({ logWarning }: IGetLatestVersionDeps) => ({
-	latestVersion,
-	allTags,
-}: GetLatestVersionCtx) => ({
+export const getLatestVersion = ({ logWarning }: IDeps) => ({ latestVersion, allTags }: Ctx) => ({
 	latestVersion: latestVersion
 		? latestVersion
 		: Either.fromNullable(allTags.find((tag) => /^(\w+)?\d+\.\d+\.\d+/.test(tag)))
