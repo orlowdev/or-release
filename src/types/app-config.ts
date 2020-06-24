@@ -71,7 +71,7 @@ export interface IAppConfig {
 	 *
 	 * This value is ignored for "git" and "bitbucket" transports.
 	 */
-	customTransportUrl: string
+	customUrl: string
 
 	/**
 	 * Custom prefix for Semantic Version, e.g. "v"

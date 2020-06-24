@@ -1,9 +1,11 @@
 import type { IAppCtx } from '../types/app-ctx'
 import type { LogFunction, LogFatalError } from '../utils/logger'
 import { Either } from '../utils/either'
+import { tap } from '../utils/helpers'
 
 interface IDeps {
 	logSuccess: LogFunction
+	logInfo: LogFunction
 	httpTransport: {
 		post: (
 			url: string,
@@ -13,15 +15,21 @@ interface IDeps {
 	logFatalError: LogFatalError
 }
 
-type Ctx = Pick<IAppCtx, 'token' | 'changelog' | 'newVersion' | 'repository' | 'dryRun'>
+type Ctx = Pick<
+	IAppCtx,
+	'token' | 'changelog' | 'newVersion' | 'repository' | 'dryRun' | 'customUrl'
+>
 
-export const publishTag = ({ logSuccess, httpTransport, logFatalError }: IDeps) => ({
+export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }: IDeps) => ({
 	token,
 	changelog,
 	newVersion,
 	repository,
+	customUrl,
 }: Ctx) =>
-	Either.right('https://api.github.com/repos/')
+	Either.fromNullable(customUrl || null)
+		.map(tap((url) => logInfo`Custom URL used for publishing the tag: ${({ g }) => g(url)}`))
+		.fold(() => Either.right('https://api.github.com/repos/'), Either.right)
 		.map((origin) => origin.concat(repository))
 		.map((origin) => origin.concat('/releases'))
 		.map(async (url) => {

@@ -43,7 +43,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.concat(makeNewVersionPipe({ logInfo, logSuccess, logExitingWarning }))
 	.pipeExtend(makeChangelog)
 	.pipeTap(exitIfDryRun({ logExitingWarning }))
-	.pipe(publishTag({ logFatalError, logSuccess, httpTransport }))
+	.pipe(publishTag({ logFatalError, logInfo, logSuccess, httpTransport }))
 	.process({
 		token: '',
 		bumpPatch: false,
@@ -58,6 +58,8 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		configFile: '',
 		buildMetadata: '',
 		preRelease: '',
+		transport: 'github',
+		customUrl: '',
 		conventions: [
 			{
 				match: ['^:ambulance:', '^:bug:', '^:lock:'],
