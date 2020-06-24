@@ -4,6 +4,7 @@ import type { IAppCtx } from './types/app-ctx'
 import httpTransport from 'got'
 import { readFileSync } from 'fs'
 import { execSync } from 'child_process'
+import { resolve } from 'path'
 import { makeNewVersionPipe } from './pipes/make-new-version-pipe'
 import { getConfigurationPipe } from './pipes/get-configuration-pipe'
 import { getGitDataPipe } from './pipes/get-git-data-pipe'
@@ -16,6 +17,15 @@ import { ExtendPipe } from './utils/pipe'
 import { Either } from './utils/either'
 import { execWith, trimCmdNewLine } from './utils/helpers'
 
+const argv = process.argv.slice(2)
+
+if (argv.includes('--version')) {
+	// eslint-disable-next-line
+	const { version } = require(resolve(__dirname, 'package.json'))
+	console.log(version)
+	process.exit(0)
+}
+
 const readFileEither = (path: string) => Either.try<string, Error>(() => readFileSync(path, 'utf8'))
 
 const execCmdSync = execWith((cmd: string) =>
@@ -23,8 +33,6 @@ const execCmdSync = execWith((cmd: string) =>
 )
 
 const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
-
-const argv = process.argv.slice(2)
 
 const env: Record<string, string> = Object.keys(process.env)
 	.filter((key) => key.startsWith('PRIESTINE_VERSIONS_'))
