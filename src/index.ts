@@ -16,6 +16,7 @@ import { logExitingWarning, logFatalError, logInfo, logSuccess, logWarning } fro
 import { ExtendPipe } from './utils/pipe'
 import { Either } from './utils/either'
 import { execWith, trimCmdNewLine } from './utils/helpers'
+import { logChangelog } from './pure/loggers/log-changelog'
 
 const argv = process.argv.slice(2)
 
@@ -84,6 +85,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.concat(getGitDataPipe({ logFatalError, logInfo, logWarning, execEither }))
 	.concat(makeNewVersionPipe({ logInfo, logSuccess, logExitingWarning }))
 	.pipeExtend(makeChangelog)
+	.pipeTap(logChangelog({ logInfo }))
 	.pipeTap(exitIfDryRun({ logExitingWarning }))
 	.pipe(publishTag({ logFatalError, logInfo, logSuccess, httpTransport }))
 	.process({
@@ -96,6 +98,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		prefix: '',
 		public: false,
 		dryRun: false,
+		showChangelog: false,
 		merges: 'exclude',
 		configFile: '',
 		buildMetadata: '',
