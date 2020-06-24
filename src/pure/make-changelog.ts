@@ -1,3 +1,4 @@
+import type { Except } from 'type-fest'
 import type { IRawCommit } from '../types/raw-commit'
 import type { IAppCtx } from '../types/app-ctx'
 import type { IConvention } from '../types/convention'
@@ -17,7 +18,10 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 
 // ------------------------------------------------------------------------------------------------
 
-const getChangelogOfType = (type: Version, { conventions, commitList }: Omit<Ctx, 'newVersion'>) =>
+const getChangelogOfType = (
+	type: Version,
+	{ conventions, commitList }: Except<Ctx, 'newVersion'>,
+) =>
 	Either.fromNullable(conventions.find((convention) => convention.bumps === type))
 		.chain((convention) =>
 			Either.fromNullable(
