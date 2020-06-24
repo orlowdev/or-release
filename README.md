@@ -42,6 +42,7 @@ Check out the [roadmap for the project](https://github.com/priestine/versions/pr
       - [Bump Major](#bump-major)
       - [Public](#public)
       - [Dry Run](#dry-run)
+      - [Show Changelog](#show-changelog)
       - [Conventions](#conventions)
     - [Config Files](#config-files)
   - [🗺 How it works](#-how-it-works)
@@ -134,6 +135,7 @@ All options that accept `true` or `false` as a value are **false** by default.
 | [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>           | `false`   |
 | [Public](#public)                 | **--public**[=\<true \| false>]              | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>               | `false`   |
 | [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]             | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>              | `false`   |
+| [Show Changelog](#show-changelog) | **--show-changelog**[=\<true \| false>]      | **PRIESTINE_VERSIONS_SHOW_CHANGELOG**=[=\<true \| false>]    | `false`   |
 
 > With CLI options that accept **boolean** values, providing those values is **_optional_**. `--bump-patch` and `--bump-patch=true` are completely the same.
 >
@@ -198,6 +200,10 @@ Applying this option is irreversible. This option is only applicable if you don'
 #### Dry Run
 
 Execute the command but skip publishing the release. May be useful for debugging or just to check what version your application is going to have next.
+
+#### Show Changelog
+
+Provide this option to include changelog in the console output. It is disabled by default as it may take quite a lot of space. This option can be helpful when setting up conventions, checking for commit message misspeling or commit type errors, or just to be able to say what you did yesterday during the daily scrum.
 
 #### Conventions
 
@@ -287,6 +293,7 @@ Here is a JSON example with the default settings for @priestine/versions. You ca
   "bumpMajor": false,
   "public": false,
   "dryRun": false,
+  "showChangelog": false,
   "conventions": [
     {
       "match": ["^:ambulance:", "^:bug:", "^:lock:"],
