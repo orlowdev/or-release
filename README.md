@@ -12,11 +12,13 @@
 
 A tool for automating [Semantic Versioning](https://semver.org) on your project.
 
-## Table of Contents
+Check out the [roadmap for the project](https://github.com/priestine/versions/projects/1).
+
+## 🔑 Table of Contents
 
 - [||l](#l)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
+  - [🔑 Table of Contents](#-table-of-contents)
+  - [✨ Features](#-features)
   - [🏁 Getting Started](#-getting-started)
     - [Local Machine Example](#local-machine-example)
     - [GitHub Actions Example](#github-actions-example)
@@ -24,6 +26,7 @@ A tool for automating [Semantic Versioning](https://semver.org) on your project.
     - [Common](#common)
     - [JavaScript](#javascript)
   - [⚙️ Configuration](#️-configuration)
+    - [Overview](#overview)
     - [Detailed description](#detailed-description)
       - [Config File](#config-file)
       - [Token](#token)
@@ -40,10 +43,10 @@ A tool for automating [Semantic Versioning](https://semver.org) on your project.
       - [Dry Run](#dry-run)
       - [Conventions](#conventions)
     - [Config Files](#config-files)
-  - [How it works](#how-it-works)
-  - [Caveats](#caveats)
+  - [🗺 How it works](#-how-it-works)
+  - [🚫 Caveats](#-caveats)
 
-## Features
+## ✨ Features
 
 - ✅ Compatible with GitHub releases. _GitLab releases and direct git tagging (hello, BitBucket) on the way!_
 - ⚙️ Bump versions for the code written in any programming language with no configuration - only git matters
@@ -111,6 +114,8 @@ The provided configuration means have the following precedence:
 3. CLI options are checked last and provided values replace defaults, configuration file values and enviroment variable values
 
 All options that accept `true` or `false` as a value are **false** by default.
+
+### Overview
 
 | Option                            | CLI Usage Example                          | Environment Usage Example                                   | Default   |
 | --------------------------------- | ------------------------------------------ | ----------------------------------------------------------- | --------- |
@@ -303,13 +308,13 @@ Here is a JSON example with the default settings for @priestine/versions. You ca
 ]
 ```
 
-## How it works
+## 🗺 How it works
 
 This intentionally over-complicated diagram depicts the application execution process:
 
 ![execution process](https://raw.githubusercontent.com/priestine/versions/master/images/diagram.png)
 
-## Caveats
+## 🚫 Caveats
 
 - **Help needed** - for some reason, `$GITHUB_TOKEN` did not work for me when I tried to use it for creating releases from GitHub Actions. I am not very skilled with this tool so there's probably me doing something wrong.
 - Currently, @priestine/versions only works with GitHub (on-premise solutions not supported yet) and gitmoji as a commit convention.
