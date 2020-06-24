@@ -9,9 +9,13 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 		# ${newVersion}
 		
 		## :boom: Breaking changes
-		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'patch'))
-			.map((convention) =>
-				commitList.filter((commit) => convention.match.includes(commit.type)).map(prettifyCommit),
+		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'major'))
+			.chain((convention) =>
+				Either.fromNullable(
+					commitList.filter((commit) =>
+						convention.match.some((match) => new RegExp(match).test(commit.type)),
+					),
+				).map((commits) => commits.map(prettifyCommit)),
 			)
 			.fold(
 				() => [],
@@ -20,8 +24,12 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 
 		## :sparkles: Features
 		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'minor'))
-			.map((convention) =>
-				commitList.filter((commit) => convention.match.includes(commit.type)).map(prettifyCommit),
+			.chain((convention) =>
+				Either.fromNullable(
+					commitList.filter((commit) =>
+						convention.match.some((match) => new RegExp(match).test(commit.type)),
+					),
+				).map((commits) => commits.map(prettifyCommit)),
 			)
 			.fold(
 				() => [],
@@ -29,9 +37,13 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 			)}
 		
 		## :bug: - :ambulance: - :lock: Fixes
-		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'major'))
-			.map((convention) =>
-				commitList.filter((commit) => convention.match.includes(commit.type)).map(prettifyCommit),
+		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'patch'))
+			.chain((convention) =>
+				Either.fromNullable(
+					commitList.filter((commit) =>
+						convention.match.some((match) => new RegExp(match).test(commit.type)),
+					),
+				).map((commits) => commits.map(prettifyCommit)),
 			)
 			.fold(
 				() => [],
