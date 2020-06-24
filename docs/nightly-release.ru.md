@@ -1,4 +1,4 @@
-# Releasing nightly builds
+# Размещение Nightly-сборок
 
 [en](./nightly-release.en.md) ∘ [ru](./nightly-release.ru.md)
 
