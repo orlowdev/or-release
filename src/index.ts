@@ -26,7 +26,7 @@ if (argv.includes('--version')) {
 }
 
 if (argv.includes('--help')) {
-	const { version } = require(resolve(__dirname, '../package.json'))
+	const { version } = require(resolve(__dirname, 'package.json'))
 
 	logInfo`
 Priestine Versions ${version as string}
