@@ -10,6 +10,6 @@ export interface IDeps {
 export const getCurrentCommit = ({ execEither, logFatalError }: IDeps) => () => ({
 	currentCommit: execEither('git rev-parse HEAD').fold(
 		logFatalError('Could not get current commit due to error.'),
-		(cc) => cc.slice(0, 7),
+		(cc) => cc,
 	),
 })

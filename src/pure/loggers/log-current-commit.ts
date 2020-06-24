@@ -8,4 +8,4 @@ interface IDeps {
 type Ctx = Pick<IAppCtx, 'currentCommit'>
 
 export const logCurrentCommit = ({ logInfo }: IDeps) => ({ currentCommit }: Ctx) =>
-	logInfo`Current commit: ${({ g }) => g(currentCommit)}`
+	logInfo`Current commit: ${({ g }) => g(currentCommit.slice(0, 7))}`
