@@ -1,5 +1,5 @@
-import { ICommitType } from './commit-type'
-import { MergeEvaluationStrategy, Email, ReleaseTransport } from './common-types'
+import type { IConvention } from './convention'
+import type { MergeEvaluationStrategy, Email, ReleaseTransport } from './common-types'
 
 /**
  * Externally configurable behaviour of the application.
@@ -52,7 +52,7 @@ export interface IAppConfig {
 	 * Commit types that are important for the application (either for
 	 * bumping of for the docs).
 	 */
-	commitTypes: ICommitType[]
+	conventions: IConvention[]
 
 	/**
 	 * Transport for delivering releases. If set to "github" or "gitlab",

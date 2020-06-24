@@ -1,11 +1,13 @@
 import type { Thunk, Unary } from '../types/common-types'
 import { isFunction } from './guards'
 
+type Nullable<T> = T | null | undefined
+
 const unsafeGet = Symbol('EitherUnsafeGet')
 
 export interface IEitherStatic {
 	try: <TSuccess, TFail>(thunk: Thunk<TSuccess>) => IEither<TSuccess, TFail>
-	fromNullable: <TContext>(x: TContext | null) => IEither<TContext, null>
+	fromNullable: <TContext>(x: Nullable<TContext>) => IEither<NonNullable<TContext>, null>
 	right: <TContext, TLeftContext = TContext>(x: TContext) => IEither<TContext, TLeftContext>
 	left: <TContext, TRightContext = TContext>(x: TContext) => IEither<TRightContext, TContext>
 }

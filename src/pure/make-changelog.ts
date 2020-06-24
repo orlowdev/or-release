@@ -1,25 +1,48 @@
 import type { IRawCommit } from '../types/raw-commit'
 import type { IAppCtx } from '../types/app-ctx'
-import type { Conventions } from '../types/common-types'
+import { Either } from '../utils/either'
 
-interface IDeps {
-	conventions: Conventions
-}
+type Ctx = Pick<IAppCtx, 'newVersion' | 'commitList' | 'conventions'>
 
-type Ctx = Pick<IAppCtx, 'newVersion' | 'commitList'>
-
-export const makeChangelog = ({ conventions }: IDeps) => ({ newVersion, commitList }: Ctx) => ({
+export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => ({
 	changelog: changelogTag`
-		## ${newVersion}
+		# ${newVersion}
 		
-		### :boom: Breaking changes
-		${commitList.filter((commit) => conventions.bumpMajor.includes(commit.type)).map(prettifyCommit)}
+		## :boom: Breaking changes
+		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'patch'))
+			.map((convention) =>
+				commitList
+					.filter((commit) => (convention as any).match.includes(commit.type))
+					.map(prettifyCommit),
+			)
+			.fold(
+				() => [],
+				(commits) => commits,
+			)}
+
+		## :sparkles: Features
+		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'minor'))
+			.map((convention) =>
+				commitList
+					.filter((commit) => (convention as any).match.includes(commit.type))
+					.map(prettifyCommit),
+			)
+			.fold(
+				() => [],
+				(commits) => commits,
+			)}
 		
-		### :sparkles: Features
-		${commitList.filter((commit) => conventions.bumpMinor.includes(commit.type)).map(prettifyCommit)}
-		
-		### :bug: - :ambulance: - :lock: Fixes
-		${commitList.filter((commit) => conventions.bumpPatch.includes(commit.type)).map(prettifyCommit)}
+		## :bug: - :ambulance: - :lock: Fixes
+		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'major'))
+			.map((convention) =>
+				commitList
+					.filter((commit) => (convention as any).match.includes(commit.type))
+					.map(prettifyCommit),
+			)
+			.fold(
+				() => [],
+				(commits) => commits,
+			)}
 	`,
 })
 

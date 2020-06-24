@@ -11,5 +11,3 @@ export type ReleaseTransport = 'git' | 'bitbucket' | 'github' | 'gitlab'
 export type Email = string
 
 export type BumpKey = 'bumpPatch' | 'bumpMinor' | 'bumpMajor'
-
-export type Conventions = Record<BumpKey, string[]>

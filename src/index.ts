@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import type { IAppCtx } from './types/app-ctx'
-import type { Conventions } from './types/common-types'
 import httpTransport from 'got'
 import { readFileSync } from 'fs'
 import { execSync } from 'child_process'
@@ -25,12 +24,6 @@ const execCmdSync = execWith((cmd: string) =>
 
 const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
 
-const conventions: Conventions = {
-	bumpPatch: [':ambulance:', ':bug:', ':lock:'],
-	bumpMinor: [':sparkles:'],
-	bumpMajor: [':boom:'],
-}
-
 const argv = process.argv.slice(2)
 
 const env: Record<string, string> = Object.keys(process.env)
@@ -47,8 +40,8 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.concat(getConfigurationPipe({ argv, env, readFileEither }))
 	.concat(validateInputPipe({ logFatalError }))
 	.concat(getGitDataPipe({ logFatalError, logInfo, logWarning, execEither }))
-	.concat(makeNewVersionPipe({ logInfo, logSuccess, conventions, logExitingWarning }))
-	.pipeExtend(makeChangelog({ conventions }))
+	.concat(makeNewVersionPipe({ logInfo, logSuccess, logExitingWarning }))
+	.pipeExtend(makeChangelog)
 	.pipeTap(exitIfDryRun({ logExitingWarning }))
 	.pipe(publishTag({ logFatalError, logSuccess, httpTransport }))
 	.process({
@@ -65,4 +58,30 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		configFile: '',
 		buildMetadata: '',
 		preRelease: '',
+		conventions: [
+			{
+				match: ['^:ambulance:', '^:bug:', '^:lock:'],
+				bumps: 'patch',
+				groupTitleFormat: '\n\n## :bug: ∘ :ambulance: ∘ :lock: Fixes\n',
+				groupDescription: '',
+				itemDescriptionFormat: '- %commit.description% (%commit.abbrevHash%)',
+				itemBodyFormat: '> %commit.body%',
+			},
+			{
+				match: ['^:sparkles:'],
+				bumps: 'minor',
+				groupTitleFormat: '\n\n## :sparkles: Features\n',
+				groupDescription: '',
+				itemDescriptionFormat: '- %commit.description% (%commit.abbrevHash%)',
+				itemBodyFormat: '> %commit.body%',
+			},
+			{
+				match: ['^:boom:'],
+				bumps: 'major',
+				groupTitleFormat: '\n\n## :boom: Breaking Changes\n',
+				groupDescription: '',
+				itemDescriptionFormat: '- %commit.description% (%commit.abbrevHash%)',
+				itemBodyFormat: '> %commit.body%',
+			},
+		],
 	})

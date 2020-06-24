@@ -1,6 +1,5 @@
 import type { IAppCtx } from '../types/app-ctx'
-import type { IRawCommit } from '../types/raw-commit'
-import type { BumpKey, Conventions } from '../types/common-types'
+import type { BumpKey } from '../types/common-types'
 import type { LogFunction } from '../utils/logger'
 import { Either } from '../utils/either'
 import { tap } from '../utils/helpers'
@@ -8,14 +7,23 @@ import { tap } from '../utils/helpers'
 interface IDeps {
 	key: BumpKey
 	logInfo: LogFunction
-	conventions: Conventions
 }
 
-type Ctx = Pick<IAppCtx, 'commitList' | BumpKey>
+type Ctx = Pick<IAppCtx, 'commitList' | 'conventions' | BumpKey>
 
-export const forceBumping = ({ key, logInfo, conventions }: IDeps) => (ctx: Ctx) => ({
+export const forceBumping = ({ key, logInfo }: IDeps) => (ctx: Ctx) => ({
 	[key]: Either.right(ctx.commitList)
-		.chain(commitsOrNull(conventions[key]))
+		.chain((commits) =>
+			Either.fromNullable(
+				ctx.conventions.find((convention) => convention.bumps === key.slice(4).toLowerCase()),
+			).chain((convention) =>
+				Either.fromNullable(
+					convention.match.find((match) =>
+						commits.some((commit) => new RegExp(match).test(commit.type)),
+					),
+				),
+			),
+		)
 		.map(
 			tap(
 				(commits) => logInfo`${key.replace('bump', '')} level changes: ${({ g }) => g(commits.length)}`,
@@ -26,12 +34,3 @@ export const forceBumping = ({ key, logInfo, conventions }: IDeps) => (ctx: Ctx)
 			() => true,
 		),
 })
-
-// ------------------------------------------------------------------------------------------------
-
-const commitsOrNull = (convention: string[]) => (commits: IRawCommit[]) => {
-	const thisType = commits.filter((commit) => convention.includes(commit.type))
-	return thisType.length > 0
-		? Either.right<IRawCommit[]>(thisType)
-		: Either.left<null, IRawCommit[]>(null)
-}

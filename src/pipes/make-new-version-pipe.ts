@@ -1,5 +1,4 @@
 import type { IAppCtx } from '../types/app-ctx'
-import type { Conventions } from '../types/common-types'
 import type { LogExitingWarning, LogFunction } from '../utils/logger'
 import { addPreRelease } from '../pure/add-pre-release'
 import { exitIfNoBumping } from '../pure/validators/exit-if-no-bumping'
@@ -13,20 +12,14 @@ import { addPrefix } from '../pure/add-prefix'
 interface IDeps {
 	logSuccess: LogFunction
 	logInfo: LogFunction
-	conventions: Conventions
 	logExitingWarning: LogExitingWarning
 }
 
-export const makeNewVersionPipe = ({
-	logSuccess,
-	logInfo,
-	conventions,
-	logExitingWarning,
-}: IDeps) =>
+export const makeNewVersionPipe = ({ logSuccess, logInfo, logExitingWarning }: IDeps) =>
 	ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
-		.pipeExtend(forceBumping({ key: 'bumpPatch', logInfo, conventions }))
-		.pipeExtend(forceBumping({ key: 'bumpMinor', logInfo, conventions }))
-		.pipeExtend(forceBumping({ key: 'bumpMajor', logInfo, conventions }))
+		.pipeExtend(forceBumping({ key: 'bumpPatch', logInfo }))
+		.pipeExtend(forceBumping({ key: 'bumpMinor', logInfo }))
+		.pipeExtend(forceBumping({ key: 'bumpMajor', logInfo }))
 		.pipeTap(exitIfNoBumping({ logExitingWarning }))
 		.pipeExtend(makeNewVersion)
 		.pipeExtend(addPreRelease)
