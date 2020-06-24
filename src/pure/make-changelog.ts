@@ -12,7 +12,7 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 		.concat(getChangelogOfType('minor', { commitList, conventions }).join('\n'))
 		.concat(getChangelogOfType('patch', { commitList, conventions }).join('\n'))
 		.concat(getChangelogOfType(null, { commitList, conventions }).join('\n'))
-		.concat('\n'),
+		.concat('\n\n'),
 })
 
 // ------------------------------------------------------------------------------------------------
