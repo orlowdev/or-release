@@ -31,7 +31,7 @@ const env: Record<string, string> = Object.keys(process.env)
 	.reduce(
 		(acc, key) => ({
 			...acc,
-			[key]: env[key],
+			[key]: process.env[key],
 		}),
 		{},
 	)
