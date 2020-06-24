@@ -35,6 +35,7 @@ Check out the [roadmap for the project](https://github.com/priestine/versions/pr
       - [Prefix](#prefix)
       - [Pre-Release](#pre-release)
       - [Build Metadata](#build-metadata)
+      - [Custom URL](#custom-url)
       - [Merges](#merges)
       - [Bump Patch](#bump-patch)
       - [Bump Minor](#bump-minor)
@@ -117,21 +118,22 @@ All options that accept `true` or `false` as a value are **false** by default.
 
 ### Overview
 
-| Option                            | CLI Usage Example                          | Environment Usage Example                                   | Default   |
-| --------------------------------- | ------------------------------------------ | ----------------------------------------------------------- | --------- |
-| [Config File](#config-file)       | **--config-file=PATH**                     | **PRIESTINE_VERSIONS_CONFIG_FILE**=PATH                     | `""`      |
-| [Token](#token)                   | **--token=\$SOME_TOKEN**                   | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN                   | `""`      |
-| [Repository](#repository)         | **--repository=octocat/github**            | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github            | `""`      |
-| [Latest Version](#latest-version) | **--latest-version=0.0.0**                 | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                 | `""`      |
-| [Prefix](#prefix)                 | **--prefix=v**                             | **PRIESTINE_VERSIONS_PREFIX**=v                             | `""`      |
-| [Pre-Release](#pre-release)       | **--pre-release=\$(git rev-parse HEAD)**   | **PRIESTINE_VERSIONS_PRE_RELEAS**=\$(git rev-parse HEAD)    | `""`      |
-| [Build Metadata](#build-metadata) | **--build-metadata=\$(date)**              | **PRIESTINE_VERSIONS_BUILD_METADATA**=\$(date)              | `""`      |
-| [Merges](#merges)                 | **--merges=\<include \| exclude \| only>** | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only> | `exclude` |
-| [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>          | `false`   |
-| [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>          | `false`   |
-| [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>]        | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>          | `false`   |
-| [Public](#public)                 | **--public**[=\<true \| false>]            | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>              | `false`   |
-| [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]           | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>             | `false`   |
+| Option                            | CLI Usage Example                            | Environment Usage Example                                    | Default   |
+| --------------------------------- | -------------------------------------------- | ------------------------------------------------------------ | --------- |
+| [Config File](#config-file)       | **--config-file=PATH**                       | **PRIESTINE_VERSIONS_CONFIG_FILE**=PATH                      | `""`      |
+| [Token](#token)                   | **--token=\$SOME_TOKEN**                     | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN                    | `""`      |
+| [Repository](#repository)         | **--repository=octocat/github**              | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github             | `""`      |
+| [Latest Version](#latest-version) | **--latest-version=0.0.0**                   | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                  | `""`      |
+| [Prefix](#prefix)                 | **--prefix=v**                               | **PRIESTINE_VERSIONS_PREFIX**=v                              | `""`      |
+| [Pre-Release](#pre-release)       | **--pre-release=\$(git rev-parse HEAD)**     | **PRIESTINE_VERSIONS_PRE_RELEAS**=\$(git rev-parse HEAD)     | `""`      |
+| [Build Metadata](#build-metadata) | **--build-metadata=\$(date)**                | **PRIESTINE_VERSIONS_BUILD_METADATA**=\$(date)               | `""`      |
+| [Custom URL](#custom-url)         | **--custom-url=https://api.mygh.com/repos/** | **PRIESTINE_VERSIONS_CUSTOM_URL**=https://api.mygh.com/repos | `""`      |
+| [Merges](#merges)                 | **--merges=\<include \| exclude \| only>**   | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only>  | `exclude` |
+| [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>           | `false`   |
+| [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>           | `false`   |
+| [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>           | `false`   |
+| [Public](#public)                 | **--public**[=\<true \| false>]              | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>               | `false`   |
+| [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]             | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>              | `false`   |
 
 > With CLI options that accept **boolean** values, providing those values is **_optional_**. `--bump-patch` and `--bump-patch=true` are completely the same.
 >
@@ -166,6 +168,10 @@ Allows setting SemVer pre-releases, e.g. `rc` or `alpha`. Do not add `-` at the 
 #### Build Metadata
 
 You can specify custom build metadata that will be appended to the version. Do not add the `+` at the beginning. @priestine/versions does not apply any modifications to build metadata so it is your responsibility to ensure their uniqueness.
+
+#### Custom URL
+
+You can specify custom URL of the API where the release should be published. This is useful for on-premise.
 
 #### Merges
 
@@ -275,6 +281,7 @@ Here is a JSON example with the default settings for @priestine/versions. You ca
   "merges": "exclude",
   "buildMetadata": "",
   "preRelease": "",
+  "customUrl": "",
   "bumpPatch": false,
   "bumpMinor": false,
   "bumpMajor": false,

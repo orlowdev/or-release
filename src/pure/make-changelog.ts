@@ -52,6 +52,11 @@ const prettifyCommit = (convention: IConvention) => (commit: IRawCommit): string
 		.replace('%commit.author.name%', commit.author.name)
 		.concat(
 			commit.body
-				? '\n\n'.concat(convention.itemBodyFormat.replace('%commit.body%', commit.body))
+				? '\n\n'.concat(
+						convention.itemBodyFormat.replace(
+							'%commit.body%',
+							commit.body.split(', ').filter(Boolean).join(', '),
+						),
+				  )
 				: '',
 		)
