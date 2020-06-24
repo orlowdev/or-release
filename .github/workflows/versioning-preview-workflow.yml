@@ -1,0 +1,20 @@
+name: Priestine Versioning
+on:
+ push:
+  branches-ignore:
+   - master
+jobs:
+ versioning:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v2
+     with:
+      fetch-depth: 0
+   - name: Setup Node
+     uses: actions/setup-node@v1
+     with:
+      node-version: '12.x'
+   - name: Publish new version if applicable
+     run: npx @priestine/versions@latest --pre-release=preview --repository=$GITHUB_REPOSITORY
+     env:
+      PRIESTINE_VERSIONS_TOKEN: ${{ secrets.PRIESTINE_VERSIONS_TOKEN }}
