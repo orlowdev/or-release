@@ -42,7 +42,6 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 	.concat(getGitDataPipe({ logFatalError, logInfo, logWarning, execEither }))
 	.concat(makeNewVersionPipe({ logInfo, logSuccess, logExitingWarning }))
 	.pipeExtend(makeChangelog)
-	.pipeTap(console.log)
 	.pipeTap(exitIfDryRun({ logExitingWarning }))
 	.pipe(publishTag({ logFatalError, logSuccess, httpTransport }))
 	.process({
