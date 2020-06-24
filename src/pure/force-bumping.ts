@@ -29,6 +29,8 @@ export const forceBumping = ({ key, logInfo, conventions }: IForceBumpingDeps) =
 		),
 })
 
+// ------------------------------------------------------------------------------------------------
+
 const commitsOrNull = (convention: string[]) => (commits: IRawCommit[]) => {
 	const thisType = commits.filter((commit) => convention.includes(commit.type))
 	return thisType.length > 0

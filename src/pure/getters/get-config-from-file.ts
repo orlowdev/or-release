@@ -25,6 +25,8 @@ export const getConfigFromFile = ({ readFileEither }: IGetConfigFromFileDeps) =>
 		)
 		.fold(() => ({}), mergeObjects(ctx))
 
+// ------------------------------------------------------------------------------------------------
+
 const getAbsolutePath = (path: string) => resolve(process.cwd(), path)
 
 const mergeObjects = <T extends Record<string, any>, K extends Partial<T> = T>(previous: T) => (

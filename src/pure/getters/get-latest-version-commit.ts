@@ -3,11 +3,6 @@ import type { Unary } from '../../types/common-types'
 import type { IEither } from '../../utils/either'
 import type { LogFatalError } from '../../utils/logger'
 
-const getCommitCommand = (latestVersion: string) =>
-	latestVersion === '0.0.0'
-		? 'git rev-list --max-parents=0 HEAD'
-		: `git show-ref ${latestVersion} -s`
-
 interface IGetLatestVersionCommitDeps {
 	execEither: Unary<string, IEither<string, Error>>
 	logFatalError: LogFatalError
@@ -24,3 +19,10 @@ export const getLatestVersionCommit = ({
 		(latestVersionCommit) => latestVersionCommit,
 	),
 })
+
+// ------------------------------------------------------------------------------------------------
+
+const getCommitCommand = (latestVersion: string) =>
+	latestVersion === '0.0.0'
+		? 'git rev-list --max-parents=0 HEAD'
+		: `git show-ref ${latestVersion} -s`

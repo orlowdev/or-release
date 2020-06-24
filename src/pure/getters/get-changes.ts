@@ -33,6 +33,8 @@ export const getChanges = ({ execEither, logFatalError }: IGetChangesDeps) => ({
 		),
 })
 
+// ------------------------------------------------------------------------------------------------
+
 /**
  * Git commit format template.
  */

@@ -25,6 +25,8 @@ export const makeChangelog = ({ conventions }: IMakeChangelogDeps) => ({
 	`,
 })
 
+// ------------------------------------------------------------------------------------------------
+
 const changelogTag = (
 	_: TemplateStringsArray,
 	version: string,
