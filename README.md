@@ -17,7 +17,7 @@ A tool for automating [Semantic Versioning](https://semver.org) on your project.
 - ✅ Compatible with GitHub releases. _GitLab releases and direct git tagging (hello, BitBucket) on the way!_
 - ⚙️ Bump versions for the code written in any programming language with no configuration - only git matters
 - 📝 Automatically generated list of changes that is put into the release body. _An option to also write to a file will also be available!_
-- 🤔 Works with [gitmoji](https://gitmoji.carloscuesta.me) commits convention. _[conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) and [turbo-git](https://github.com/labs-js/turbo-git) comming soon, as well as custom conventions you can set up for your project_
+- 🤔 Works with [gitmoji](https://gitmoji.carloscuesta.me) commits convention, but you can configure it to your heart's content (see [Conventions](#conventions)).
 
 ## Getting Started
 
