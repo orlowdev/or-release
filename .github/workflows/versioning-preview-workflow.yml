@@ -1,4 +1,4 @@
-name: Priestine Versioning
+name: Priestine Versioning (Preview)
 on:
  push:
   branches-ignore:
