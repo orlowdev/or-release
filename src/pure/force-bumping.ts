@@ -28,6 +28,6 @@ export const forceBumping = ({ key, logInfo }: IDeps) => (ctx: Ctx) => ({
 		)
 		.fold(
 			() => ctx[key],
-			() => true,
+			(commits) => commits.length > 0,
 		),
 })
