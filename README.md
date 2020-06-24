@@ -1,4 +1,4 @@
-# ||l @priestine/versions
+# ||l
 
 ![lint](https://github.com/priestine/versions/workflows/lint/badge.svg)
 ![ava](https://github.com/priestine/versions/workflows/AVA/badge.svg)
@@ -18,14 +18,6 @@ A tool for automating [Semantic Versioning](https://semver.org) on your project.
 - ⚙️ Bump versions for the code written in any programming language with no configuration - only git matters
 - 📝 Automatically generated list of changes that is put into the release body. _An option to also write to a file will also be available!_
 - 🤔 Works with [gitmoji](https://gitmoji.carloscuesta.me) commits convention. _[conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) and [turbo-git](https://github.com/labs-js/turbo-git) comming soon, as well as custom conventions you can set up for your project_
-
-## 📝 Docs
-
-- [Publishing released version to NPM](./docs/js-ts/npm.en.md)
-
-## Why
-
-I'll tell you why a little bit later, when I have some free time.
 
 ## Getting Started
 
@@ -68,6 +60,16 @@ jobs:
    - name: Publish new version if applicable
      run: npx @priestine/versions --token=${{ secrets.PRIESTINE_VERSIONS_TOKEN }} --repository=$GITHUB_REPOSITORY
 ```
+
+## 📝 Docs
+
+### Common
+
+- [Setting up nightly releases](./docs/nightly-release.en.md)
+
+### JavaScript
+
+- [Publishing released version to NPM](./docs/js-ts/npm.en.md)
 
 ## Configuration
 
@@ -155,65 +157,119 @@ Applying this option is irreversible. This option is only applicable if you don'
 
 Execute the command but skip publishing the release. May be useful for debugging or just to check what version your application is going to have next.
 
-### Config Files
+#### Conventions
 
-#### JSON Config File
+Conventions can only be set up in [config files](#config-files). The conventions outline the process of finding commit types, binding those types to SemVer versions (major, minor or patch) and specify how the changes should be displayed in the change log. It is an array of objects of the following type:
 
-You can provide a `.json` file with a path relative to the current working directory and it will be parsed as a JSON file.
+```typescript
+/**
+ * Convention for defining how to get commit type, what version this
+ * type should bump, and how to display the change in the change log.
+ */
+export interface IConvention {
+	/**
+	 * An array of strings containing RegExp that is used to check commit
+	 * descriptions.
+	 */
+	match: string[]
 
-```json
-{
-	"token": "",
-	"repository": "",
-	"latestVersion": "",
-	"prefix": "",
-	"merges": "exclude",
-	"buildMetadata": "",
-	"preRelease": "",
-	"bumpPatch": false,
-	"bumpMinor": false,
-	"bumpMajor": false,
-	"public": false,
-	"dryRun": false
+	/**
+	 * Title for the group of commits of this type in the changelog.
+	 */
+	groupTitleFormat: string
+
+	/**
+	 * Optional description for the group.
+	 */
+	groupDescription: string
+
+	/**
+	 * A template describing how the commits of this type should be
+	 * displayed in the changelog. Here you can use the following
+	 * placeholders that will be replaced with the actual contents of the
+	 * commit:
+	 *
+	 * - %commit.type%
+	 * - %commit.description%
+	 * - %commit.author.name%
+	 * - %commit.author.email%
+	 * - %commit.abbrevHash%
+	 * - %commit.hash%
+	 */
+	itemDescriptionFormat: string
+
+	/**
+	 * A template describing how the body of commits of this type should
+	 * be displayed in the changelog (if it exists). Here you can use the
+	 * %commit.body% placeholder that will be replaced with the actual
+	 * contents of the commit body.
+	 */
+	itemBodyFormat: string
+
+	/**
+	 * Semantic Version part that must be bumped if a commit of this type
+	 * is found since previous version.
+	 */
+	bumps: 'patch' | 'minor' | 'major' | null
 }
 ```
 
-#### YAML Config File
+**NOTE** that `@priestine/semantics` only adds line breaks (`\n`) between commits within a group.
 
-You can provide a `.yml` or `.yaml` file with a path relative to the current working directory and it will be parsed as a YAML file.
+You can see the default configuration for `@priestine/versions` below in the examples for config files.
 
-```yaml
-token: ''
-repository: ''
-latestVersion: ''
-prefix: ''
-merges: 'exclude'
-buildMetadata: ''
-preRelease: ''
-bumpPatch: false
-bumpMinor: false
-bumpMajor: false
-public: false
-dryRun: false
-```
+### Config Files
 
-#### TOML Config File
+The files must have appropriate extensions:
 
-You can provide a `.toml` file with a path relative to the current working directory and it will be parsed as a TOML file.
+- `.json` for JSON
+- `.yml` or `.yaml` for YAML
+- `.toml` for TOML
 
-```toml
-token = ""
-repository = ""
-latestVersion = ""
-prefix = ""
-merges = "exclude"
-buildMetadata = ""
-preRelease = ""
-bumpPatch = false
-bumpMinor = false
-bumpMajor = false
-public = false
-dryRun = false
+Config files allow deeper configuration than env variables and CLI options. Specifically, config files allow provision of conventions.
+
+Here is a JSON example with the default settings for @priestine/versions. You can do the same with YAML and TOML as well.
+
+```json
+{
+  "token": "",
+  "repository": "",
+  "latestVersion": "",
+  "prefix": "",
+  "merges": "exclude",
+  "buildMetadata": "",
+  "preRelease": "",
+  "bumpPatch": false,
+  "bumpMinor": false,
+  "bumpMajor": false,
+  "public": false,
+  "dryRun": false,
+  "conventions": [
+    {
+      "match": ["^:ambulance:", "^:bug:", "^:lock:"],
+      "bumps": "patch",
+      "groupTitleFormat": "\n\n## :bug: ∘ :ambulance: ∘ :lock: Fixes\n\n",
+      "groupDescription": "",
+      "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
+      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+    },
+    {
+      "match": ["^:sparkles:"],
+      "bumps": "minor",
+      "groupTitleFormat": "\n\n## :sparkles: Features\n\n",
+      "groupDescription": "",
+      "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
+      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+    },
+    {
+      "match": ["^:boom:"],
+      "bumps": "major",
+      "groupTitleFormat": "\n\n## :boom: Breaking Changes\n\n",
+      "groupDescription": "",
+      "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
+      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+    }
+]
 ```
 
 ## How it works
