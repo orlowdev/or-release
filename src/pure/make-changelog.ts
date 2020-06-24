@@ -11,9 +11,7 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 		## :boom: Breaking changes
 		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'patch'))
 			.map((convention) =>
-				commitList
-					.filter((commit) => (convention as any).match.includes(commit.type))
-					.map(prettifyCommit),
+				commitList.filter((commit) => convention.match.includes(commit.type)).map(prettifyCommit),
 			)
 			.fold(
 				() => [],
@@ -23,9 +21,7 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 		## :sparkles: Features
 		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'minor'))
 			.map((convention) =>
-				commitList
-					.filter((commit) => (convention as any).match.includes(commit.type))
-					.map(prettifyCommit),
+				commitList.filter((commit) => convention.match.includes(commit.type)).map(prettifyCommit),
 			)
 			.fold(
 				() => [],
@@ -35,9 +31,7 @@ export const makeChangelog = ({ newVersion, commitList, conventions }: Ctx) => (
 		## :bug: - :ambulance: - :lock: Fixes
 		${Either.fromNullable(conventions.find((convention) => convention.bumps === 'major'))
 			.map((convention) =>
-				commitList
-					.filter((commit) => (convention as any).match.includes(commit.type))
-					.map(prettifyCommit),
+				commitList.filter((commit) => convention.match.includes(commit.type)).map(prettifyCommit),
 			)
 			.fold(
 				() => [],
