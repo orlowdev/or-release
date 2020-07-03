@@ -3,17 +3,18 @@ import type { BumpKey } from '../types/common-types'
 import { Either } from '../utils/either'
 import { extractVersionTuple } from '../utils/helpers'
 
-type Ctx = Pick<IAppCtx, 'latestVersion' | 'public' | BumpKey>
+type Ctx = Pick<IAppCtx, 'latestVersion' | 'public' | 'prefixReset' | BumpKey>
 
 export const makeNewVersion = ({
 	latestVersion,
 	public: isPublic,
+	prefixReset,
 	bumpPatch,
 	bumpMinor,
 	bumpMajor,
 }: Ctx) => ({
 	newVersion: Either.fromNullable(extractVersionTuple(latestVersion))
-		.map((tuple) => tuple.slice(1, 4))
+		.map((tuple) => tuple.slice(2, 5))
 		.map((tuple) => tuple.map(Number))
 		.map(([major, minor, patch]) => [major, minor, bumpPatch ? patch + 1 : patch])
 		.map(([major, minor, patch]) => (bumpMinor ? [major, minor + 1, 0] : [major, minor, patch]))
@@ -24,6 +25,7 @@ export const makeNewVersion = ({
 				? [major, bumpMajor ? minor : minor + 1, 0]
 				: [major, minor, patch],
 		)
+		.map((result) => (prefixReset ? [1, 0, 0] : result))
 		.map((tuple) => tuple.join('.'))
 		.fold(
 			() => `${isPublic ? '1.0' : '0.1'}.0`,

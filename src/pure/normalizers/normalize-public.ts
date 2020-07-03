@@ -8,7 +8,7 @@ export const validatePublic = ({ latestVersion, public: isPublic, prefixReset }:
 	public:
 		isPublic ||
 		Either.fromNullable(extractVersionTuple(latestVersion))
-			.map(([_, major]) => major)
+			.map(([_, __, major]) => major)
 			.map(Number)
 			.fold(
 				() => prefixReset,
