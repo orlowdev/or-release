@@ -22,7 +22,7 @@ const argv = process.argv.slice(2)
 
 if (argv.includes('--version')) {
 	const { version } = require(resolve(__dirname, 'package.json'))
-	console.log(version)
+	logInfo(version)
 	process.exit(0)
 }
 
