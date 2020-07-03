@@ -41,6 +41,7 @@ Check out the [roadmap for the project](https://github.com/priestine/versions/pr
       - [Bump Minor](#bump-minor)
       - [Bump Major](#bump-major)
       - [Public](#public)
+      - [Prefix Reset](#prefix-reset)
       - [Dry Run](#dry-run)
       - [Show Changelog](#show-changelog)
       - [Conventions](#conventions)
@@ -134,6 +135,7 @@ All options that accept `true` or `false` as a value are **false** by default.
 | [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>           | `false`   |
 | [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>           | `false`   |
 | [Public](#public)                 | **--public**[=\<true \| false>]              | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>               | `false`   |
+| [Prefix Reset](#prefix-reset)     | **--prefix-reset**[=\<true \| false>]        | **PRIESTINE_VERSIONS_PREFIX_RESET**=\<true \| false>         | `false`   |
 | [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]             | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>              | `false`   |
 | [Show Changelog](#show-changelog) | **--show-changelog**[=\<true \| false>]      | **PRIESTINE_VERSIONS_SHOW_CHANGELOG**=[=\<true \| false>]    | `false`   |
 
@@ -196,6 +198,10 @@ If, for some reason, you want to force bumping the major version, even if it is 
 According to the Semantic Versioning specification, releases that have a MAJOR version of **0** are not considered stable. Breaking changes for these releases bump MINOR version instead of the MAJOR one. These rules also apply if you use @priestine/versions - by default, your versions will have MAJOR version of **0**. The changelog is created with MAJOR changes separate from MINOR ones, though. You can provide this option to exit the experimental stage. The closest release will be `1.0.0`, thus declaring public API.
 
 Applying this option is irreversible. This option is only applicable if you don't have releases with MAJOR version higher than **0**. Otherwise, your project is considered to have public API declared already and you cannot publish `0.x.x` versions anymore.
+
+#### Prefix Reset
+
+Setting this option to true will reset major version to **1** if the prefix changes. This option does not affect the versioning process if prefix is not provided. This option requires declaring public API. If major version was `0`, this option will force it to be set to `1`.
 
 #### Dry Run
 

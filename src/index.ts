@@ -52,8 +52,10 @@ ${({ g }) => g('--bump-patch')}[=<true|false>]		Force bumping patch version
 ${({ g }) => g('--bump-minor')}[=<true|false>]		Force bumping minor version
 ${({ g }) => g('--bump-major')}[=<true|false>]		Force bumping major version
 ${({ g }) => g('--public')}[=<true|false>]			Declare public API (allow bumping major versions)
+${({ g }) => g('--prefix-reset')}[=<true|false>]		Reset major version on prefix change
 ${({ g }) => g('--dry-run')}[=<true|false>]		Skip publishing new release
 ${({ g }) => g('--debug')}[=<true|false>]			Run the app in debug mode
+
 
 --version				Display current @priestine/versions version
 --help					Show usage help message (this one)
@@ -105,6 +107,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		preRelease: '',
 		transport: 'github',
 		customUrl: '',
+		prefixReset: false,
 		conventions: [
 			{
 				match: ['^:ambulance:', '^:bug:', '^:lock:'],
