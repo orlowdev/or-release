@@ -204,4 +204,11 @@ export interface IAppConfig {
 	 * @default ""
 	 */
 	repository: string
+
+	/**
+	 * Enable showing the produced changelog in the console.
+	 *
+	 * @default false
+	 */
+	showChangelog: boolean
 }

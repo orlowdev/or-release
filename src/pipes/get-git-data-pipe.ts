@@ -31,6 +31,7 @@ export const getGitDataPipe = ({ logFatalError, logInfo, logWarning, execEither 
 		.pipeTap(logCurrentCommit({ logInfo }))
 		.pipeTap(logPrefix({ logInfo }))
 		.pipeExtend(getAllTags({ execEither }))
+		.pipeTap(({ allTags }) => console.log(allTags))
 		.pipeExtend(getLatestVersion({ logWarning }))
 		.pipeTap(logLatestVersion({ logInfo }))
 		.pipeExtend(validatePublic)
