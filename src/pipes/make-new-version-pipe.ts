@@ -8,6 +8,7 @@ import { makeNewVersion } from '../pure/make-new-version'
 import { ExtendPipe } from '../utils/pipe'
 import { addBuildMetadata } from '../pure/add-build-metadata'
 import { addPrefix } from '../pure/add-prefix'
+import { removeTrailingZeroes } from '../pure/remove-trailing-zeroes'
 
 interface IDeps {
 	logSuccess: LogFunction
@@ -22,6 +23,8 @@ export const makeNewVersionPipe = ({ logSuccess, logInfo, logExitingWarning }: I
 		.pipeExtend(forceBumping({ key: 'bumpMajor', logInfo }))
 		.pipeTap(exitIfNoBumping({ logExitingWarning }))
 		.pipeExtend(makeNewVersion)
+		.pipeExtend(removeTrailingZeroes)
+		.pipeExtend(removeTrailingZeroes)
 		.pipeExtend(addPreRelease)
 		.pipeExtend(addBuildMetadata)
 		.pipeExtend(addPrefix)
