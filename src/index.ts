@@ -115,7 +115,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 				groupTitleFormat: '\n\n## :bug: ∘ :ambulance: ∘ :lock: Fixes\n',
 				groupDescription: '',
 				itemDescriptionFormat: '- %commit.description% (%commit.abbrevHash%)',
-				itemBodyFormat: '> %commit.body%',
+				itemBodyFormat: '> %commit.body%\n',
 			},
 			{
 				match: ['^:sparkles:'],
@@ -123,7 +123,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 				groupTitleFormat: '\n\n## :sparkles: Features\n',
 				groupDescription: '',
 				itemDescriptionFormat: '- %commit.description% (%commit.abbrevHash%)',
-				itemBodyFormat: '> %commit.body%',
+				itemBodyFormat: '> %commit.body%\n',
 			},
 			{
 				match: ['^:boom:'],
@@ -131,7 +131,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 				groupTitleFormat: '\n\n## :boom: Breaking Changes\n',
 				groupDescription: '',
 				itemDescriptionFormat: '- %commit.description% (%commit.abbrevHash%)',
-				itemBodyFormat: '> %commit.body%',
+				itemBodyFormat: '> %commit.body%\n',
 			},
 		],
 	})

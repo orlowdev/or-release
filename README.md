@@ -304,26 +304,26 @@ Here is a JSON example with the default settings for @priestine/versions. You ca
     {
       "match": ["^:ambulance:", "^:bug:", "^:lock:"],
       "bumps": "patch",
-      "groupTitleFormat": "\n\n## :bug: ∘ :ambulance: ∘ :lock: Fixes\n\n",
+      "groupTitleFormat": "\n\n## :bug: ∘ :ambulance: ∘ :lock: Fixes\n",
       "groupDescription": "",
       "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
-      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+      "itemBodyFormat": "> %commit.body%\n",
     },
     {
       "match": ["^:sparkles:"],
       "bumps": "minor",
-      "groupTitleFormat": "\n\n## :sparkles: Features\n\n",
+      "groupTitleFormat": "\n\n## :sparkles: Features\n",
       "groupDescription": "",
       "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
-      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+      "itemBodyFormat": "> %commit.body%\n",
     },
     {
       "match": ["^:boom:"],
       "bumps": "major",
-      "groupTitleFormat": "\n\n## :boom: Breaking Changes\n\n",
+      "groupTitleFormat": "\n\n## :boom: Breaking Changes\n",
       "groupDescription": "",
       "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
-      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+      "itemBodyFormat": "> %commit.body%\n",
     }
 ]
 ```
