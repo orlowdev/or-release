@@ -212,4 +212,12 @@ export interface IAppConfig {
 	 * @default false
 	 */
 	prefixReset: boolean
+
+	/**
+	 * Remove trailing zeroes when creating new versions. E.g. `1.1.0` -> `1.1` or `14.0.0` -> `14`.
+	 * This is not compliant with Semantic Versioning!
+	 *
+	 * @default false
+	 */
+	noTrailingZeroes: boolean
 }

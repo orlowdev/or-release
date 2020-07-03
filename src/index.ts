@@ -108,6 +108,7 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 		transport: 'github',
 		customUrl: '',
 		prefixReset: false,
+		noTrailingZeroes: false,
 		conventions: [
 			{
 				match: ['^:ambulance:', '^:bug:', '^:lock:'],

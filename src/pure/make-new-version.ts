@@ -15,8 +15,9 @@ export const makeNewVersion = ({
 	bumpMajor,
 }: Ctx) => ({
 	newVersion: Either.fromNullable(extractVersionTuple(latestVersion))
-		.map((tuple) => tuple.slice(2, 5))
+		.map((tuple) => tuple.slice(1, 4))
 		.map((tuple) => tuple.map(Number))
+		.map((tuple) => tuple.map((x) => (Number.isNaN(x) ? 0 : x)))
 		.map(([major, minor, patch]) => [major, minor, bumpPatch ? patch + 1 : patch])
 		.map(([major, minor, patch]) => (bumpMinor ? [major, minor + 1, 0] : [major, minor, patch]))
 		.map(([major, minor, patch]) =>

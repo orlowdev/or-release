@@ -6,12 +6,22 @@ interface IDeps {
 	logWarning: LogFunction
 }
 
-type Ctx = Pick<IAppCtx, 'latestVersion' | 'allTags'>
+type Ctx = Pick<IAppCtx, 'latestVersion' | 'allTags' | 'noTrailingZeroes'>
 
-export const getLatestVersion = ({ logWarning }: IDeps) => ({ latestVersion, allTags }: Ctx) => ({
+export const getLatestVersion = ({ logWarning }: IDeps) => ({
+	latestVersion,
+	allTags,
+	noTrailingZeroes,
+}: Ctx) => ({
 	latestVersion:
 		latestVersion ||
-		Either.fromNullable(allTags.find((tag) => /^(\w+)?\.?\d+\.\d+\.\d+$/.test(tag)))
+		Either.fromNullable(
+			allTags.find((tag) =>
+				noTrailingZeroes
+					? /^(\w+)?\d+\.?(\d+)?\.?(\d+)?$/.test(tag)
+					: /^(\w+)?\d+\.\d+\.\d+$/.test(tag),
+			),
+		)
 			.leftMap(
 				() => logWarning`Could not find previous semantic versions. Using ${({ y }) => y('0.0.0')}.`,
 			)
