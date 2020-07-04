@@ -50,13 +50,20 @@ const prettifyCommit = (convention: IConvention) => (commit: IRawCommit): string
 		.replace('%commit.hash%', commit.hash)
 		.replace('%commit.author.email%', commit.author.email)
 		.replace('%commit.author.name%', commit.author.name)
-		.concat(
-			commit.body
-				? '\n\n'.concat(
-						convention.itemBodyFormat.replace(
-							'%commit.body%',
-							commit.body.split(', ').filter(Boolean).join(', '),
-						),
-				  )
-				: '',
-		)
+		.concat(prettifyCommitBody(commit.body, convention.itemBodyFormat))
+
+const prettifyCommitBody = (commitBody: string, bodyFormat: string) => {
+	const cleanCommitBody = commitBody
+		.split(', ')
+		.filter(filterOutIssueReferences)
+		.filter(Boolean)
+		.join(', ')
+
+	return cleanCommitBody ? '\n\n'.concat(bodyFormat.replace('%commit.body%', cleanCommitBody)) : ''
+}
+
+const filterOutIssueReferences = (bodyLine: string) =>
+	!/clos(e|ed|es|ing)\s.*(#|http)/i.test(bodyLine) &&
+	!/resolv(e|ed|es|ing)\s.*(#|http)/i.test(bodyLine) &&
+	!/fix(e|ed|es|ing)\s.*(#|http)/i.test(bodyLine) &&
+	!/implement(ed|es|ing)\s.*(#|http)/i.test(bodyLine)

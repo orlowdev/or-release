@@ -154,13 +154,7 @@ export interface IAppConfig {
 
 	/**
 	 * Build metadata to be associated with the release, e.g. +1fabaf1,
-	 * 01012020, etc. The + sign at the beginning is optional. If it is
-	 * not there, @priestine/versioning will add it automatically.
-	 * @priestine/versioning also automatically adds .# at the end of the
-	 * build metadata so provided build metadata "01012020" becomes
-	 * "+01012020.1". If subsequent releases get the same version and the
-	 * same build metadata, the number increments ("+01012020.1" ->
-	 * "+01012020.2").
+	 * +01012020, etc.
 	 *
 	 * @see https://semver.org/#spec-item-10
 	 *
@@ -211,4 +205,19 @@ export interface IAppConfig {
 	 * @default false
 	 */
 	showChangelog: boolean
+
+	/**
+	 * Force resetting major version to 1 on prefix change.
+	 *
+	 * @default false
+	 */
+	prefixReset: boolean
+
+	/**
+	 * Remove trailing zeroes when creating new versions. E.g. `1.1.0` -> `1.1` or `14.0.0` -> `14`.
+	 * This is not compliant with Semantic Versioning!
+	 *
+	 * @default false
+	 */
+	noTrailingZeroes: boolean
 }

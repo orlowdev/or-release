@@ -41,6 +41,8 @@ Check out the [roadmap for the project](https://github.com/priestine/versions/pr
       - [Bump Minor](#bump-minor)
       - [Bump Major](#bump-major)
       - [Public](#public)
+      - [Prefix Reset](#prefix-reset)
+      - [No Trailing Zeroes](#no-trailing-zeroes)
       - [Dry Run](#dry-run)
       - [Show Changelog](#show-changelog)
       - [Conventions](#conventions)
@@ -119,23 +121,25 @@ All options that accept `true` or `false` as a value are **false** by default.
 
 ### Overview
 
-| Option                            | CLI Usage Example                            | Environment Usage Example                                    | Default   |
-| --------------------------------- | -------------------------------------------- | ------------------------------------------------------------ | --------- |
-| [Config File](#config-file)       | **--config-file=PATH**                       | **PRIESTINE_VERSIONS_CONFIG_FILE**=PATH                      | `""`      |
-| [Token](#token)                   | **--token=\$SOME_TOKEN**                     | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN                    | `""`      |
-| [Repository](#repository)         | **--repository=octocat/github**              | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github             | `""`      |
-| [Latest Version](#latest-version) | **--latest-version=0.0.0**                   | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                  | `""`      |
-| [Prefix](#prefix)                 | **--prefix=v**                               | **PRIESTINE_VERSIONS_PREFIX**=v                              | `""`      |
-| [Pre-Release](#pre-release)       | **--pre-release=\$(git rev-parse HEAD)**     | **PRIESTINE_VERSIONS_PRE_RELEAS**=\$(git rev-parse HEAD)     | `""`      |
-| [Build Metadata](#build-metadata) | **--build-metadata=\$(date)**                | **PRIESTINE_VERSIONS_BUILD_METADATA**=\$(date)               | `""`      |
-| [Custom URL](#custom-url)         | **--custom-url=https://api.mygh.com/repos/** | **PRIESTINE_VERSIONS_CUSTOM_URL**=https://api.mygh.com/repos | `""`      |
-| [Merges](#merges)                 | **--merges=\<include \| exclude \| only>**   | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only>  | `exclude` |
-| [Bump Patch](#bump-patch)         | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>           | `false`   |
-| [Bump Minor](#bump-minor)         | **--bump-minor**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>           | `false`   |
-| [Bump Major](#bump-major)         | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>           | `false`   |
-| [Public](#public)                 | **--public**[=\<true \| false>]              | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>               | `false`   |
-| [Dry Run](#dry-run)               | **--dry-run**[=\<true \| false>]             | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>              | `false`   |
-| [Show Changelog](#show-changelog) | **--show-changelog**[=\<true \| false>]      | **PRIESTINE_VERSIONS_SHOW_CHANGELOG**=[=\<true \| false>]    | `false`   |
+| Option                                    | CLI Usage Example                            | Environment Usage Example                                    | Default   |
+| ----------------------------------------- | -------------------------------------------- | ------------------------------------------------------------ | --------- |
+| [Config File](#config-file)               | **--config-file=PATH**                       | **PRIESTINE_VERSIONS_CONFIG_FILE**=PATH                      | `""`      |
+| [Token](#token)                           | **--token=\$SOME_TOKEN**                     | **PRIESTINE_VERSIONS_TOKEN**=\$SOME_TOKEN                    | `""`      |
+| [Repository](#repository)                 | **--repository=octocat/github**              | **PRIESTINE_VERSIONS_REPOSITORY**=octocat/github             | `""`      |
+| [Latest Version](#latest-version)         | **--latest-version=0.0.0**                   | **PRIESTINE_VERSIONS_LATEST_VERSION**=0.0.0                  | `""`      |
+| [Prefix](#prefix)                         | **--prefix=v**                               | **PRIESTINE_VERSIONS_PREFIX**=v                              | `""`      |
+| [Pre-Release](#pre-release)               | **--pre-release=\$(git rev-parse HEAD)**     | **PRIESTINE_VERSIONS_PRE_RELEAS**=\$(git rev-parse HEAD)     | `""`      |
+| [Build Metadata](#build-metadata)         | **--build-metadata=\$(date)**                | **PRIESTINE_VERSIONS_BUILD_METADATA**=\$(date)               | `""`      |
+| [Custom URL](#custom-url)                 | **--custom-url=https://api.mygh.com/repos/** | **PRIESTINE_VERSIONS_CUSTOM_URL**=https://api.mygh.com/repos | `""`      |
+| [Merges](#merges)                         | **--merges=\<include \| exclude \| only>**   | **PRIESTINE_VERSIONS_MERGES**=\<include \| exclude \| only>  | `exclude` |
+| [Bump Patch](#bump-patch)                 | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_PATCH**=\<true \| false>           | `false`   |
+| [Bump Minor](#bump-minor)                 | **--bump-minor**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MINOR**=\<true \| false>           | `false`   |
+| [Bump Major](#bump-major)                 | **--bump-patch**[=\<true \| false>]          | **PRIESTINE_VERSIONS_BUMP_MAJOR**=\<true \| false>           | `false`   |
+| [Public](#public)                         | **--public**[=\<true \| false>]              | **PRIESTINE_VERSIONS_PUBLIC**=\<true \| false>               | `false`   |
+| [Prefix Reset](#prefix-reset)             | **--prefix-reset**[=\<true \| false>]        | **PRIESTINE_VERSIONS_PREFIX_RESET**=\<true \| false>         | `false`   |
+| [No Trailing Zeroes](#no-trailing-zeroes) | **--no-trailing-zeroes**[=\<true \| false>]  | **PRIESTINE_VERSIONS_NO_TRAILING_ZEROES**=\<true \| false>   | `false`   |
+| [Dry Run](#dry-run)                       | **--dry-run**[=\<true \| false>]             | **PRIESTINE_VERSIONS_DRY_RUN**=\<true \| false>              | `false`   |
+| [Show Changelog](#show-changelog)         | **--show-changelog**[=\<true \| false>]      | **PRIESTINE_VERSIONS_SHOW_CHANGELOG**=[=\<true \| false>]    | `false`   |
 
 > With CLI options that accept **boolean** values, providing those values is **_optional_**. `--bump-patch` and `--bump-patch=true` are completely the same.
 >
@@ -196,6 +200,14 @@ If, for some reason, you want to force bumping the major version, even if it is 
 According to the Semantic Versioning specification, releases that have a MAJOR version of **0** are not considered stable. Breaking changes for these releases bump MINOR version instead of the MAJOR one. These rules also apply if you use @priestine/versions - by default, your versions will have MAJOR version of **0**. The changelog is created with MAJOR changes separate from MINOR ones, though. You can provide this option to exit the experimental stage. The closest release will be `1.0.0`, thus declaring public API.
 
 Applying this option is irreversible. This option is only applicable if you don't have releases with MAJOR version higher than **0**. Otherwise, your project is considered to have public API declared already and you cannot publish `0.x.x` versions anymore.
+
+#### Prefix Reset
+
+Setting this option to true will reset major version to **1** if the prefix changes. This option does not affect the versioning process if prefix is not provided. This option requires declaring public API. If major version was `0`, this option will force it to be set to `1`.
+
+#### No Trailing Zeroes
+
+Remove trailing zeroes in the new version, e.g. `14.0.0` -> `14` or `10.15.0` -> `10.15`. **NOTE**: this is not compliant with Semantic Versioning. This option may be useful for creating new versions under the scheme Apple uses for their software. Alternatively, it can be applied to prettify CalVer-like versions.
 
 #### Dry Run
 
@@ -284,40 +296,42 @@ Here is a JSON example with the default settings for @priestine/versions. You ca
   "repository": "",
   "latestVersion": "",
   "prefix": "",
-  "merges": "exclude",
-  "buildMetadata": "",
   "preRelease": "",
+  "buildMetadata": "",
   "customUrl": "",
+  "merges": "exclude",
   "bumpPatch": false,
   "bumpMinor": false,
   "bumpMajor": false,
   "public": false,
+  "prefixReset": false,
+  "noTrailingZeroes": false,
   "dryRun": false,
   "showChangelog": false,
   "conventions": [
     {
       "match": ["^:ambulance:", "^:bug:", "^:lock:"],
       "bumps": "patch",
-      "groupTitleFormat": "\n\n## :bug: ∘ :ambulance: ∘ :lock: Fixes\n\n",
+      "groupTitleFormat": "\n\n## :bug: ∘ :ambulance: ∘ :lock: Fixes\n",
       "groupDescription": "",
       "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
-      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+      "itemBodyFormat": "> %commit.body%\n",
     },
     {
       "match": ["^:sparkles:"],
       "bumps": "minor",
-      "groupTitleFormat": "\n\n## :sparkles: Features\n\n",
+      "groupTitleFormat": "\n\n## :sparkles: Features\n",
       "groupDescription": "",
       "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
-      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+      "itemBodyFormat": "> %commit.body%\n",
     },
     {
       "match": ["^:boom:"],
       "bumps": "major",
-      "groupTitleFormat": "\n\n## :boom: Breaking Changes\n\n",
+      "groupTitleFormat": "\n\n## :boom: Breaking Changes\n",
       "groupDescription": "",
       "itemDescriptionFormat": "- %commit.description% (%commit.abbrevHash%)",
-      "itemBodyFormat": "\n\n> %commit.body%\n\n",
+      "itemBodyFormat": "> %commit.body%\n",
     }
 ]
 ```

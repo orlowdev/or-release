@@ -18,8 +18,8 @@ export const forceBumping = ({ key, logInfo }: IDeps) => (ctx: Ctx) => ({
 				ctx.conventions.find((convention) => convention.bumps === key.slice(4).toLowerCase()),
 			).chain((convention) =>
 				Either.fromNullable(
-					convention.match.filter((match) =>
-						commits.some((commit) => new RegExp(match).test(commit.type)),
+					commits.filter((commit) =>
+						convention.match.some((match) => new RegExp(match).test(commit.type)),
 					),
 				).map(
 					tap((commits) => logInfo`${key.slice(4)} level changes: ${({ g }) => g(commits.length)}`),

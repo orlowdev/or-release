@@ -19,19 +19,12 @@ export const getAllTags = ({ execEither }: IDeps) => () => ({
 // ------------------------------------------------------------------------------------------------
 
 const bySemVer = (a: string, b: string): -1 | 0 | 1 => {
-	if (!/\d+.\d+.\d+/.test(a)) {
-		return 1
-	}
-
-	if (!/\d+.\d+.\d+/.test(b)) {
-		return -1
-	}
-
-	const aTuple: [number, number, number, string] = /(\d+)\.(\d+)\.(\d+)(.*)/
+	const aTuple: [number, number, number, string] = /(\d+)\.?(\d+)?\.?(\d+)?(.*)/
 		.exec(a)
 		?.slice(1, 5)
 		.map((n, i) => (i < 3 ? Number(n) : n)) as any
-	const bTuple: [number, number, number, string] = /(\d+)\.(\d+)\.(\d+)(.*)/
+
+	const bTuple: [number, number, number, string] = /(\d+)\.?(\d+)?\.?(\d+)?(.*)/
 		.exec(b)
 		?.slice(1, 5)
 		.map((n, i) => (i < 3 ? Number(n) : n)) as any
