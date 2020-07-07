@@ -8,7 +8,7 @@ export const normalizePublic = ({ latestVersion, public: isPublic, prefixReset }
 	public:
 		isPublic ||
 		Either.fromNullable(extractVersionTuple(latestVersion))
-			.map(([_, __, major]) => major)
+			.map(([_, major]) => major)
 			.map(Number)
 			.fold(
 				() => prefixReset,
