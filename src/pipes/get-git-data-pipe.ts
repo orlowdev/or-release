@@ -14,8 +14,8 @@ import { logLatestVersionCommit } from '../pure/loggers/log-latest-version-commi
 import { logMerges } from '../pure/loggers/log-merges'
 import { logPrefix } from '../pure/loggers/log-prefix'
 import { logPublic } from '../pure/loggers/log-public'
-import { validateMergeStrategy } from '../pure/normalizers/normalize-merges'
-import { validatePublic } from '../pure/normalizers/normalize-public'
+import { validateMergeStrategy } from '../pure/validators/normalize-merges'
+import { validatePublic } from '../pure/validators/normalize-public'
 import { ExtendPipe } from '../utils/pipe'
 
 interface IDeps {
