@@ -14,8 +14,8 @@ import { logLatestVersionCommit } from '../pure/loggers/log-latest-version-commi
 import { logMerges } from '../pure/loggers/log-merges'
 import { logPrefix } from '../pure/loggers/log-prefix'
 import { logPublic } from '../pure/loggers/log-public'
-import { validateMergeStrategy } from '../pure/validators/normalize-merges'
-import { validatePublic } from '../pure/validators/normalize-public'
+import { normalizeMerges } from '../pure/validators/normalize-merges'
+import { normalizePublic } from '../pure/validators/normalize-public'
 import { ExtendPipe } from '../utils/pipe'
 
 interface IDeps {
@@ -33,9 +33,9 @@ export const getGitDataPipe = ({ logFatalError, logInfo, logWarning, execEither 
 		.pipeExtend(getAllTags({ execEither }))
 		.pipeExtend(getLatestVersion({ logWarning }))
 		.pipeTap(logLatestVersion({ logInfo }))
-		.pipeExtend(validatePublic)
+		.pipeExtend(normalizePublic)
 		.pipeTap(logPublic({ logWarning }))
-		.pipeExtend(validateMergeStrategy)
+		.pipeExtend(normalizeMerges)
 		.pipeTap(logMerges({ logInfo }))
 		.pipeExtend(getLatestVersionCommit({ execEither, logFatalError }))
 		.pipeTap(logLatestVersionCommit({ logInfo }))

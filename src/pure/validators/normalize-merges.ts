@@ -3,6 +3,6 @@ import { Switch } from '../../utils/switch'
 
 type Ctx = Pick<IAppCtx, 'merges'>
 
-export const validateMergeStrategy = ({ merges }: Ctx) => ({
+export const normalizeMerges = ({ merges }: Ctx) => ({
 	merges: Switch.of(merges).case('include', 'include').case('only', 'only').default('exclude'),
 })

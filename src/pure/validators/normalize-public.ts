@@ -4,7 +4,7 @@ import { extractVersionTuple } from '../../utils/helpers'
 
 type Ctx = Pick<IAppCtx, 'latestVersion' | 'public' | 'prefixReset'>
 
-export const validatePublic = ({ latestVersion, public: isPublic, prefixReset }: Ctx) => ({
+export const normalizePublic = ({ latestVersion, public: isPublic, prefixReset }: Ctx) => ({
 	public:
 		isPublic ||
 		Either.fromNullable(extractVersionTuple(latestVersion))
