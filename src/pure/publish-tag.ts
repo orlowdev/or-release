@@ -17,17 +17,10 @@ interface IDeps {
 
 type Ctx = Pick<
 	IAppCtx,
-	| 'token'
-	| 'changelog'
-	| 'newVersion'
-	| 'repository'
-	| 'dryRun'
-	| 'customUrl'
-	| 'currentCommit'
-	| 'preRelease'
+	'token' | 'changelog' | 'newVersion' | 'repository' | 'customUrl' | 'currentCommit' | 'preRelease'
 >
 
-export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }: IDeps) => ({
+export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }: IDeps) => async ({
 	token,
 	changelog,
 	newVersion,
@@ -37,7 +30,13 @@ export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }
 	preRelease,
 }: Ctx) =>
 	Either.fromNullable(customUrl || null)
-		.map(tap((url) => logInfo`Custom URL used for publishing the tag: ${({ g }) => g(url)}`))
+		.map(
+			tap(
+				(url) =>
+					/* istanbul ignore next */
+					logInfo`Custom URL used for publishing the tag: ${({ g }) => g(url)}`,
+			),
+		)
 		.fold(() => Either.right('https://api.github.com/repos/'), Either.right)
 		.map((origin) => origin.concat(repository))
 		.map((origin) => origin.concat('/releases'))
@@ -57,6 +56,7 @@ export const publishTag = ({ logSuccess, logInfo, httpTransport, logFatalError }
 					},
 				})
 
+				/* istanbul ignore next */
 				logSuccess`Version ${({ g }) => g(newVersion)} successfully released! 🥂`
 			} catch (error) {
 				logFatalError('Could not publish the release due to the error:')(error)
