@@ -8,7 +8,8 @@ export const addPreRelease = ({ newVersion, preRelease, allTags }: Ctx) => ({
 		? Either.fromNullable(
 				allTags.find((tag) => new RegExp(`${newVersion}-${preRelease}\\.\\d+`).test(tag)),
 		  )
-				.chain((tag) => Either.fromNullable(tag?.split('.').slice(-1)[0]))
+				.chain(Either.fromNullable)
+				.chain((tag) => Either.fromNullable(tag.split('.').slice(-1)[0]))
 				.map(Number)
 				.fold(
 					() => `${newVersion}-${preRelease}.1`,
