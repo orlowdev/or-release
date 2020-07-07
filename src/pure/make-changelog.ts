@@ -24,15 +24,12 @@ const getChangelogOfType = (
 ) =>
 	Either.fromNullable(conventions.find((convention) => convention.bumps === type))
 		.chain((convention) =>
-			Either.fromNullable(
+			Either.right(
 				commitList.filter((commit) =>
 					convention.match.some((match) => new RegExp(match).test(commit.type)),
 				),
 			).map((commits) =>
-				[
-					commits.length > 0 ? convention.groupTitleFormat : '',
-					commits.length > 0 ? convention.groupDescription : '',
-				]
+				[convention.groupTitleFormat, convention.groupDescription]
 					.filter(Boolean)
 					.concat(commits.map(prettifyCommit(convention))),
 			),
@@ -65,5 +62,5 @@ const prettifyCommitBody = (commitBody: string, bodyFormat: string) => {
 const filterOutIssueReferences = (bodyLine: string) =>
 	!/clos(e|ed|es|ing)\s.*(#|http)/i.test(bodyLine) &&
 	!/resolv(e|ed|es|ing)\s.*(#|http)/i.test(bodyLine) &&
-	!/fix(e|ed|es|ing)\s.*(#|http)/i.test(bodyLine) &&
-	!/implement(ed|es|ing)\s.*(#|http)/i.test(bodyLine)
+	!/fix(ed|es|ing)?\s.*(#|http)/i.test(bodyLine) &&
+	!/implement(ed|es|ing)?\s.*(#|http)/i.test(bodyLine)
