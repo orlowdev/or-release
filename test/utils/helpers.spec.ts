@@ -67,3 +67,11 @@ test('extractVersionTuple should ignore pre-releases and build metadata', (t) =>
 	t.is(tuple[2], '0')
 	t.is(tuple[3], '0')
 })
+
+test('extractVersionTuple properly handles versions with matching prefix', (t) => {
+	const tuple: any = extractVersionTuple('v1.0.0')
+	t.is(tuple[0], '1.0.0')
+	t.is(tuple[1], '1')
+	t.is(tuple[2], '0')
+	t.is(tuple[3], '0')
+})
