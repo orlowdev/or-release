@@ -22,4 +22,4 @@ export const tap = <TArg>(f: Unary<TArg, any>) => (x: TArg): TArg => {
 }
 
 export const extractVersionTuple = (versionString: string) =>
-	/(\d+)\.?(\d+)?\.?(\d+)?/.exec(versionString)
+	/(\d+)\.?(\d+)?\.?(\d+)?\.?(\d+)?/.exec(versionString)
