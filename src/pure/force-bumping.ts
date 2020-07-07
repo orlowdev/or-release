@@ -22,7 +22,11 @@ export const forceBumping = ({ key, logInfo }: IDeps) => (ctx: Ctx) => ({
 						convention.match.some((match) => new RegExp(match).test(commit.type)),
 					),
 				).map(
-					tap((commits) => logInfo`${key.slice(4)} level changes: ${({ g }) => g(commits.length)}`),
+					tap(
+						(commits) =>
+							/* istanbul ignore next */
+							logInfo`${key.slice(4)} level changes: ${({ g }) => g(commits.length)}`,
+					),
 				),
 			),
 		)
