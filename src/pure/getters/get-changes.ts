@@ -63,12 +63,12 @@ const setCommitType = (conventions: IConvention[]) => (rawCommit: IRawCommit): I
 		...rawCommit,
 		type: Either.fromNullable(
 			conventions.reduce(
-				(acc, convention) =>
+				(acc: string | null, convention) =>
 					convention.match.find(
 						(match) =>
 							new RegExp(match).test(rawCommit.description) || new RegExp(match).test(rawCommit.body),
 					) ?? acc,
-				'',
+				null,
 			),
 		)
 			.chain((match) =>
