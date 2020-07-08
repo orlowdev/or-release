@@ -23,7 +23,9 @@ export const getLatestVersion = ({ logWarning }: IDeps) => ({
 			),
 		)
 			.leftMap(
-				() => logWarning`Could not find previous semantic versions. Using ${({ y }) => y('0.0.0')}.`,
+				() =>
+					/* istanbul ignore next */
+					logWarning`Could not find previous semantic versions. Using ${({ y }) => y('0.0.0')}.`,
 			)
 			.fold(
 				() => '0.0.0',
