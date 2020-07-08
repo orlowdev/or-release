@@ -1,6 +1,6 @@
 # Размещение Nightly-сборок
 
-[en](./nightly-release.en.md) ∘ [ru](./nightly-release.ru.md)
+[English](./nightly-release.en.md) ∘ [Русский](./nightly-release.ru.md)
 
 Данный документ кратко описывает автоматизацию процесс публикации nightly-релизов. Более детально процесс описан в примерах ниже.
 

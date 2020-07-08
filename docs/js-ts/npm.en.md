@@ -1,6 +1,6 @@
 # Publishing releases to NPM
 
-[en](./npm.en.md) ∘ [ru](./npm.ru.md)
+[English](./npm.en.md) ∘ [Русский](./npm.ru.md)
 
 This document briefly describes the automation of the process of publishing new release to **NPM**. It is also applicable for publishing to other registries, including **GitHub Packages**. For details, see the examples below. The process itself is quite straightforward:
 

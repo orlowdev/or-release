@@ -1,6 +1,6 @@
 # Releasing nightly builds
 
-[en](./nightly-release.en.md) ∘ [ru](./nightly-release.ru.md)
+[English](./nightly-release.en.md) ∘ [Русский](./nightly-release.ru.md)
 
 This document briefly describes the automation of the process of publishing nightly releases. For details, see the examples below.
 
