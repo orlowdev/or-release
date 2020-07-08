@@ -89,6 +89,9 @@ test('getChanges properly extracts commit type from commit description', (t) => 
 				{
 					match: ['^:bug:\\s'],
 				} as any,
+				{
+					match: ['^:ignoredone:\\s'],
+				} as any,
 			],
 		}),
 		{
@@ -125,6 +128,40 @@ test('getChanges properly extracts commit type from commit description', (t) => 
 					description: 'some commit message',
 					body: 'body lies here',
 					type: ':boom:',
+				},
+			],
+		},
+	)
+})
+
+test('getChanges properly extracts commit type from commit body', (t) => {
+	const execEither: any = () =>
+		Either.right(
+			'commit 123123123123123\n{^^^hash^^^: ^^^123123123123123^^^,^^^abbrevHash^^^: ^^^1231231^^^,^^^author^^^: {^^^name^^^: ^^^test^^^,^^^email^^^: ^^^email^^^},^^^description^^^: ^^^some commit message^^^,^^^body^^^: ^^^BREAKING CHANGE: body lies here^^^}',
+		)
+	const spyLog: any = spy()
+	t.deepEqual(
+		getChanges({ execEither, logFatalError: () => spyLog })({
+			latestVersionCommit: '123',
+			merges: 'only',
+			conventions: [
+				{
+					match: ['^BREAKING CHANGE:\\s'],
+				} as any,
+			],
+		}),
+		{
+			commitList: [
+				{
+					hash: '123123123123123',
+					abbrevHash: '1231231',
+					author: {
+						name: 'test',
+						email: 'email',
+					},
+					description: 'some commit message',
+					body: 'BREAKING CHANGE: body lies here',
+					type: 'BREAKING CHANGE:',
 				},
 			],
 		},
