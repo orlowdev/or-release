@@ -18,7 +18,7 @@ export const getConfigFromFile = ({ readFileEither }: IDeps) => (ctx: IAppCtx): 
 					.case((x) => /\.ya?ml$/.test(x), YAML.parse)
 					.case((x) => x.endsWith('.json'), JSON.parse)
 					.case((x) => x.endsWith('.toml'), TOML.parse)
-					.default(() => ctx),
+					.default(() => ({})),
 			),
 		)
 		.fold(() => ({}), mergeObjects(ctx))
