@@ -105,3 +105,4 @@ ExtendPipe.empty<IAppCtx, Partial<IAppCtx>>()
 			},
 		],
 	})
+	.catch(console.error)
