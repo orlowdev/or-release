@@ -29,7 +29,10 @@ const getChangelogOfType = (
 					convention.match.some((match) => new RegExp(match).test(commit.type)),
 				),
 			).map((commits) =>
-				[convention.groupTitleFormat, convention.groupDescription]
+				[
+					commits.length > 0 ? convention.groupTitleFormat : '',
+					commits.length > 0 ? convention.groupDescription : '',
+				]
 					.filter(Boolean)
 					.concat(commits.map(prettifyCommit(convention))),
 			),
