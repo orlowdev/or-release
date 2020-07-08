@@ -58,47 +58,45 @@ const filterOutCommitHeadings = (changes: string[]) =>
 const normalizeChangeString = (changes: string[]) =>
 	changes.map((line) => line.replace(/"/g, "'").replace(/\n/g, '').replace(/\^{3}/g, '"')).join(', ')
 
-const setCommitType = (conventions: IConvention[]) => (rawCommit: IRawCommit): IRawCommit => {
-	return {
-		...rawCommit,
-		type: Either.fromNullable(
-			conventions.reduce(
-				(acc: string | null, convention) =>
-					convention.match.find(
-						(match) =>
-							new RegExp(match).test(rawCommit.description) || new RegExp(match).test(rawCommit.body),
-					) ?? acc,
-				null,
+const setCommitType = (conventions: IConvention[]) => (rawCommit: IRawCommit): IRawCommit => ({
+	...rawCommit,
+	type: Either.fromNullable(
+		conventions.reduce(
+			(acc: string | null, convention) =>
+				convention.match.find(
+					(match) =>
+						new RegExp(match).test(rawCommit.description) || new RegExp(match).test(rawCommit.body),
+				) ?? acc,
+			null,
+		),
+	)
+		.chain((match) =>
+			Either.fromNullable(
+				new RegExp(match).exec(
+					new RegExp(match).test(rawCommit.description) ? rawCommit.description : rawCommit.body,
+				),
 			),
 		)
-			.chain((match) =>
-				Either.fromNullable(
-					new RegExp(match).exec(
-						new RegExp(match).test(rawCommit.description) ? rawCommit.description : rawCommit.body,
-					),
-				),
-			)
-			.fold(
-				() => '',
-				(match) => match[0].trim(),
-			),
-		description: Either.fromNullable(
-			conventions.reduce(
-				(acc, convention) =>
-					convention.match.find((match) => new RegExp(match).test(rawCommit.description)) ?? acc,
+		.fold(
+			() => '',
+			(match) => match[0].trim(),
+		),
+	description: Either.fromNullable(
+		conventions.reduce(
+			(acc, convention) =>
+				convention.match.find((match) => new RegExp(match).test(rawCommit.description)) ?? acc,
+			'',
+		),
+	)
+		.chain((match) => Either.fromNullable(match || null))
+		.map((match) =>
+			rawCommit.description.replace(
+				new RegExp(match.endsWith('\\s') ? match : match.concat('\\s')),
 				'',
 			),
 		)
-			.chain((match) => Either.fromNullable(match || null))
-			.map((match) =>
-				rawCommit.description.replace(
-					new RegExp(match.endsWith('\\s') ? match : match.concat('\\s')),
-					'',
-				),
-			)
-			.fold(
-				() => rawCommit.description,
-				(match) => match,
-			),
-	}
-}
+		.fold(
+			() => rawCommit.description,
+			(match) => match,
+		),
+})
