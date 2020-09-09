@@ -1,4 +1,4 @@
-name: AVA
+name: Testing (AVA)
 on: [push, pull_request]
 jobs:
  check:
@@ -14,5 +14,5 @@ jobs:
       node-version: '12.x'
    - name: Install dependencies
      run: yarn
-   - name: Test
+   - name: Run tests
      run: yarn test

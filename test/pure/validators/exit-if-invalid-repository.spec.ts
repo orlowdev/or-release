@@ -16,6 +16,6 @@ test('exitIfInvalidRepository exits if repository is not provided', (t) => {
 
 test('exitIfInvalidRepository does not exit if provided repository is valid', (t) => {
 	const spy: any = sinon.spy()
-	exitIfInvalidRepository({ logFatalError: () => spy })({ repository: 'priestine/versions' })
+	exitIfInvalidRepository({ logFatalError: () => spy })({ repository: 'orlovedev/or-release' })
 	t.false(spy.called)
 })

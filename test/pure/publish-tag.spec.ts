@@ -46,14 +46,14 @@ test('publishTag publishes tag using correct request to a custom origin', async 
 		token: 'token',
 		changelog: 'changelog',
 		newVersion: '1.0.0',
-		repository: 'priestine/versions',
+		repository: 'orlovedev/or-release',
 		customUrl: 'https://example.com/',
 		currentCommit: '123123123123123123123123123123123123123123',
 		preRelease: 'alpha',
 	})
 
 	t.true(
-		post.calledWithExactly('https://example.com/priestine/versions/releases', {
+		post.calledWithExactly('https://example.com/orlovedev/or-release/releases', {
 			headers: { Authorization: 'Bearer token', 'Content-Type': 'application/json' },
 			json: {
 				tag_name: '1.0.0',
@@ -83,14 +83,14 @@ test('publishTag publishes tag using correct request to GitHub', async (t) => {
 		token: 'token',
 		changelog: 'changelog',
 		newVersion: '1.0.0',
-		repository: 'priestine/versions',
+		repository: 'orlovedev/or-release',
 		customUrl: '',
 		currentCommit: '123123123123123123123123123123123123123123',
 		preRelease: '',
 	})
 
 	t.true(
-		post.calledWithExactly('https://api.github.com/repos/priestine/versions/releases', {
+		post.calledWithExactly('https://api.github.com/repos/orlovedev/or-release/releases', {
 			headers: { Authorization: 'Bearer token', 'Content-Type': 'application/json' },
 			json: {
 				tag_name: '1.0.0',

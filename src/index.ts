@@ -41,7 +41,7 @@ const execCmdSync = execWith((cmd: string) =>
 const execEither = (cmd: string) => Either.try<string, Error>(execCmdSync(cmd)).map(trimCmdNewLine)
 
 const env: Record<string, string> = Object.keys(process.env)
-	.filter((key) => key.startsWith('PRIESTINE_VERSIONS_'))
+	.filter((key) => key.startsWith('OR_RELEASE_'))
 	.reduce(
 		(acc, key) => ({
 			...acc,

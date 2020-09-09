@@ -45,7 +45,7 @@ const envToObject = (env: NodeJS.ProcessEnv) =>
 	Object.keys(env).reduce(
 		(acc, key) => ({
 			...acc,
-			[transformCase(key.slice(19)).from.upperSnake.to.camel.toString()]: env[key],
+			[transformCase(key.slice(11)).from.upperSnake.to.camel.toString()]: env[key],
 		}),
 		{},
 	)

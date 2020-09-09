@@ -12,5 +12,5 @@ Please note we have a code of conduct, please follow it in all your interactions
 - Do not manually change project version in `package.json`
 - Contributed code must be at least 80% covered with tests
 - Contributed code must be checked with linting tools set up for the project
-- Create a pull request to `master` branch of current repository
+- Create a pull request to `main` branch of current repository
 - Specify link to the issue you are resolving with this contribution (if applicable)

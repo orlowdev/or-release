@@ -36,13 +36,13 @@ jobs:
      with:
       node-version: '12.x'
    - name: Publish new version with build metadata attached
-     # Запуск @priestine/versions с указанием build metadata на основе
+     # Запуск or-release с указанием build metadata на основе
      # текущей даты и пре-релиза nightly.
      # Результатом выполнения этой команды для версии 1.0.0 от 23 июня
      # 2020 будет `1.0.0-nightly.1+20200623`.
-     run: npx @priestine/versions --pre-release=nightly --build-metadata=$(date '+%Y%m%d') --repository=$GITHUB_REPOSITORY
+     run: npx or-release --pre-release=nightly --build-metadata=$(date '+%Y%m%d') --repository=$GITHUB_REPOSITORY
      env:
       # Для удобства, можно перенести часть конфигурации в переменные
       # окружения.
-      PRIESTINE_VERSIONS_TOKEN: ${{ secrets.PRIESTINE_VERSIONS_TOKEN }}
+      OR_RELEASE_TOKEN: ${{ secrets.OR_RELEASE_TOKEN }}
 ```

@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG] "
+title: '[BUG] '
 labels: bug
-assignees: priestine
+assignees: orlovedev
 ---
 
 ## Describe the bug

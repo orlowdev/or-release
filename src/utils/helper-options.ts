@@ -2,7 +2,7 @@ import { LogFunction } from './logger'
 
 export const showHelpMessage = (version: string, logInfo: LogFunction) => {
 	logInfo`
-Priestine Versions ${version}
+||release ${version}
 
 A tool for automating Semantic Versioning on your project.
 
@@ -29,7 +29,7 @@ ${({ g }) => g('--dry-run')}[=<true|false>]		Skip publishing new release
 ${({ g }) => g('--debug')}[=<true|false>]			Run the app in debug mode
 
 
---version				Display current @priestine/versions version
+--version				Display current or-release version
 --help					Show usage help message (this one)
 `
 	process.exit(0)
