@@ -3,7 +3,6 @@ on:
  push:
   branches-ignore:
    - main
-   - master
 jobs:
  versioning:
   runs-on: ubuntu-latest
