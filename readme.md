@@ -6,7 +6,7 @@
 ![ava](https://github.com/orlovedev/or-release/workflows/AVA/badge.svg)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/47fea726a5dfd86413cf/maintainability)](https://codeclimate.com/github/orlovedev/or-release/maintainability)
-[![codecov](https://codecov.io/gh/orlovedev/or-release/branch/master/graph/badge.svg)](https://codecov.io/gh/orlovedev/or-release)
+[![codecov](https://codecov.io/gh/orlovedev/or-release/branch/main/graph/badge.svg)](https://codecov.io/gh/orlovedev/or-release)
 
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
@@ -342,7 +342,7 @@ Here is a JSON example with the default settings for or-release. You can do the 
 
 This intentionally over-complicated diagram depicts the application execution process:
 
-![execution process](https://raw.githubusercontent.com/orlovedev/or-release/master/images/diagram.png)
+![execution process](https://raw.githubusercontent.com/orlovedev/or-release/main/images/diagram.png)
 
 ## 🚫 Caveats
 
