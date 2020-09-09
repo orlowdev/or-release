@@ -29,11 +29,8 @@ jobs:
       node-version: '12.x'
       # If you want to publish to a different registry, you can set it
       # here. E.g. for publishing to GitHub Packages, replace this with
-      # "https://npm.pkg.github.com/".
+      # "https://npm.pkg.github.com".
       registry-url: 'https://registry.npmjs.org'
-      # If you use scoped packages, put the scope here. If you don't,
-      # just remove this property altogether.
-      scope: '@orlovedev'
    - name: Set env
      # This command extracts the release tag value and assigns it to a
      # RELEASE_VERSION env variable.
