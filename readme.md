@@ -1,5 +1,7 @@
 # ||release
 
+![or-release logo](./images/or-release.jpg)
+
 ![lint](https://github.com/orlovedev/or-release/workflows/lint/badge.svg)
 ![ava](https://github.com/orlovedev/or-release/workflows/AVA/badge.svg)
 
