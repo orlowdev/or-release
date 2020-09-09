@@ -16,6 +16,6 @@ jobs:
      with:
       node-version: '12.x'
    - name: Publish new release (if applicable)
-     run: npx @priestine/versions@latest --pre-release=alpha --repository=$GITHUB_REPOSITORY
+     run: npx or-release --pre-release=alpha --repository=$GITHUB_REPOSITORY
      env:
       OR_RELEASE_TOKEN: ${{ secrets.OR_RELEASE_TOKEN }}
