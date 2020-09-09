@@ -10,6 +10,6 @@ type Ctx = Pick<IAppCtx, 'repository'>
 
 export const exitIfInvalidRepository = ({ logFatalError }: IDeps) => ({ repository }: Ctx) =>
 	Either.fromNullable(repository)
-		.chain((repo) => Either.fromNullable(/^\w+\/\w+$/.exec(repo)))
+		.chain((repo) => Either.fromNullable(/^[a-zA-Z0-9.-]+\/[a-zA-Z0-9.-]+$/.exec(repo)))
 		.leftMap(() => new Error('Repository undefined or syntax is invalid'))
 		.leftMap(logFatalError('Could not start the application:'))
