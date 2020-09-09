@@ -37,7 +37,7 @@ export interface IAppConfig {
 	 * Path to versioning config file.
 	 *
 	 * File notation/language is resolved from the file extension.
-	 * @priestine/versioning uses the following parsers:
+	 * or-release uses the following parsers:
 	 *
 	 * - .json | .yaml | .yml => YAML
 	 * - .toml => TOML
@@ -56,8 +56,8 @@ export interface IAppConfig {
 
 	/**
 	 * Transport for delivering releases. If set to "github" or "gitlab",
-	 * apart from creating a git tag, @priestine/versioning will also
-	 * create a release.
+	 * apart from creating a git tag, or-release will also create a
+	 * release.
 	 *
 	 * Bitbucket is just an alias for "git" and it only creates a git tag.
 	 *
@@ -93,8 +93,8 @@ export interface IAppConfig {
 	writeChangelogToTag: boolean
 
 	/**
-	 * Configure writing changelog to files. @priestine/versioning will
-	 * APPEND new data to the changelog.
+	 * Configure writing changelog to files. or-release will APPEND new
+	 * data to the changelog.
 	 *
 	 * @default []
 	 */
@@ -140,11 +140,11 @@ export interface IAppConfig {
 	/**
 	 * Pre-release postfix to be associated with the release, e.g -rc,
 	 * -alpha, -beta, etc. The - sign at the beginning is optional. If it
-	 * is not there, @priestine/versioning will add it automatically.
-	 * @priestine/versioning also automatically adds .# at the end of the
-	 * pre-release so provided pre-release "rc" becomes "-rc.1". If
-	 * subsequent releases get the same version and the same pre-release,
-	 * the number increments ("-alpha.1" -> "-alpha.2").
+	 * is not there, or-release will add it automatically. or-release
+	 * also automatically adds .# at the end of the pre-release so
+	 * provided pre-release "rc" becomes "-rc.1". If subsequent releases
+	 * get the same version and the same pre-release, the number
+	 * increments ("-alpha.1" -> "-alpha.2").
 	 *
 	 * @see https://semver.org/#spec-item-9
 	 *
@@ -190,7 +190,7 @@ export interface IAppConfig {
 	bumpMajor: boolean
 
 	/**
-	 * Repository path, e.g. "priestine/semantics". This value is needed
+	 * Repository path, e.g. "orlovedev/or-release". This value is needed
 	 * when API is used for publishing releases to GitHub or GitLab. In
 	 * most cases, it can be taken from an environment variable in your
 	 * CI tool.

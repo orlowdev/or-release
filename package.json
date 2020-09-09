@@ -1,6 +1,6 @@
 {
-	"name": "@priestine/versions",
-	"description": "A tool for automating Semantic Versioning on your project",
+	"name": "or-release",
+	"description": "Automated release management for your projects",
 	"version": "0.0.0",
 	"main": "index.js",
 	"engines": {
@@ -10,7 +10,7 @@
 		"access": "public"
 	},
 	"bin": "./index.js",
-	"repository": "https://github.com/priestine/versions.git",
+	"repository": "https://github.com/orlovedev/or-release.git",
 	"author": "Sergei Orlov <orlove.dev@gmail.com> (https://orlove.dev/)",
 	"keywords": [
 		"ci",
@@ -29,10 +29,10 @@
 		"bitbucket"
 	],
 	"license": "MIT",
-	"homepage": "https://github.com/priestine/versions",
+	"homepage": "https://github.com/orlovedev/or-release",
 	"bugs": {
 		"email": "orlove.dev@gmail.com",
-		"url": "https://github.com/priestine/versions/issues"
+		"url": "https://github.com/orlovedev/or-release/issues"
 	},
 	"scripts": {
 		"start": "ts-node src/index.ts",
