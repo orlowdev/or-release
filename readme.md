@@ -10,7 +10,7 @@
 
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![versioning: or-release](https://img.shields.io/badge/versioning-%7C%7Cl-E76D83.svg)](https://github.com/orlovedev/or-release)
+[![versioning: or-release](https://img.shields.io/badge/versioning-%7C%7Cr-E76D83.svg)](https://github.com/orlovedev/or-release)
 
 A tool for automating versioning on your project.
 
@@ -21,6 +21,7 @@ Check out the [roadmap for the project](https://github.com/orlovedev/or-release/
 - [||release](#release)
   - [🔑 Table of Contents](#-table-of-contents)
   - [✨ Features](#-features)
+  - [🗣 Spread the Word](#-spread-the-word)
   - [🏁 Getting Started](#-getting-started)
     - [Local Machine Example](#local-machine-example)
     - [GitHub Actions Example](#github-actions-example)
@@ -58,6 +59,16 @@ Check out the [roadmap for the project](https://github.com/orlovedev/or-release/
 - ⚙️ Bump versions for the code written in any programming language with no configuration - only git matters
 - 📝 Automatically generated list of changes that is put into the release body. _An option to also write to a file will also be available!_
 - 🤔 Works with [gitmoji](https://gitmoji.carloscuesta.me) commits convention, but you can configure it to your heart's content (see [Conventions](#conventions)).
+
+## 🗣 Spread the Word
+
+Let other people know that you use `or-release` for versioning by adding the or-release badge in your readme:
+
+[![versioning: or-release](https://img.shields.io/badge/versioning-%7C%7Cr-E76D83.svg)](https://github.com/orlovedev/or-release)
+
+```markdown
+[![versioning: or-release](https://img.shields.io/badge/versioning-%7C%7Cr-E76D83.svg)](https://github.com/orlovedev/or-release)
+```
 
 ## 🏁 Getting Started
 
